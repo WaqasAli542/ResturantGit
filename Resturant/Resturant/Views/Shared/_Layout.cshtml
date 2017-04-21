@@ -1,0 +1,89 @@
+﻿<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Stickys</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/styles.css" rel="stylesheet" />
+</head>
+
+<body>
+
+
+
+    @RenderBody()
+
+    <footer>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="logo-footer"> <a href="#"><img src="~/Content/images/stickys-logo-dark.png" alt=""></a> </div>
+                    <p>
+                        New York City’s finest gourmet Chicken Finger restaurant. Our chicken is fresh, never <br>
+                        frozen, antibiotic free, hormone free and always deliciously different.
+                    </p>
+                    <div class="footer-social-media"> <a href="#"><img src="~/Content/images/facebook.png" alt=""></a> <a href="#"><img src="~/Content/images/twitter.png" alt=""></a> <a href="#"><img src="~/Content/images/instagram.png" alt=""></a> </div>
+                    <p class="copyright">© STICKY'S FINGER JOINT | WEBSITE POWERED BY <a href="#">BRANDIBBLE </a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+
+    @if (ViewBag.Session != null)
+{
+    <script src="~/Scripts/jquery-ui.js"></script>
+        <script>
+            $(".spinner").spinner();
+
+            $(document).ready(function () {
+                $(".cutom-anc").click(function () {
+                    $(".custom-nav").slideToggle("slow");
+                });
+                $(".shopping-cart").click(function () {
+                    $(".checkout").animate({ width: 'toggle' }, 350);
+                });
+
+            });
+        </script>
+}
+    else
+    {
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+        <script>
+
+            $(document).ready(function () {
+
+                // Basic usage
+                $(".placepicker").placepicker();
+
+                // Advanced usage
+                $("#advanced-placepicker").each(function () {
+                    var target = this;
+                    var $collapse = $(this).parents('.form-group').next('.collapse');
+                    var $map = $collapse.find('.another-map-class');
+
+                    var placepicker = $(this).placepicker({
+                        map: $map.get(0),
+                        placeChanged: function (place) {
+                            console.log("place changed: ", place.formatted_address, this.getLocation());
+                        }
+                    }).data('placepicker');
+                });
+
+            }); // END document.ready
+
+        </script>
+    }
+</body>
+
+</html>

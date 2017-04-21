@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="727f18ff03ff41d884879f4a850715c9" Name="Diagram1">
+        <EntityTypeShape EntityType="ResturantDatabaseModel.AddOn" Width="1.5" PointX="8.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Admin" Width="1.5" PointX="15.75" PointY="13.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Branch" Width="1.5" PointX="13" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Branch_Day" Width="1.5" PointX="15.25" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Branch_Item" Width="1.5" PointX="15.25" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Category" Width="1.5" PointX="1.5" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Cousine" Width="1.5" PointX="1.5" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Customer" Width="1.5" PointX="0.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Day" Width="1.5" PointX="13" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Discount" Width="1.5" PointX="3" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.ExtraCharge" Width="1.5" PointX="3" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Food" Width="1.5" PointX="3.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Food_AddOn" Width="1.5" PointX="10.5" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Food_Ingredients" Width="1.5" PointX="6" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Food_Size" Width="1.5" PointX="3.75" PointY="27.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.FoodItem" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.FoodItem_AddOn" Width="1.5" PointX="10.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Ingredient" Width="1.5" PointX="3.75" PointY="30.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order" Width="1.5" PointX="3" PointY="14.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_AddOn" Width="1.5" PointX="7.5" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_Discount" Width="1.5" PointX="5.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_ExtraCharges" Width="1.5" PointX="5.25" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_FoodItem" Width="1.5" PointX="5.25" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_Item" Width="1.5" PointX="5.25" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_SpecialOffer" Width="1.5" PointX="8.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_SpecialOffer_AddOn" Width="1.5" PointX="10.5" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_SpecialOffer_FoodItem" Width="1.5" PointX="8.25" PointY="12.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_SpecialOffer_Item" Width="1.5" PointX="10.25" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Order_Taxes" Width="1.5" PointX="5.25" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.OrderItem_AddOn" Width="1.5" PointX="7.5" PointY="21.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.PaymentMethod" Width="1.5" PointX="0.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Postcode" Width="1.5" PointX="15.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.ResturantDetail" Width="1.5" PointX="10.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.SpecialOffer" Width="1.5" PointX="6" PointY="27.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.SpecialOffer_AddOn" Width="1.5" PointX="12.5" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.SpecialOffer_Item" Width="1.5" PointX="13.25" PointY="14.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ResturantDatabaseModel.Tax" Width="1.5" PointX="3" PointY="9.375" IsExpanded="true" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Food_AddOn_AddOn" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_AddOn_ToAddOn" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_AddOn_ToAddOn" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_OrderItem_AddOn_ToAddOn" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_AddOn_Addon" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Table_AddOn" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Branch_Day_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Branch_Item_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Branch_ResturantDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Postcodes_Branch" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Branch_Day_Day" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Category_Cousine" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Discount_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_Item_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Table_Category" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_CustomerId" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_Discount_Discount" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_ExtraCharges_ExtraCharges" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Food_AddOn_Food" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Food_Ingredients_Food" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_FoodItem_Food" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Food_Ingredients_Ingredients" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_FoodItem_ToFood_Size" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_Item_Food_Size" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_FoodItem_ToFoodItem" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_FoodItem_ToFoodItem" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_Item_ToFoodItem" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Table_FoodItem" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_Discount_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_ExtraCharges_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_FoodItem_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_Item_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_PaymentMethod" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_Item_ToOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_ToOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_Taxes_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_AddOn_ToOrderItem" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_OrderItem_AddOn_ToOrderItem" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_ToSpecialOffer" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_AddOn_ToSpecialOffer" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_SpecialOffer_Item_ToSpecialOffer" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Order_Taxes_Taxes" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_AddOn_SpecialOffer" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_Item_SpecialOffer" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
