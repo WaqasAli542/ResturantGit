@@ -748,22 +748,28 @@ public class AdminFoodController : Controller
             if (check)
                 truncatedAddons.Add(addon);
         }
-        return JsonConvert.SerializeObject(truncatedAddons, Formatting.Indented,
-            new JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            }
-        );
+
+      return  JsonConvert.SerializeObject(addOnList);
+
+
+
+
+        
     }
     public string getCategory(int cousineId)
     {
         List<Category> cats = new BLFood().getListOfCategoryByCousineId(cousineId);
         return JsonConvert.SerializeObject(cats, Formatting.Indented,
-            new JsonSerializerSettings()
-            {
-                ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            }
-        );
+                      new JsonSerializerSettings()
+                      {
+                          ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                      });
+        //return JsonConvert.SerializeObject(cats, Formatting.Indented,
+        //    new JsonSerializerSettings()
+        //    {
+        //        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+        //    }
+        //);
     }
     #endregion
 

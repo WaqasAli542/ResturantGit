@@ -300,6 +300,10 @@ namespace Resturant.BAL
         {
             return new DALFood().getListOfSpecialOffer_Item();
         }
+        public List<SpecialOffer_Item> getListOfSpecialOffer_ItemBySpecialOfferId(int specialId)
+        {
+            return new DALFood().getListOfSpecialOffer_ItemBySpecialOfferId(specialId);
+        }
         public SpecialOffer_Item getSpecialOffer_ItemById(int _id)
         {
             return new DALFood().getSpecialOffer_ItemById(_id);

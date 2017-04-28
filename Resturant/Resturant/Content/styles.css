@@ -633,7 +633,7 @@ button.close, button.close span, button.close span {
 	padding-top: 5px;
 	padding-left: 9px;
 }
-.checkout {
+/*.checkout {
 	height: 89%;
 	position: fixed;
 	width: 320px;
@@ -748,7 +748,52 @@ button.close, button.close span, button.close span {
 .list-detail li.sb-total {
 	color:#fff;
 	border-bottom:1px soldi #F4E38B;
-	font-family:Arial, Helvetica, sans-serif}
+	font-family:Arial, Helvetica, sans-serif}*/
+.cd-cart-trigger .count {
+	list-style: none;
+	font-family: Tahoma, Geneva, sans-serif;
+	height: 32px;
+}
+.cd-cart * {
+	font-family: Tahoma, Geneva, sans-serif;
+}
+.cd-cart footer {
+	color: #fff;
+	min-height: inherit;
+	padding-left: 0px;
+	padding-top: 0px;
+	border-radius: 0px;
+}
+.product-details h3 {
+	margin: 0px;
+}
+.cd-cart .price {
+	font-size: 16px !important;
+}
+.cd-cart .actions {
+	float: left;
+	width: 100%;
+	margin-top: 0px;
+	font-size: 14px;
+}
+.cd-cart ul li {
+	list-style: none
+}
+.cd-cart .checkout {
+	padding: 0px;
+	border: none;
+}
+.cd-cart h2{
+	margin-top:0px;}
+.actions a{
+	font-size:13px;}
+.quantity label{
+	font-size:12px;}
+.cd-cart .checkout{
+	background:#C32630}
+.cd-cart .checkout:hover{
+	background:#C32630;
+	opacity:.9;}
  @media only screen and (min-width : 768px) and (max-width : 1024px) {
 .navbar-brand>img {
 	max-width: 120px;

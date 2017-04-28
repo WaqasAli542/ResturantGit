@@ -235,6 +235,7 @@
     <Compile Include="Models\Ingredient.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Items.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
@@ -316,6 +317,7 @@
     <Content Include="App_Data\ResturantDatabase_log.ldf">
       <DependentUpon>ResturantDatabase.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\add-cart.css" />
     <Content Include="Content\AdminThemeFiles\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Content\AdminThemeFiles\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Content\AdminThemeFiles\bootstrap\css\bootstrap.css" />
@@ -1216,6 +1218,9 @@
     <Content Include="Content\images\cart.png" />
     <Content Include="Content\images\catering-bg.jpg" />
     <Content Include="Content\images\catering-heading.png" />
+    <Content Include="Content\images\cd-icon-arrow-next.svg" />
+    <Content Include="Content\images\cd-icon-select.svg" />
+    <Content Include="Content\images\cd-icons-cart-close.svg" />
     <Content Include="Content\images\checks.png" />
     <Content Include="Content\images\dots-yellow.png" />
     <Content Include="Content\images\dots.png" />
@@ -1227,6 +1232,7 @@
     <Content Include="Content\images\location-4.jpg" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\nav-bg-rep.png" />
+    <Content Include="Content\images\product-preview.png" />
     <Content Include="Content\images\slider-1.jpg" />
     <Content Include="Content\images\slider-2.jpg" />
     <Content Include="Content\images\stickys-logo-dark.png" />
@@ -1234,6 +1240,7 @@
     <Content Include="Content\images\user.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\Other Styling Files\CSS\style.css" />
+    <Content Include="Content\reset.css" />
     <Content Include="Content\styles.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -1406,10 +1413,12 @@
       <LastGenOutput>ResturantDatabase.cs</LastGenOutput>
     </Content>
     <None Include="Properties\PublishProfiles\Resturant.pubxml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Scripts\cart\jquery-3.0.0.min.js" />
+    <Content Include="Scripts\cart\main.js" />
+    <Content Include="Scripts\customerJs\jquery-ui.js" />
+    <Content Include="Scripts\customerJs\main.js" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\customerJs\bootstrap.js" />
     <Content Include="Scripts\customerJs\bootstrap.min.js" />
     <Content Include="Scripts\customerJs\gmaps.js" />
@@ -1422,7 +1431,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
-    <Content Include="Scripts\jquery-ui.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -1493,6 +1501,7 @@
     <Content Include="Views\ResturantDetail\UpdateResturantDetails.cshtml" />
     <Content Include="Views\ResturantDetail\AddBranch.cshtml" />
     <Content Include="Views\ResturantDetail\UpdateBranch.cshtml" />
+    <Content Include="Views\Home\SpecialOffers.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -360,7 +360,11 @@ namespace Resturant.DAL.Classes
         {
             return database.SpecialOffer_Item.ToList();
         }
-
+        public List<SpecialOffer_Item> getListOfSpecialOffer_ItemBySpecialOfferId(int specialId)
+        {
+            var sl=database.SpecialOffer_Item.ToList().Where(so => so.SpecialOfferID == specialId);
+            return sl.ToList();
+        }
         public SpecialOffer_Item getSpecialOffer_ItemById(int _id)
         {
             return database.SpecialOffer_Item.FirstOrDefault(x => x.Id == _id);

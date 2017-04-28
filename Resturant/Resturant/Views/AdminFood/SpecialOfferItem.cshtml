@@ -4,63 +4,7 @@
 }
 @model Resturant.Models.SpecialOffer
 @using Resturant.Models;
-<script type="text/javascript">
-    function updateValue() {
 
-        $.ajax({
-            dataType: "json",
-            type: "GET",
-            url: '@Url.Action("getCategory", "AdminFood")',
-            contentType: "application/json; charset=utf-8",
-            data: { cousineId: parseInt($('#CousineId').val()) },
-            success: function (response) {
-
-                var $el = $("#CategoryId");
-                $el.empty(); // remove old options
-                $el.append($("<option></option>")
-                        .attr("value", '').text('Please Select'));
-
-                $.each(response, function (value, key) {
-
-                    $el.append($("<option></option>")
-                            .attr("value", key.Id).text(key.Name));
-                });
-            },
-            error: function (response) { alert(response ); }
-
-        });
-
-    }
-
-    function updateAddOn() {
-
-        $.ajax({
-            dataType: "json",
-            type: "GET",
-            url: '@Url.Action("getSpecialOfferAddOn", "AdminFood")',
-            contentType: "application/json; charset=utf-8",
-            data: { AddOncategoryId: parseInt($('#AddOnCategory').val()), specialOfferId: parseInt(@Model.Id) },
-            success: function (response) {
-
-                var $el = $("#AddOnID");
-                $el.empty(); // remove old options
-                $el.append($("<option></option>")
-                        .attr("value", '').text('Please Select'));
-
-                $.each(response, function (value, key) {
-
-                    $el.append($("<option></option>")
-                            .attr("value", key.Id).text(key.Name));
-                });
-            },
-            error: function (response) { alert(response); }
-
-        });
-
-    }
-
-
-</script>
 
 <div class="box">
     <div class="box-header">
@@ -291,5 +235,62 @@
     </div>
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript">
+   
+        function updateValue() {
+
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: '@Url.Action("getCategory", "AdminFood")',
+                contentType: "application/json; charset=utf-8",
+                data: { cousineId: parseInt($('#CousineId').val()) },
+                success: function (response) {
+
+                    var $el = $("#CategoryId");
+                    $el.empty(); // remove old options
+                    $el.append($("<option></option>")
+                            .attr("value", '').text('Please Select'));
+
+                    $.each(response, function (value, key) {
+
+                        $el.append($("<option></option>")
+                                .attr("value", key.Id).text(key.Name));
+                    });
+                },
+                error: function (response) { alert(response); }
+
+            });
+
+        }
+
+        function updateAddOn() {
+
+            $.ajax({
+                dataType: "json",
+                type: "GET",
+                url: '@Url.Action("getSpecialOfferAddOn", "AdminFood")',
+                contentType: "application/json; charset=utf-8",
+                data: { AddOncategoryId: parseInt($('#AddOnCategory').val()), specialOfferId: parseInt(@Model.Id) },
+                success: function (response) {
+
+                    var $el = $("#AddOnID");
+                    $el.empty(); // remove old options
+                    $el.append($("<option></option>")
+                            .attr("value", '').text('Please Select'));
+
+                    $.each(response, function (value, key) {
+
+                        $el.append($("<option></option>")
+                                .attr("value", key.Id).text(key.Name));
+                    });
+                },
+                error: function (response) { alert(response); }
+
+            });
+
+        }
 
 
+</script>
