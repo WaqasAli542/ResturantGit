@@ -18,13 +18,12 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#about">Menu</a></li>
-                    <li><a href="#contact">Location</a></li>
-                    <li><a href="#contact">CATERING</a></li>
-                    <li><a href="#contact">CAREERS</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
-                    <li class="order-online"><a href="#contact">Order Online</a></li>
+                    <li class="active"><a href="#">About</a></li>
+                    <li><a href="../Home/Menu">Menu</a></li>
+                    <li><a href="../Home/SpecialOffers">Special Offers</a></li>
+                    <li><a href="../Home/Location">Location</a></li>
+                    <li><a href="../Home/Contact">CONTACT</a></li>
+                    <li class="order-online"><a href="../Home/OrderOnline">Order Online</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -91,40 +90,78 @@ else
 </div>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 
 
 <script>
-            var OrderN=0;
+    var OrderN = 0;
+    var quantity = 0;
             var amount = 0;
             var name = "";
             var count = 0;
+            var addons = "";
+            var specialofferitem = "";
+            function handleClickOfSpecialOffer(cb) {
+                specialofferitem = "";
+                for (var i = 0 ; i < quantity; i++) {
+                    var e = document.getElementById(i+"");
+                    specialofferitem = specialofferitem +e.options[e.selectedIndex].value+ ",";
+                }
+                document.getElementById("mob").innerHTML = name + ',' + amount + "," + "addon" + "," + addons + "foodtype" + "," + specialofferitem;
+
+            }
             function handleClick(cb) {
 
-                if (cb.checked)
-                {
-
+                if (cb.checked) {
+                    addons = addons + cb.id + ",";
                     amount = amount + parseInt(cb.value);
-
                 }
-                else
-                {
-
+                else {
+                    addons = addons.replace(cb.id + ",", "");
                     amount = amount - parseInt(cb.value);
                 }
+                document.getElementById("mob").innerHTML = name + ',' + amount + "," + "addon" + "," + addons + "foodtype" + "," + specialofferitem;
+               
+            }
+           
 
-                document.getElementById("mob").innerHTML = name + ',' + amount;
-                 alert(amount);
-                $(cb).change(function () {
-                    //do something when the user clicks the box
+
+    //remove Values from addons and specialofferitem
+            function RemoveAddandItems() {
+                addons = "";
+                specialofferitem = "";
+            }
 
 
+
+            function displaySpecialOffer(specialOfferID) {
+                $.ajax({
+                    dataType: "json",
+                    type: "GET",
+                    url: '@Url.Action("GetSpecialOffer", "Home")',
+                    contentType: "application/json; charset=utf-8",
+                    data: { SpecialOfferID: specialOfferID },
+                    success: function (response) {
+                        amount = parseInt(response.Price);
+                        var $el = $("#SpecialOfferDescription");
+                        var $price = $("#btnsubmit");
+                        name = response.Name;
+                        $el.empty(); // remove old options
+                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Name + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Name + ',' + amount + "</p>"))
+                        $price.removeAttr("data-price")
+                        $price.attr("data-price", amount)
+
+
+                    },
+                    error: function (response) { alert(response); }
 
                 });
 
             }
          
-            function displayFoodModal(FoodItemId) {
+    function displayFoodModal(FoodItemId) {
+        check = 0;
                 $.ajax({
                     dataType: "json",
                     type: "GET",
@@ -132,14 +169,26 @@ else
                     contentType: "application/json; charset=utf-8",
                     data: { SpecialOfferID: FoodItemId },
                     success: function (response) {
-                        amount = parseInt(response.Price);
-                        var $el = $("#Fooddescription");
-                        var $price = $("#btnsubmit");
-                        name = response.Size;
+                        var temp = "";
+                        var $el = $("#SelectDiv");
                         $el.empty(); // remove old options
-                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Size + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Size + ',' + amount + "</p>"))
-                        $price.removeAttr("data-price")
-                        $price.attr("data-price", amount)
+                       
+                               
+                            quantity = parseInt(response[0].Quantity);
+                     
+                            for(var i=0;i<quantity;i++)
+                            {
+                                temp = temp + "  <div class='form-group'><label> Select a " + response[0].Category.Name + "</label> <div class='select-wrapper select-wrapper-large blackSelect'> <select onchange='handleClickOfSpecialOffer(this);'  class='form-control ' id=" + i + ">";
+
+                                $.each(response[0].Category.Foods, function (value1, key1) {
+                                    temp = temp + "<option value=" + key1.Id + ">" + key1.Name +  "</option>";
+                                });
+
+                                $el.append($(temp + "</select></div></div>"));
+                                temp = "";
+                            }
+                        
+                        
 
 
                     },
@@ -162,7 +211,7 @@ else
 
                         $.each(response, function (value, key) {
 
-                            $el.append($("<tr> <td width='50%'><input onclick='handleClick(this);' id='"+key.Id+ "' type='checkbox' name= '" + key.Price + "' value='" + key.Price + "'>  <label id= 'kdf' name='" + key.Name + " value='" + key.Price + "'>" + key.Name + "</label><p type='text' id='" + key.Id + "' hidden >" + key.Name + '                   ' + key.Price + " </p> <span class='pull-right'>  $ " + key.Price + "</span></td></tr>"))
+                            $el.append($("<tr> <td width='50%'><input onclick='handleClick(this);' id='" + parseInt(key.AddOn.Id) + "' type='checkbox' name= '" + key.AddOn.Price + "' value='" + key.AddOn.Price + "'>  <label id= 'kdf' name='" + key.AddOn.Name + " value='" + key.AddOn.Price + "'>" + key.AddOn.Name + "</label><p type='text' id='" + parseInt(key.AddOn.Id) + "' hidden >" + key.AddOn.Name + ',' + key.AddOn.Price + " </p> <span class='pull-right'>  $ " + key.AddOn.Price + "</span></td></tr>"))
 
                         });
                     },
@@ -176,13 +225,16 @@ else
           
     $(document).on("click", ".open-FoodItem", function () {
 
-                var myFoodItemId = $(this).data('id');
-                $(".modal-body #foodItemId").val(myFoodItemId);
+                var mySpecialOfferId = $(this).data('id');
+                $(".modal-body #foodItemId").val(mySpecialOfferId);
                 var $el = $("#modalTable");
                 $el.empty(); // remove old options
-
-                displayAddonModal(myFoodItemId);
-                displayFoodModal(myFoodItemId);
+                specialofferitem = "";
+                addons = "";
+          
+                displaySpecialOffer(mySpecialOfferId);
+                displayAddonModal(mySpecialOfferId);
+                displayFoodModal(mySpecialOfferId);
                 // As pointed out in comments,
                 // it is superfluous to have to manually call the modal.
                 $('#show_AddOns').toggle();
@@ -194,13 +246,14 @@ else
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div id="Fooddescription"></div>
+                <div id="SpecialOfferDescription"></div>
             </div>
-            <form action="AddtoOrder" method="post" onsubmit="updateBasket()">
+            <form action="#" method="post" onsubmit="updateBasket()">
                 <div class="modal-body">
+                    <h4 class="model-main-heading">Add it into the Basket<small></small></h4>
+                    <div id="SelectDiv">
 
-
-                    <h4>Add it into the Basket<small></small></h4>
+                    </div>
                     <table id="modalTable" class="table mb0">
                         <tr>
                             <td width="50%">
@@ -228,8 +281,8 @@ else
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <input id="btnsubmit" data-price="" type="submit" class="cd-add-to-cart btn btn-primary" value="ADD to Order" />
+                    <button type="button" onclick="RemoveAddandItems()" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input id="btnsubmit" data-price="" data-dismiss="modal" onclick=" updatebasket()" type="submit" class="cd-add-to-cart btn btn-primary" value="ADD to Order" />
                 </div>
             </form>
         </div>

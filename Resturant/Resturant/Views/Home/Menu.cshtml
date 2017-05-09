@@ -17,13 +17,12 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#about">Menu</a></li>
-                    <li><a href="#contact">Location</a></li>
-                    <li><a href="#contact">CATERING</a></li>
-                    <li><a href="#contact">CAREERS</a></li>
-                    <li><a href="#contact">CONTACT</a></li>
-                    <li class="order-online"><a href="#contact">Order Online</a></li>
+                    <li class="active"><a href="#">About</a></li>
+                    <li><a href="../Home/Menu">Menu</a></li>
+                    <li><a href="../Home/SpecialOffers">Special Offers</a></li>
+                    <li><a href="../Home/Location">Location</a></li>
+                    <li><a href="../Home/Contact">CONTACT</a></li>
+                    <li class="order-online"><a href="../Home/OrderOnline">Order Online</a></li>
                 </ul>
             </div>
             <!--/.nav-collapse -->
@@ -113,27 +112,23 @@ else
             var amount = 0;
             var name = "";
             var count = 0;
+            var addons="";
             function handleClick(cb) {
    
                 if (cb.checked)
                 {
-                    
-                    amount = amount + parseInt(cb.value);
-                  
+                    addons = addons + cb.id + ",";
+                    amount = amount + parseInt(cb.value); 
                 }
                 else
                 {
-            
+                   addons= addons.replace(cb.id + ",", "");
                     amount = amount - parseInt(cb.value);
                 }
-              
-                document.getElementById("mob").innerHTML = name + ',' + amount;
+                document.getElementById("mob").innerHTML = name + ',' + amount + "," + "addon" + "," + addons;
                  alert(amount);
                 $(cb).change(function () {
-                    //do something when the user clicks the box
-              
-                
-                    
+                    //do something when the user clicks the box   
                 });
               
             }
@@ -154,8 +149,6 @@ else
                         $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Size + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Size + ',' + amount + "</p>"))
                         $price.removeAttr("data-price") 
                         $price.attr("data-price", amount)
-                      
-
                     },
                     error: function (response) { alert(response); }
 
@@ -212,20 +205,9 @@ else
                     </div>
                     <form action="AddtoOrder" method="post" onsubmit="updateBasket()">
                         <div class="modal-body">
-                          
-                          
                             <h4>Add it into the Basket<small></small></h4>
                             <table id="modalTable" class="table mb0">
                                 <tr>
-                                    <td width="50%">
-                                        <input id="checkbox3" type="checkbox" name="" value="3">
-                                        <label>SMALL CLASSIC FRY</label>
-                                        <span class="pull-right"> $0.92</span>
-                                    </td>
-                                    <td width="50%">
-                                        <input id="checkbox3" type="checkbox" name="" value="3">
-                                        <label>SMALL CAJUN FRY</label>
-                                    </td>
                                 </tr>
                             </table>
                             <input type="text" hidden id="foodItemId" name="foodItemId" />

@@ -2165,7 +2165,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ResturantDatabaseEntities15" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ResturantDatabaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AddOns" EntityType="Self.AddOn" />
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Branches" EntityType="Self.Branch" />
@@ -2389,7 +2389,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ResturantDatabaseModelStoreContainer" CdmEntityContainer="ResturantDatabaseEntities15">
+        <EntityContainerMapping StorageEntityContainer="ResturantDatabaseModelStoreContainer" CdmEntityContainer="ResturantDatabaseEntities">
           <EntitySetMapping Name="AddOns">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.AddOn">
               <MappingFragment StoreEntitySet="AddOn">

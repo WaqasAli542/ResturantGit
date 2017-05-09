@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Resturant.BAL;
 using Resturant.Models;
+using Resturant.Models.DTO;
 using Resturant.UtilityClasses;
 using System;
 using System.Collections.Generic;
@@ -732,7 +733,7 @@ public class AdminFoodController : Controller
     {
         List<AddOn> addOnList = new BLFood().getListOfCategoryOfAddon(AddOncategoryId);
         List<SpecialOffer_AddOn> soao = new BLFood().getListOfSpecialOffer_AddOn_OfSpecificValues(specialOfferId);
-        List<AddOn> truncatedAddons = new List<AddOn>();
+        List<Resturant.Models.DTO.AddOnDTO> truncatedAddons = new List<Resturant.Models.DTO.AddOnDTO>();
 
         foreach (AddOn addon in addOnList)
         {
@@ -746,12 +747,16 @@ public class AdminFoodController : Controller
                 }
             }
             if (check)
-                truncatedAddons.Add(addon);
+                truncatedAddons.Add(new Resturant.Models.DTO.AddOnDTO(addon));
         }
 
-      return  JsonConvert.SerializeObject(addOnList);
 
 
+        return JsonConvert.SerializeObject(truncatedAddons, Formatting.Indented,
+                      new JsonSerializerSettings()
+                      {
+                          ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                      });
 
 
         
@@ -759,7 +764,12 @@ public class AdminFoodController : Controller
     public string getCategory(int cousineId)
     {
         List<Category> cats = new BLFood().getListOfCategoryByCousineId(cousineId);
-        return JsonConvert.SerializeObject(cats, Formatting.Indented,
+        List<CategoryDTO> categories = new List<CategoryDTO>();
+        foreach (Category item in cats)
+        {
+            categories.Add(new CategoryDTO(item));
+        }
+        return JsonConvert.SerializeObject(categories, Formatting.Indented,
                       new JsonSerializerSettings()
                       {
                           ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore

@@ -16,7 +16,7 @@ namespace Resturant.Models
     public partial class ResturantDatabase : DbContext
     {
         public ResturantDatabase()
-            : base("name=ResturantDatabaseEntities15")
+            : base("name=ResturantDatabaseEntities")
         {
         }
     

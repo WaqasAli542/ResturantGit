@@ -40,6 +40,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Braintree-2.65.0">
+      <HintPath>..\packages\Braintree.2.65.0\lib\Braintree-2.65.0.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -205,12 +208,18 @@
     <Compile Include="Models\Customer.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DataHandling\AddOnManagement.cs" />
     <Compile Include="Models\Day.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Discount.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTO\AddOnDTO.cs" />
+    <Compile Include="Models\DTO\CategoryDTO.cs" />
+    <Compile Include="Models\DTO\FoodDTO.cs" />
+    <Compile Include="Models\DTO\FoodItemDTO.cs" />
+    <Compile Include="Models\DTO\SpecialOffer_ItemDTO.cs" />
     <Compile Include="Models\ExtraCharge.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
@@ -1414,7 +1423,6 @@
     </Content>
     <None Include="Properties\PublishProfiles\Resturant.pubxml" />
     <Content Include="Scripts\cart\jquery-3.0.0.min.js" />
-    <Content Include="Scripts\cart\main.js" />
     <Content Include="Scripts\customerJs\jquery-ui.js" />
     <Content Include="Scripts\customerJs\main.js" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />

@@ -86,9 +86,25 @@ jQuery(document).ready(function ($) {
         //this is just a product placeholder
         //you should insert an item with the selected product info
         //replace productId, productName, price and url with your real product infohttp:
-        productId = productId + 1;
+        productId = productId + 1; var addons = ""; var foodtype = ""; var check;
         var text = document.getElementById("mob").innerHTML
-        var sp = text.split(",", 3)
+        var sp = text.split(",")
+        var len = sp.length;
+        for (var i =3 ; i < len-1; i++) {
+
+            if(sp[i]==""){}
+            else if(sp[i]=="foodtype")
+            {
+                check = i+1;
+                break;
+            }
+            else {
+                addons = addons + sp[i] + ",";
+            }
+        }
+        for (var i = check ; i < len - 1; i++) {
+            foodtype = foodtype + sp[i] + ",";
+        }
         var productAdded = $('<li class="product"><div class="product-image"><a href="#0"><img src="../Content/images/product-preview.png" alt="placeholder"></a></div><div class="product-details"><h3><a href="#0">' + sp[0] + '</a></h3><span class="price">' + sp[1] + '</span><div class="actions"><p hidden id="' + sp[0] + sp[1] + '">' + productId + '</p><a href="#0" onClick="deleteItem()" class="delete-item">Delete</a><div class="quantity"><label for="cd-product-' + productId + '">Qty</label><span class="select"><select id="cd-product-' + productId + '" name="quantity"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option></select></span></div></div></div></li>');
         cartList.prepend(productAdded);
 
@@ -97,7 +113,7 @@ jQuery(document).ready(function ($) {
             type: "GET",
             url: 'http://localhost:11632/Home/AddItems?',
             contentType: "application/json; charset=utf-8",
-            data: { name: sp[0], price: sp[1] },
+            data: { name: sp[0], price: sp[1] , addon: addons , fitem: foodtype },
             success: function (response) {
             },
             error: function (response) { alert(response); }
@@ -137,6 +153,8 @@ jQuery(document).ready(function ($) {
 
         });
     }
+
+
     function oldquickUpdateCart() {
         var quantity = 0;
         var price = 0;

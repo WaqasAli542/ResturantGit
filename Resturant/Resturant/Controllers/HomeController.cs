@@ -2,6 +2,7 @@
 using Resturant.BAL;
 using Resturant.BAL.Order_Managament;
 using Resturant.Models;
+using Resturant.Models.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,13 @@ namespace Resturant.Controllers
             }
             List<Items> Items= new List<Items>();
             System.Web.HttpContext.Current.Session["Items"] = Items;
+            return View();
+        }
+        public ActionResult loginrequest(string Email, string Password)
+        {
+            // database check
+
+
             return View();
         }
         public ActionResult Career()
@@ -94,9 +102,9 @@ namespace Resturant.Controllers
         }
         //AddItems
         [HttpGet]
-        public string AddItems(string name,string price)
+        public string AddItems(string name,string price,string addon,string fitem)
         {
-            Items item = new Items(1, name, price);
+            Items item = new Items(1, name, price,addon,fitem);
             List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
             items.Add(item);
             System.Web.HttpContext.Current.Session["Items"] = items;
@@ -288,75 +296,56 @@ namespace Resturant.Controllers
             ViewBag.Session = "alpha";
             List<SpecialOffer_Item> items = new List<SpecialOffer_Item>();
             SpecialOffer offer= new BLFood().getSpecialOffersById(SpecialOfferID);
-           List<SpecialOffer_Item> temp = new BLFood().getListOfSpecialOffer_Item().Where(x=>x.SpecialOfferID==SpecialOfferID).ToList();
-     
+        
+            List<SpecialOffer_Item> temp = new BLFood().getListOfSpecialOffer_Item().Where(x=>x.SpecialOfferID==SpecialOfferID).ToList();
+            List<SpecialOffer_ItemDTO> soiDTO = new List<SpecialOffer_ItemDTO>();
          
             
             
             foreach (SpecialOffer_Item item in temp)
            {
-           //    List<Food> foods = new List<Food>();
-           //       foreach (var f in item.Category.Foods)
-           //{
-           //    f.Category = null;
-           //    f.Food_Ingredients = null;
-           //    f.Tageline = null;
           
-           //    List<FoodItem> fItems= new List<FoodItem>();
-           //     foreach(FoodItem fi in f.FoodItems)
-           //     {
-           //         fi.Food = null;
-           //         fi.FoodItem_AddOn = null;
-           //         fi.Order_FoodItem = null;
-           //         fi.Order_SpecialOffer_FoodItem = null;
-           //         fi.Order_SpecialOffer_Item = null;
-           //         fItems.Add(fi);
-           //     }
-           //     f.FoodItems=fItems;
-           //     foods.Add(f);
-           //}
-           //       item.Category.Foods = foods;
-           //       item.Category.Cousine = null;
-           //       item.Category.Discounts = null;
-           //       item.Food_Size = null;
-           //       item.SpecialOffer = null;
-           //       items.Add(item);
-               SpecialOffer_Item it = new SpecialOffer_Item();
-               Category ca = new Category { Id = item.Category.Id, Name = item.Category.Name };
-               List<Food> foods = new List<Food>();
+               SpecialOffer_ItemDTO it = new SpecialOffer_ItemDTO(item);
+               CategoryDTO ca = new CategoryDTO(item.Category);
+               List<FoodDTO> foods = new List<FoodDTO>();
                foreach (Food f in item.Category.Foods)
                {
-                   Food tempf = new Food { Id = f.Id, Name = f.Name };
+                   FoodDTO tempf = new FoodDTO(f); 
 
                    if (f.FoodItems.Count > 0)
                    {
+                       List<FoodItemDTO> foodItems = new List<FoodItemDTO>();
                        FoodItem tempFoodItem = f.FoodItems.First(fItems => fItems.Food_Size_Id == item.SizeId);
                        if (tempFoodItem != null)
                        {
-                           FoodItem tempfi = new FoodItem { Id = tempFoodItem.Id, Size = tempFoodItem.Size, Price = tempFoodItem.Price };
-                           tempf.FoodItems = new List<FoodItem>();
-                           tempf.FoodItems.Add(tempfi);
+                           foodItems.Add(new FoodItemDTO(tempFoodItem));
 
                        }
-                       foods.Add(tempf);
+                       tempf.FoodItems = foodItems;
                    }
+                   foods.Add(tempf);
                }
                ca.Foods = foods;
                it.Category = ca;
-                items.Add(it);
-
-
-               
-            }
-        
-
-           return JsonConvert.SerializeObject(items, Formatting.Indented,
+               soiDTO.Add(it);  
+            }            return JsonConvert.SerializeObject(soiDTO, Formatting.Indented,
               new JsonSerializerSettings()
               {
                   ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
               });
 
         }
+
+        //GetSpecialOffer
+        [HttpGet]
+        public string GetSpecialOffer(int SpecialOfferID)
+        {
+            ViewBag.Session = "alpha";
+            var specialOffer = new BLFood().getSpecialOffersById(SpecialOfferID);
+            string json = JsonConvert.SerializeObject(specialOffer, Formatting.Indented, new JsonSerializerSettings { PreserveReferencesHandling = PreserveReferencesHandling.Objects });
+            return json;
+        }
+
 
         [HttpGet]
         public string GetAddOnBySpecialOfferId(int sId)
