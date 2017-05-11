@@ -12,11 +12,9 @@ namespace Resturant.Controllers
 {
     public class HomeController : Controller
     {
+        
         //
         // GET: /Home/
-
-
-
         public ActionResult Index()
         {
             System.Web.HttpContext.Current.Session["orderId"] = null;
@@ -37,6 +35,9 @@ namespace Resturant.Controllers
 
 
             }
+            //Customer Login Credientials
+            System.Web.HttpContext.Current.Session["LoginCustomer"] = null;
+
             List<Items> Items= new List<Items>();
             System.Web.HttpContext.Current.Session["Items"] = Items;
             return View();
@@ -45,16 +46,44 @@ namespace Resturant.Controllers
         {
             // database check
 
-            bool isLogin = new BLCustomer().Login(Email, Password);
-            if(isLogin)
+            Customer isLogin = new BLCustomer().Login(Email, Password);
+            if(isLogin.Id > 0)
             {
-                return RedirectToAction("Index");
+                System.Web.HttpContext.Current.Session["LoginCustomer"] = isLogin;
+                return RedirectToAction("Location");
             }
             return RedirectToAction("Login");
         }
         public ActionResult Check_Out()
         {
-            return View();
+            ViewBag.extracharges = new BLExtraCharges().getListOfExtraCharges();
+            ViewBag.Taxes = new BLTax().getListOfTax();
+            List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
+            ViewBag.Customer = new BLCustomer().getCustomersById(2);
+
+
+            ////Discounts
+
+            //List<Discount> discounts =new BLDiscount().getListOfDiscount();
+            //List<Discount> temp = new List<Discount>();
+            // DateTime today_date = Convert.ToDateTime(string.Format("{0:HH:mm:ss tt}", DateTime.Now));
+            //DateTime today_time = Convert.ToDateTime(today_date.TimeOfDay.ToString());
+            //int i = 0;
+            //foreach(Discount  discount in discounts)
+            //{
+            //    if ((today_date - discount.StartingDate).TotalMinutes > 0 && (discount.EndingDate - today_date).TotalMinutes > 0)
+            //    {
+            //          TimeSpan t=(TimeSpan)(TimeSpan.FromTicks(today_time.Ticks)-discount.StartingTime) ;
+            //          temp.Add(discount);
+            //    }
+            //    else
+            //    {
+            //        discounts.RemoveAt(i);
+            //    }
+            //    i++;
+            //}
+
+            return View(items);
         }
 
         public ActionResult Signup()
@@ -121,7 +150,10 @@ namespace Resturant.Controllers
         [HttpGet]
         public string AddItems(string name,string price,string addon,string fitem)
         {
-            Items item = new Items(1, name, price,addon,fitem);
+
+            Double actualPrice = Convert.ToDouble(price);
+
+            Items item = new Items(1, name, actualPrice, addon, fitem);
             List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
             items.Add(item);
             System.Web.HttpContext.Current.Session["Items"] = items;
@@ -192,7 +224,7 @@ namespace Resturant.Controllers
         {
             ViewBag.Session = "alpha";
             FoodItem temp = new BLFood().getFoodItemById(foodItemID);
-            FoodItem foodItem = new FoodItem { Size = temp.Size, Price = temp.Price };
+            FoodItem foodItem = new FoodItem { Size = temp.Size, Price = temp.Price, Food=new Food {Name=temp.Food.Name} };
             return JsonConvert.SerializeObject(foodItem, Formatting.Indented,
                         new JsonSerializerSettings()
                         {
@@ -207,10 +239,16 @@ namespace Resturant.Controllers
             ViewBag.Session = "alpha";
             BLFood blfood = new BLFood();
             Food food = blfood.getFoodItemById(foodItemID).Food;
+            FoodItem foodItem = blfood.getFoodItemById(foodItemID);
             List<AddOn> addons = new List<AddOn>();
 
 
-            List<Food_AddOn> food_addons = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id).ToList();
+            List<Food_AddOn> food_addons = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id && foodAddon.FoodSizeId == foodItem.Food_Size_Id).ToList();
+            List<Food_AddOn> temp = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id && foodAddon.FoodSizeId == null).ToList();
+
+            if(temp.Count>0)
+            food_addons.AddRange(temp);
+
             foreach (var item in food_addons)
             {
                 addons.Add(new AddOn(){Name=item.AddOn.Name,Id=item.AddOn.Id,Price=item.AddOn.Price});

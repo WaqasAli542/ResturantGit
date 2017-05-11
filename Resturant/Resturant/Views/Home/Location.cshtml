@@ -2,6 +2,7 @@
     ViewBag.Title = "Location";
     Layout = "";
 }
+@using Resturant.Models;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +65,19 @@
                     <li><a href="../Home/SpecialOffers">Special Offers</a></li>
                     <li><a href="../Home/Location">Location</a></li>
                     <li><a href="../Home/Contact">CONTACT</a></li>
-                    <li><a href="../Home/login">LOGIN</a></li>
+                    @{
+                        if (System.Web.HttpContext.Current.Session["LoginCustomer"] == null)
+                        {
+                            <li><a href="../Home/login">LOGIN</a></li>
+                        }
+                        else
+                        {
+                            Customer cus = (Customer)System.Web.HttpContext.Current.Session["LoginCustomer"];
+                            <li><a href="../Home/logOut ">LOGOUT @cus.FirstName</a></li>
+                        }
+                    }
+
+                    
                     <li class="order-online"><a href="../Home/OrderOnline">Order Online</a></li>
                 </ul>
             </div>

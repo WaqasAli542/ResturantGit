@@ -46,12 +46,12 @@ namespace Resturant.DAL.Classes
 
         #region Login
 
-        public bool login(string Email, string Password)
+        public Customer login(string Email, string Password)
         {
             if (database.Customers.FirstOrDefault(customer => customer.Email.Equals(Email) && customer.Password.Equals(Password)) != null)
             {
-                return true;
-            } return false;
+                return database.Customers.FirstOrDefault(customer => customer.Email.Equals(Email) && customer.Password.Equals(Password));
+            } return new Customer();
 
         }
         #endregion

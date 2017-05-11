@@ -35,7 +35,7 @@ namespace Resturant.Controllers
             cus.Password = Password;
             return new BLCustomer().addCustomers(cus);
         }
-        public bool Login(string Email,string Password)
+        public Customer Login(string Email,string Password)
         {
             return new BLCustomer().Login(Email,Password);
         }

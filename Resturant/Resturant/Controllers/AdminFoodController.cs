@@ -201,6 +201,7 @@ public class AdminFoodController : Controller
         ViewBag.Food_Size = blfood.getListOfFood_Sizes();
         ViewBag.Ingredients = blfood.getListOfIngredients();
         ViewBag.AddOn = blfood.getListOfAddon();
+        ViewBag.Sizes = blfood.getListOfFood_Sizes();
         return View("DisplayFood", food);
     }
 
@@ -272,9 +273,9 @@ public class AdminFoodController : Controller
     #endregion
 
     #region Addon
-    public ActionResult AddFoodAddOn(int AddOnID, int FoodId)
+    public ActionResult AddFoodAddOn(int AddOnID, int FoodId, int food_Size)
     {
-        Food_AddOn foodAddOn = new Food_AddOn { FoodId = FoodId, AddOnId = AddOnID };
+        Food_AddOn foodAddOn = new Food_AddOn { FoodId = FoodId, AddOnId = AddOnID, FoodSizeId = food_Size };
         BLFood blfood = new BLFood();
         blfood.addFood_AddOn(foodAddOn);
         return RedirectToAction("DisplayFoodList", new { id = FoodId });
@@ -361,6 +362,7 @@ public class AdminFoodController : Controller
     {
         BLFood blfood = new BLFood();
         blfood.addAddOn(_addOn);
+       
         return RedirectToAction("DisplayAddOn");
     }
 
@@ -372,7 +374,7 @@ public class AdminFoodController : Controller
     public ActionResult DisplayAddOn()
     {
         BLFood blfood = new BLFood();
-   
+        ViewBag.Sizes = new BLFood().getListOfFood_Sizes();
         return View("AddAddon",  blfood.getListOfAddon());
 
     }

@@ -79,6 +79,7 @@
         <AssociationConnector Association="ResturantDatabaseModel.FK_Order_Taxes_Taxes" ManuallyRouted="false" />
         <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_AddOn_SpecialOffer" ManuallyRouted="false" />
         <AssociationConnector Association="ResturantDatabaseModel.FK_SpecialOffer_Item_SpecialOffer" ManuallyRouted="false" />
+        <AssociationConnector Association="ResturantDatabaseModel.FK_Food_AddOn_Food_Size" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

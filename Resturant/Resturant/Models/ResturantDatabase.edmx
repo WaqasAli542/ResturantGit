@@ -136,6 +136,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="FoodId" Type="int" Nullable="false" />
           <Property Name="AddOnId" Type="int" Nullable="false" />
+          <Property Name="FoodSizeId" Type="int" />
         </EntityType>
         <EntityType Name="Food_Ingredients">
           <Key>
@@ -426,6 +427,18 @@
             </Principal>
             <Dependent Role="Food_AddOn">
               <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Food_AddOn_Food_Size">
+          <End Role="Food_Size" Type="Self.Food_Size" Multiplicity="0..1" />
+          <End Role="Food_AddOn" Type="Self.Food_AddOn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food_Size">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Food_AddOn">
+              <PropertyRef Name="FoodSizeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -906,6 +919,10 @@
             <End Role="Food" EntitySet="Food" />
             <End Role="Food_AddOn" EntitySet="Food_AddOn" />
           </AssociationSet>
+          <AssociationSet Name="FK_Food_AddOn_Food_Size" Association="Self.FK_Food_AddOn_Food_Size">
+            <End Role="Food_Size" EntitySet="Food_Size" />
+            <End Role="Food_AddOn" EntitySet="Food_AddOn" />
+          </AssociationSet>
           <AssociationSet Name="FK_Food_Ingredients_Food" Association="Self.FK_Food_Ingredients_Food">
             <End Role="Food" EntitySet="Food" />
             <End Role="Food_Ingredients" EntitySet="Food_Ingredients" />
@@ -1198,6 +1215,8 @@
           <Property Name="AddOnId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AddOn" Relationship="Self.FK_Food_AddOn_AddOn" FromRole="Food_AddOn" ToRole="AddOn" />
           <NavigationProperty Name="Food" Relationship="Self.FK_Food_AddOn_Food" FromRole="Food_AddOn" ToRole="Food" />
+          <Property Name="FoodSizeId" Type="Int32" />
+          <NavigationProperty Name="Food_Size" Relationship="ResturantDatabaseModel.FK_Food_AddOn_Food_Size" FromRole="Food_AddOn" ToRole="Food_Size" />
         </EntityType>
         <EntityType Name="Food_Ingredients">
           <Key>
@@ -1217,6 +1236,7 @@
           <Property Name="SizeDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="FoodItems" Relationship="Self.FK_FoodItem_ToFood_Size" FromRole="Food_Size" ToRole="FoodItem" />
           <NavigationProperty Name="SpecialOffer_Item" Relationship="Self.FK_SpecialOffer_Item_Food_Size" FromRole="Food_Size" ToRole="SpecialOffer_Item" />
+          <NavigationProperty Name="Food_AddOn" Relationship="ResturantDatabaseModel.FK_Food_AddOn_Food_Size" FromRole="Food_Size" ToRole="Food_AddOn" />
         </EntityType>
         <EntityType Name="FoodItem">
           <Key>
@@ -2148,7 +2168,23 @@
             <End Role="SpecialOffer" EntitySet="SpecialOffers" />
             <End Role="SpecialOffer_Item" EntitySet="SpecialOffer_Item" />
           </AssociationSet>
+          <AssociationSet Name="FK_Food_AddOn_Food_Size" Association="ResturantDatabaseModel.FK_Food_AddOn_Food_Size">
+            <End Role="Food_Size" EntitySet="Food_Size" />
+            <End Role="Food_AddOn" EntitySet="Food_AddOn" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Food_AddOn_Food_Size">
+          <End Type="ResturantDatabaseModel.Food_Size" Role="Food_Size" Multiplicity="0..1" />
+          <End Type="ResturantDatabaseModel.Food_AddOn" Role="Food_AddOn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food_Size">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Food_AddOn">
+              <PropertyRef Name="FoodSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2294,6 +2330,7 @@
           <EntitySetMapping Name="Food_AddOn">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Food_AddOn">
               <MappingFragment StoreEntitySet="Food_AddOn">
+                <ScalarProperty Name="FoodSizeId" ColumnName="FoodSizeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FoodId" ColumnName="FoodId" />
                 <ScalarProperty Name="AddOnId" ColumnName="AddOnId" />

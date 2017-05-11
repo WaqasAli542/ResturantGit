@@ -39,7 +39,7 @@ namespace Resturant.BAL
 
         #region Login
 
-        public bool Login(string Email, string Password)
+        public Customer Login(string Email, string Password)
         {
             return new DALCustomer().login(Email, Password); ;
         }

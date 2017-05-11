@@ -189,7 +189,7 @@
                     </div>
                     <div class="modal-body">
                         <select class="form-control" name="AddOnID">
-                            <option>Ingredients</option>
+                            <option>Add On</option>
                             @foreach (AddOn addOn in ViewBag.AddOn)
                             {
                                 bool check = true;
@@ -207,6 +207,19 @@
                             }
 
                         </select>
+                        <br />
+                        <select class="form-control" name="food_Size">
+                            <option>Select Size</option>
+                            @{
+                                foreach (Food_Size item in ViewBag.Sizes)
+                                {
+                                    <option value=@item.Id>@item.SizeDescription</option>
+                                }
+
+                            }
+
+                        </select>
+
 
                         @Html.Hidden("FoodId", @Model.Id)
                     </div>

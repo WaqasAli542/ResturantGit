@@ -145,9 +145,9 @@ else
                         amount = parseInt(response.Price);
                         var $el = $("#Fooddescription");
                         var $price = $("#btnsubmit");
-                        name = response.Size;
-                        $el.empty(); // remove old options
-                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Size + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Size + ',' + amount + "</p>"))
+                        name = response.Size+" "+ response.Food.Name;
+                        $el.empty(); // remove  old options
+                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Size + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Size + " " + response.Food.Name + ',' + amount + "</p>"))
                         $price.removeAttr("data-price") 
                         $price.attr("data-price", amount)
                     },
@@ -232,3 +232,34 @@ else
                 </div>
             </div>
         </div>
+
+
+<div class="cd-cart-container empty">
+    <a href="#0" class="cd-cart-trigger">
+        Cart
+        <ul class="count">
+            <!-- cart items count -->
+            <li>0</li>
+            <li>0</li>
+        </ul> <!-- .count -->
+    </a>
+
+    <div class="cd-cart">
+        <div class="wrapper">
+            <header>
+                <h2>Cart</h2>
+                <span class="undo">Item removed. <a href="#0">Undo</a></span>
+            </header>
+
+            <div class="body">
+                <ul>
+                    <!-- products added to the cart will be inserted here using JavaScript -->
+                </ul>
+            </div>
+            <footer>
+                <a href="/Home/Check_Out" class="checkout btn"><em>Checkout - $<span>0</span></em></a>
+            </footer>
+
+        </div>
+    </div> <!-- .cd-cart -->
+</div>

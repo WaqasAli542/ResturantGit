@@ -17,8 +17,10 @@ namespace Resturant.Models
         public int Id { get; set; }
         public int FoodId { get; set; }
         public int AddOnId { get; set; }
+        public Nullable<int> FoodSizeId { get; set; }
     
         public virtual AddOn AddOn { get; set; }
         public virtual Food Food { get; set; }
+        public virtual Food_Size Food_Size { get; set; }
     }
 }

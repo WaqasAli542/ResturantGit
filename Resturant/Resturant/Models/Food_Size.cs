@@ -18,6 +18,7 @@ namespace Resturant.Models
         {
             this.FoodItems = new HashSet<FoodItem>();
             this.SpecialOffer_Item = new HashSet<SpecialOffer_Item>();
+            this.Food_AddOn = new HashSet<Food_AddOn>();
         }
     
         public int Id { get; set; }
@@ -25,5 +26,6 @@ namespace Resturant.Models
     
         public virtual ICollection<FoodItem> FoodItems { get; set; }
         public virtual ICollection<SpecialOffer_Item> SpecialOffer_Item { get; set; }
+        public virtual ICollection<Food_AddOn> Food_AddOn { get; set; }
     }
 }

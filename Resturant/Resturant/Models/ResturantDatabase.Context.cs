@@ -13,7 +13,7 @@ namespace Resturant.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ResturantDatabase : DbContext
+    public partial class ResturantDatabase: DbContext
     {
         public ResturantDatabase()
             : base("name=ResturantDatabaseEntities9")
