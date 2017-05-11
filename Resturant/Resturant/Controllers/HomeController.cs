@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Resturant.BAL;
-using Resturant.BAL.Order_Managament;
 using Resturant.Models;
 using Resturant.Models.DTO;
 using System;
@@ -16,7 +15,7 @@ namespace Resturant.Controllers
         //
         // GET: /Home/
 
-        OrderMgmt orderMgmt;
+
 
         public ActionResult Index()
         {
@@ -46,8 +45,26 @@ namespace Resturant.Controllers
         {
             // database check
 
-
+            bool isLogin = new BLCustomer().Login(Email, Password);
+            if(isLogin)
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login");
+        }
+        public ActionResult Check_Out()
+        {
             return View();
+        }
+
+        public ActionResult Signup()
+        {
+            return View();
+        }
+        public ActionResult SaveCustomer(Customer customer)
+        {
+           bool check= new BLCustomer().addCustomers(customer);
+            return RedirectToAction("index");
         }
         public ActionResult Career()
         {
@@ -321,7 +338,7 @@ namespace Resturant.Controllers
                            foodItems.Add(new FoodItemDTO(tempFoodItem));
 
                        }
-                       tempf.FoodItems = foodItems;
+                       tempf.FoodItems =foodItems;
                    }
                    foods.Add(tempf);
                }
@@ -364,20 +381,21 @@ namespace Resturant.Controllers
         //This is adding to database but it is not usefull now ------------------------------- remmove this functionality--------------------
         public ActionResult AddtoOrder(int foodItemId)
         {
-            if (orderMgmt == null)
-                orderMgmt = new OrderMgmt();
+            //if (orderMgmt == null)
+            //    orderMgmt = new OrderMgmt();
 
-            orderMgmt.addFoodItem(foodItemId);
+            //orderMgmt.addFoodItem(foodItemId);
 
-            List<AddOn> addons = new BLFood().getListOfAddon();
-            foreach (AddOn ad in addons)
-            {
-                string valId = ad.Id.ToString();
-                string val = Request.Form[valId];
-                if (val != null)
-                    orderMgmt.addAddOn(ad.Id);
-            }
+            //List<AddOn> addons = new BLFood().getListOfAddon();
+            //foreach (AddOn ad in addons)
+            //{
+            //    string valId = ad.Id.ToString();
+            //    string val = Request.Form[valId];
+            //    if (val != null)
+            //        orderMgmt.addAddOn(ad.Id);
+            //}
             return RedirectToAction("Menu");
+            
         }
 
     }

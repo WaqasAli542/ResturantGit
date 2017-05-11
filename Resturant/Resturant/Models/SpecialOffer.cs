@@ -17,7 +17,6 @@ namespace Resturant.Models
         public SpecialOffer()
         {
             this.Order_SpecialOffer = new HashSet<Order_SpecialOffer>();
-            this.Order_SpecialOffer_Item = new HashSet<Order_SpecialOffer_Item>();
             this.SpecialOffer_AddOn = new HashSet<SpecialOffer_AddOn>();
             this.SpecialOffer_Item = new HashSet<SpecialOffer_Item>();
         }
@@ -33,7 +32,6 @@ namespace Resturant.Models
         public string Name { get; set; }
     
         public virtual ICollection<Order_SpecialOffer> Order_SpecialOffer { get; set; }
-        public virtual ICollection<Order_SpecialOffer_Item> Order_SpecialOffer_Item { get; set; }
         public virtual ICollection<SpecialOffer_AddOn> SpecialOffer_AddOn { get; set; }
         public virtual ICollection<SpecialOffer_Item> SpecialOffer_Item { get; set; }
     }

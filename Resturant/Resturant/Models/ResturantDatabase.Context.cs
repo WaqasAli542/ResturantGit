@@ -16,7 +16,7 @@ namespace Resturant.Models
     public partial class ResturantDatabase : DbContext
     {
         public ResturantDatabase()
-            : base("name=ResturantDatabaseEntities")
+            : base("name=ResturantDatabaseEntities9")
         {
         }
     
@@ -44,14 +44,11 @@ namespace Resturant.Models
         public DbSet<FoodItem_AddOn> FoodItem_AddOn { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Order_AddOn> Order_AddOn { get; set; }
         public DbSet<Order_Discount> Order_Discount { get; set; }
         public DbSet<Order_ExtraCharges> Order_ExtraCharges { get; set; }
-        public DbSet<Order_FoodItem> Order_FoodItem { get; set; }
         public DbSet<Order_Item> Order_Item { get; set; }
         public DbSet<Order_SpecialOffer> Order_SpecialOffer { get; set; }
         public DbSet<Order_SpecialOffer_AddOn> Order_SpecialOffer_AddOn { get; set; }
-        public DbSet<Order_SpecialOffer_FoodItem> Order_SpecialOffer_FoodItem { get; set; }
         public DbSet<Order_SpecialOffer_Item> Order_SpecialOffer_Item { get; set; }
         public DbSet<Order_Taxes> Order_Taxes { get; set; }
         public DbSet<OrderItem_AddOn> OrderItem_AddOn { get; set; }

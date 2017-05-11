@@ -15,16 +15,16 @@ namespace Resturant.Models.DTO
             this.Image = food.Name;
             this.CategoryId = food.CategoryId;
         }
-    
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Tageline { get; set; }
-        public string Image { get; set; }
-        public int CategoryId { get; set; }
-    
-        public virtual Category Category { get; set; }
-        public virtual ICollection<Food_AddOn> Food_AddOn { get; set; }
-        public virtual ICollection<Food_Ingredients> Food_Ingredients { get; set; }
-        public virtual ICollection<FoodItemDTO> FoodItems { get; set; }
+
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Tageline { get; set; }
+    public string Image { get; set; }
+    public int CategoryId { get; set; }
+
+    public virtual Category Category { get; set; }
+    public virtual ICollection<Food_AddOn> Food_AddOn { get; set; }
+    public virtual ICollection<Food_Ingredients> Food_Ingredients { get; set; }
+    public virtual ICollection<FoodItemDTO> FoodItems { get; set; }
     }
 }

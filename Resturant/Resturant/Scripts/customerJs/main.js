@@ -123,7 +123,6 @@ jQuery(document).ready(function ($) {
 
     //testing
     function addItems() {
-        alert("b");
         $.ajax({
             dataType: "json",
             type: "GET",

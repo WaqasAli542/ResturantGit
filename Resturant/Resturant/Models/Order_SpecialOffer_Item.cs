@@ -15,12 +15,12 @@ namespace Resturant.Models
     public partial class Order_SpecialOffer_Item
     {
         public int Id { get; set; }
-        public int OrderId { get; set; }
-        public int SpecialOfferId { get; set; }
-        public int FoodItemId { get; set; }
+        public int Order_SpecialOfferId { get; set; }
+        public int SpecialOffer_ItemId { get; set; }
+        public int FoodId { get; set; }
     
-        public virtual FoodItem FoodItem { get; set; }
-        public virtual Order Order { get; set; }
-        public virtual SpecialOffer SpecialOffer { get; set; }
+        public virtual Food Food { get; set; }
+        public virtual Order_SpecialOffer Order_SpecialOffer { get; set; }
+        public virtual SpecialOffer_Item SpecialOffer_Item { get; set; }
     }
 }

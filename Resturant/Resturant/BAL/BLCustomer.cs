@@ -34,6 +34,11 @@ namespace Resturant.BAL
         {
             return new DALCustomer().updateCustomers(_Customers);
         }
+       
+        #endregion
+
+        #region Login
+
         public bool Login(string Email, string Password)
         {
             return new DALCustomer().login(Email, Password); ;

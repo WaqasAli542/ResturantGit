@@ -9,14 +9,14 @@ namespace Resturant.BAL
 {
     public class BLAdmin
     {
-                public bool addAdmins(Admin _admins)
-        {
+              public bool addAdmins(Admin _admins)
+                 {
                 return new DALAdmin().addAdmins(_admins);
-        }
+                 }
               public bool updateAdmins(Admin _admins)
-                {
+               {
                     return new DALAdmin().updateAdmins(_admins);
-                }
+               }
               public bool deleteAdmins(int _id)
               {
                   return new DALAdmin().deleteAdmins(_id);

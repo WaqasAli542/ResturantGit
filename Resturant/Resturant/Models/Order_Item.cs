@@ -16,19 +16,18 @@ namespace Resturant.Models
     {
         public Order_Item()
         {
-            this.Order_AddOn = new HashSet<Order_AddOn>();
             this.OrderItem_AddOn = new HashSet<OrderItem_AddOn>();
         }
     
         public int Id { get; set; }
         public int OrderID { get; set; }
-        public int ItemID { get; set; }
+        public int FoodItemId { get; set; }
         public int IDType { get; set; }
         public int Count { get; set; }
         public Nullable<int> SpecialOfferId { get; set; }
     
+        public virtual FoodItem FoodItem { get; set; }
         public virtual Order Order { get; set; }
-        public virtual ICollection<Order_AddOn> Order_AddOn { get; set; }
         public virtual ICollection<OrderItem_AddOn> OrderItem_AddOn { get; set; }
     }
 }

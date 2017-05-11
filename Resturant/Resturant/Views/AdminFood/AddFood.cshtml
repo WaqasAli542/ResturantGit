@@ -4,32 +4,6 @@
 }
 @model List<Resturant.Models.Food>
 @using Resturant.Models;
-
-<script type="text/javascript">
-    function updateValue() {
-
-        $.ajax({
-            dataType: "json",
-            type: "GET",
-            url: '@Url.Action("getCategory", "AdminFood")',
-            contentType:"application/x-www-form-urlencoded",
-            data: { cousineId: parseInt($('#CousineId').val()) },
-            success: function (response) {
-                var $el = $("#CategoryId");
-                $el.empty(); // remove old options
-                $el.append($("<option></option>")
-                        .attr("value", '').text('Please Select'));
-                $.each(response, function (value, key) {
-                    $el.append($("<option></option>")
-                            .attr("value", key.Id).text(key.Name));
-                });
-            },
-            error: function (response) { alert(response); }
-
-        });
-
-    }
-</script>
 <div class="row" style="margin-top:10%;">
     <div class="col-md-offset-2 col-md-6">
         <div class="box box-primary col-md-10">
@@ -111,5 +85,28 @@
     </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    function updateValue() {
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: '@Url.Action("getCategory", "AdminFood")',
+            contentType:"application/x-www-form-urlencoded",
+            data: { cousineId: parseInt($('#CousineId').val()) },
+            success: function (response) {
+                var $el = $("#CategoryId");
+                $el.empty(); // remove old options
+                $el.append($("<option></option>")
+                        .attr("value", '').text('Please Select'));
+                $.each(response, function (value, key) {
+                    $el.append($("<option></option>")
+                            .attr("value", key.Id).text(key.Name));
+                });
+            },
+            error: function (response) { alert(response); }
 
+        });
 
+    }
+</script>

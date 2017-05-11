@@ -165,6 +165,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientsApiController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ResturantDetailsController.cs" />
     <Compile Include="Controllers\SpecialOfferAPIController.cs" />
     <Compile Include="Controllers\TaxesAPIController.cs" />
@@ -208,7 +209,6 @@
     <Compile Include="Models\Customer.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DataHandling\AddOnManagement.cs" />
     <Compile Include="Models\Day.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
@@ -217,9 +217,9 @@
     </Compile>
     <Compile Include="Models\DTO\AddOnDTO.cs" />
     <Compile Include="Models\DTO\CategoryDTO.cs" />
+    <Compile Include="Models\DataHandling\AddOnManagement.cs" />
     <Compile Include="Models\DTO\FoodDTO.cs" />
     <Compile Include="Models\DTO\FoodItemDTO.cs" />
-    <Compile Include="Models\DTO\SpecialOffer_ItemDTO.cs" />
     <Compile Include="Models\ExtraCharge.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
@@ -245,22 +245,17 @@
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Items.cs" />
+    <Compile Include="Models\DTO\SpecialOffer_ItemDTO.cs" />
     <Compile Include="Models\Order.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\OrderItem_AddOn.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Order_AddOn.cs">
-      <DependentUpon>ResturantDatabase.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Order_Discount.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Order_ExtraCharges.cs">
-      <DependentUpon>ResturantDatabase.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Order_FoodItem.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Order_Item.cs">
@@ -270,9 +265,6 @@
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Order_SpecialOffer_AddOn.cs">
-      <DependentUpon>ResturantDatabase.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Order_SpecialOffer_FoodItem.cs">
       <DependentUpon>ResturantDatabase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Order_SpecialOffer_Item.cs">
@@ -1246,6 +1238,7 @@
     <Content Include="Content\images\slider-2.jpg" />
     <Content Include="Content\images\stickys-logo-dark.png" />
     <Content Include="Content\images\twitter.png" />
+    <Content Include="Content\images\ui-icons_777777_256x240.png" />
     <Content Include="Content\images\user.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\Other Styling Files\CSS\style.css" />
@@ -1510,6 +1503,11 @@
     <Content Include="Views\ResturantDetail\AddBranch.cshtml" />
     <Content Include="Views\ResturantDetail\UpdateBranch.cshtml" />
     <Content Include="Views\Home\SpecialOffers.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\OrderById.cshtml" />
+    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Home\Check_Out.cshtml" />
+    <Content Include="Views\Home\Signup.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

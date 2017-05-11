@@ -5,34 +5,6 @@
 @model Resturant.Models.Food
 @using Resturant.Models;
 
-<script type="text/javascript">
-    function updateValue() {
-        $.ajax({
-            dataType: "json",
-            type: "GET",
-            url: '@Url.Action("getCategory", "AdminFood")',
-            contentType: "application/json; charset=utf-8",
-            data: { cousineId: parseInt($('#CousineId').val()) },
-            success: function (response) {
-
-                var $el = $("#CategoryId");
-                $el.empty(); // remove old options
-                $el.append($("<option></option>")
-                        .attr("value", '').text('Please Select'));
-
-                $.each(response, function (value, key) {
-
-                    $el.append($("<option></option>")
-                            .attr("value", key.Id).text(key.Name));
-                });
-            },
-            error: function (response) { alert(response); }
-
-        });
-
-    }
-
-</script>
 @* Food Description *@
 <div class="box">
     <div class="box-header">
@@ -59,6 +31,7 @@
                     <th class="col-md-6">Name</th>
                     <th class="col-md-2">Price</th>
                     <th class="col-md-2">Category</th>
+                    <th class="col-md-2">Tagline</th>
                     <th>Action</th>
 
 
@@ -71,6 +44,7 @@
                     <td>@fa.Size</td>
                     <td>@fa.Price</td>
                     <td>@fa.Food_Size.SizeDescription</td>
+                    <td>@fa.TagLine</td>
                     <td>@Html.ActionLink("Delete FoodItem", "deleteFoodItem", new { _id = fa.Id, _foodId = fa.FoodId }, new { @type = "button", @class = "btn btn-danger" }) </td>
 
                 </tr>
@@ -159,11 +133,13 @@
                     <div class="modal-body">
                         <div class="form-group">
 
-                            <input type="text" class="form-control" name="Size" placeholder="Enter the size of Food Item">
+                            <input type="text" class="form-control" name="Size" placeholder="Enter the size name">
                         </div>
                         <div class="form-group">
-
-                            <input type="number" class="form-control" name="Price" placeholder="Enter the price of Food Item">
+                            <input type="number" class="form-control" name="Price" placeholder="Enter the price">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="Tagline" placeholder="Enter the tagline">
                         </div>
                         <div class="form-group">
                             <label>Select </label>
@@ -303,3 +279,32 @@
 
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function updateValue() {
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: '@Url.Action("getCategory", "AdminFood")',
+            contentType: "application/json; charset=utf-8",
+            data: { cousineId: parseInt($('#CousineId').val()) },
+            success: function (response) {
+
+                var $el = $("#CategoryId");
+                $el.empty(); // remove old options
+                $el.append($("<option></option>")
+                        .attr("value", '').text('Please Select'));
+
+                $.each(response, function (value, key) {
+
+                    $el.append($("<option></option>")
+                            .attr("value", key.Id).text(key.Name));
+                });
+            },
+            error: function (response) { alert(response); }
+
+        });
+
+    }
+
+</script>

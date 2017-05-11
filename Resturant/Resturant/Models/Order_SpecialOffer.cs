@@ -14,12 +14,20 @@ namespace Resturant.Models
     
     public partial class Order_SpecialOffer
     {
+        public Order_SpecialOffer()
+        {
+            this.Order_SpecialOffer_AddOn = new HashSet<Order_SpecialOffer_AddOn>();
+            this.Order_SpecialOffer_Item = new HashSet<Order_SpecialOffer_Item>();
+        }
+    
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int SpecialOfferId { get; set; }
         public int CountOfSpecialOffers { get; set; }
     
         public virtual Order Order { get; set; }
+        public virtual ICollection<Order_SpecialOffer_AddOn> Order_SpecialOffer_AddOn { get; set; }
+        public virtual ICollection<Order_SpecialOffer_Item> Order_SpecialOffer_Item { get; set; }
         public virtual SpecialOffer SpecialOffer { get; set; }
     }
 }

@@ -14,6 +14,11 @@ namespace Resturant.Models
     
     public partial class SpecialOffer_Item
     {
+        public SpecialOffer_Item()
+        {
+            this.Order_SpecialOffer_Item = new HashSet<Order_SpecialOffer_Item>();
+        }
+    
         public int Id { get; set; }
         public int SpecialOfferID { get; set; }
         public int CategoryId { get; set; }
@@ -23,6 +28,7 @@ namespace Resturant.Models
     
         public virtual Category Category { get; set; }
         public virtual Food_Size Food_Size { get; set; }
+        public virtual ICollection<Order_SpecialOffer_Item> Order_SpecialOffer_Item { get; set; }
         public virtual SpecialOffer SpecialOffer { get; set; }
     }
 }

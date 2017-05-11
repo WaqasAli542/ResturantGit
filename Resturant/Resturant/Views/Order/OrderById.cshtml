@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "OrderById";
+    Layout = "~/Views/Shared/AdminLayout.cshtml";
+}
+@model Resturant.Models.Order
+@using Resturant.Models;
+
+
+@{
+    double total = 0;
+    double subtotal=0;
+
+}
+
+<link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+<style>
+    * {
+        font-family: 'Bree Serif', serif;
+    }
+
+    .list-group-item {
+        border: none;
+    }
+
+    .hor {
+        border-bottom: 5px solid black;
+    }
+
+    .line {
+        margin-bottom: 20px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+            <h2 class="page-header">Order # 78635653</h2>
+            <h3>Customer Name: <small>@Model.Customer.FirstName @Model.Customer.LastName</small></h3>
+            <h3>Customer Address: <small>@Model.Customer.Address</small></h3>
+            <h3>Status: <small>On Preparation</small></h3>
+            <h3 class="text-danger">Delivery Time: <small>11:30 PM</small></h3>
+            <div class="list-group">
+                <h3>Items</h3>
+
+                @foreach (Order_Item oi in Model.Order_Item)
+                {
+                    string addon = "";
+                    total = total + (oi.Count * oi.FoodItem.Price);
+                    foreach (OrderItem_AddOn add in oi.OrderItem_AddOn)
+                    {
+                        addon = addon + add.AddOn.Name + " " + add.AddOn.Price + " , ";
+                        total = total + add.AddOn.Price;
+                    }
+                    <h4><strong>@oi.Count * @oi.FoodItem.Size , </strong><small> @addon</small><strong class="pull-right">£ @oi.FoodItem.Price</strong>     </h4>
+                }
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-8 hor">
+            <h3>Special Offers</h3>
+            @foreach (Order_SpecialOffer os in Model.Order_SpecialOffer)
+            { 
+                total = total + (os.SpecialOffer.Price * os.CountOfSpecialOffers);
+                string orderSItems = "";
+                string orderSAddons = "";
+
+
+                foreach (Order_SpecialOffer_Item osi in os.Order_SpecialOffer_Item)
+                {
+                    string a = "1 " + osi.SpecialOffer_Item.Food_Size.SizeDescription + " " + osi.Food.Name;
+                    orderSItems = orderSItems + a + " , ";
+                }
+                foreach (Order_SpecialOffer_AddOn osa in os.Order_SpecialOffer_AddOn)
+                {
+                    string ad = osa.SpecialOffer_AddOn.Quantity + " " + osa.SpecialOffer_AddOn.AddOn.Name;
+                    orderSAddons = orderSAddons + ad + " , ";
+                }
+
+                subtotal=total;
+                <h4><strong>@os.CountOfSpecialOffers *  @os.SpecialOffer.Name </strong><small>@os.SpecialOffer.Description</small><strong class="pull-right">£ @os.SpecialOffer.Price</strong></h4>
+                <div class="col-md-offset-1 col-md-6 line">
+                    <small style="margin-left:5%; line-height:10px;"><strong>Items</strong>  @orderSItems <strong>AddOns</strong> @orderSAddons</small>
+                    <br />
+                    
+
+
+                </div>
+                }
+                <br />
+ 
+            </div>
+
+                <br />
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="col-md-offset-3 col-md-7 col-xs-9">
+                        <h4 class="pull-right"><strong>Sub-Total:</strong></h4>
+                    </div>
+                    <div class="col-md-2 col-xs-3">
+                        <h4 class="pull-right"><strong> £ @subtotal </strong></h4>
+                    </div>
+                </div>
+                @foreach (Order_ExtraCharges oe in Model.Order_ExtraCharges)
+                {
+                    total = total + oe.ExtraCharge.Price;
+                    <hr />
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="col-md-offset-3 col-md-7 col-xs-9">
+                            <h4 class="pull-right"><strong>@oe.ExtraCharge.Name:</strong></h4>
+                        </div>
+                        <div class="col-md-2 col-xs-3">
+                            <h4 class="pull-right">
+                                <strong>
+                                    £ @oe.ExtraCharge.Price
+                                </strong>
+                            </h4>
+                        </div>
+                    </div>
+                }
+
+
+                @foreach (Order_Discount od in Model.Order_Discount)
+                {
+                    total = total - ((od.Discount.Percentage / 100) * total);
+                    <hr />
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="col-md-offset-3 col-md-7 col-xs-9">
+                            <h4 class="pull-right"><strong>@od.Discount.Name:</strong></h4>
+                        </div>
+                        <div class="col-md-2 col-xs-3">
+                            <h4 class="pull-right"><strong>% @od.Discount.Percentage  </strong></h4>
+                        </div>
+                    </div>
+
+                }
+
+
+                @foreach (Order_Taxes oe in Model.Order_Taxes)
+                {
+                    total= total+((oe.Tax.Percentage/100)*total);
+                    <hr />
+                    <div class="col-md-offset-2 col-md-8 hor">
+                        <div class="col-md-offset-3 col-md-7 col-xs-9">
+                            <h4 class="pull-right"><strong>@oe.Tax.Name:</strong></h4>
+                        </div>
+                        <div class="col-md-2 col-xs-3">
+                            <h4 class="pull-right"><strong>% @oe.Tax.Percentage </strong></h4>
+                        </div>
+                    </div>
+
+                }
+
+                <hr />
+                <div class="col-md-offset-2 col-md-8">
+                    <div class="col-md-offset-3 col-md-7 col-xs-9">
+                        <h4 class="pull-right"><strong>Total:</strong></h4>
+                    </div>
+                    <div class="col-md-2 col-xs-3">
+                        <h4 class="pull-right"><strong>£ @total</strong></h4>
+                    </div>
+                </div>
+            </div>
+        </div>

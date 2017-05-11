@@ -16,9 +16,7 @@ namespace Resturant.Models
     {
         public FoodItem()
         {
-            this.Order_FoodItem = new HashSet<Order_FoodItem>();
-            this.Order_SpecialOffer_FoodItem = new HashSet<Order_SpecialOffer_FoodItem>();
-            this.Order_SpecialOffer_Item = new HashSet<Order_SpecialOffer_Item>();
+            this.Order_Item = new HashSet<Order_Item>();
             this.FoodItem_AddOn = new HashSet<FoodItem_AddOn>();
         }
     
@@ -27,12 +25,11 @@ namespace Resturant.Models
         public double Price { get; set; }
         public int FoodId { get; set; }
         public Nullable<int> Food_Size_Id { get; set; }
+        public string TagLine { get; set; }
     
         public virtual Food Food { get; set; }
         public virtual Food_Size Food_Size { get; set; }
-        public virtual ICollection<Order_FoodItem> Order_FoodItem { get; set; }
-        public virtual ICollection<Order_SpecialOffer_FoodItem> Order_SpecialOffer_FoodItem { get; set; }
-        public virtual ICollection<Order_SpecialOffer_Item> Order_SpecialOffer_Item { get; set; }
+        public virtual ICollection<Order_Item> Order_Item { get; set; }
         public virtual ICollection<FoodItem_AddOn> FoodItem_AddOn { get; set; }
     }
 }

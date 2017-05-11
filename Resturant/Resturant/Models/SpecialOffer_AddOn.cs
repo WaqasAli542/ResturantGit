@@ -14,12 +14,18 @@ namespace Resturant.Models
     
     public partial class SpecialOffer_AddOn
     {
+        public SpecialOffer_AddOn()
+        {
+            this.Order_SpecialOffer_AddOn = new HashSet<Order_SpecialOffer_AddOn>();
+        }
+    
         public int Id { get; set; }
         public int SpecialOfferID { get; set; }
         public int AddonID { get; set; }
         public int Quantity { get; set; }
     
         public virtual AddOn AddOn { get; set; }
+        public virtual ICollection<Order_SpecialOffer_AddOn> Order_SpecialOffer_AddOn { get; set; }
         public virtual SpecialOffer SpecialOffer { get; set; }
     }
 }

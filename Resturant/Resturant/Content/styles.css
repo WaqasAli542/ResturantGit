@@ -71,7 +71,7 @@
 	font-style: normal;
 }
 body {
-	font-family: 'action_manregular';
+	font-family: Tahoma, Geneva, sans-serif;
 }
 img {
 	max-width: 100%;
@@ -99,8 +99,11 @@ img {
 }
 a {
 	transition: all 0.4s ease 0s;
-	color: #C32630;
+	color: #2ea375;
 	font-size: 16px;
+}
+button {
+	transition: all 0.4s ease 0s;
 }
 a:hover {
 	color: #000;
@@ -116,11 +119,16 @@ h2 {
 	font-family: Tahoma, Geneva, sans-serif;
 	font-weight: bold;
 }
+h3 {
+	font-size: 24px;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: bold;
+}
 p {
 	font-family: Tahoma, Geneva, sans-serif
 }
 nav {
-	background: #c32630 url(../Content/images/nav-bg-rep.png) left top repeat-x;
+	background: #2ea375 url(../Content/images/nav-bg-rep.png) left top repeat-x;
 	height: 120px;
 }
 .navbar-brand>img {
@@ -151,7 +159,7 @@ nav {
 	max-width: 100px;
 }
 .order-online {
-	background: #6e151b;
+	background: #054d30;
 }
 .bg-order {
 	background: url(../Content/images/bg-1.jpg) left top no-repeat fixed;
@@ -187,9 +195,9 @@ footer .container-fluid, nav .container-fluid {
 }
 .form-control {
 	text-align: center;
-	color: #fff;
+	color: #1F1C1B;
 	background: none;
-	border: 1px solid #fff;
+	border: 1px solid #000;
 	border-radius: 0px;
 	height: 45px;
 	line-height: 45px;
@@ -227,11 +235,15 @@ input[type=radio]:not(old):checked + label {
 }
 .btn.btn-primary {
 	border-radius: 0px;
-	background-color: #C32630;
-	border: 1px solid #C32630;
-	padding: 10px 20px;
+	background-color: #2ea375;
+	border: 1px solid #2ea375;
+	padding: 6px 20px;
 	font-size: 22px;
 	min-width: 200px;
+}
+.btn.btn-primary:hover {
+	background-color: #000;
+	border: 1px solid #000;
 }
 footer {
 	background: url(../Content/images/bg-footer-chicken_622x520.png) bottom right/311px 280px no-repeat #1F1C1B;
@@ -256,7 +268,7 @@ footer {
 	display: block;
 	padding: 10px 15px;
 	font-weight: 900;
-	background: #6e151b;
+	background: #054d30;
 	text-transform: uppercase;
 	letter-spacing: 0.05em;
 	color: #fff;
@@ -307,16 +319,6 @@ footer {
 	margin: auto;
 	background: url(../Content/images/arrow-down-black.png) 95% center no-repeat
 }
-.select-wrapper-large.blackSelect {
-	background: url(../Content/images/arrow-down-black.png) 98.5% center no-repeat
-}
-.select-wrapper-large.blackSelect .form-control{
-    color:#000;
-    width:101.5%;
-}
-.col-black {
-    color:#000 !important;
-}
 .dots {
 	background: url(../Content/images/dots.png) left center repeat-x;
 	height: 30px;
@@ -349,7 +351,7 @@ footer {
 	font-size: 26px !important;
 }
 .colRed {
-	color: #C32630 !important
+	color: #2ea375 !important
 }
 .m0 {
 	margin: 0px !important;
@@ -539,10 +541,9 @@ footer {
 	color: #F4E38B
 }
 .modal-body h4 {
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: bold;
 	font-family: Tahoma, Geneva, sans-serif;
-    
 }
 .modal-body tr td {
 	padding: 5px;
@@ -553,7 +554,7 @@ footer {
 	text-decoration: none;
 }
 .menu-category tr td h3 a:hover {
-	color: #C32630;
+	color: #2ea375;
 }
 .menu-wrapper h3 {
 	color: #1F1C1B;
@@ -598,7 +599,7 @@ button.close {
 	text-align: center;
 	letter-spacing: 0;
 	color: #fff;
-	background: #C32630;
+	background: #2ea375;
 	opacity: 1 !important;
 }
 button.close, button.close span, button.close span {
@@ -644,17 +645,6 @@ button.close, button.close span, button.close span {
 	padding-top: 5px;
 	padding-left: 9px;
 }
-.modal-header{
-    background:#f7f7f7;
-}
-.modal-body label{
-    font-size:16px;
-    font-weight:normal;
-}
-.modal-body h4.model-main-heading{
-    font-size:18px;
-    margin-bottom:12px;
-}
 /*.checkout {
 	height: 89%;
 	position: fixed;
@@ -662,7 +652,7 @@ button.close, button.close span, button.close span {
 	z-index: 9999;
 	right: 0px;
 	display: none;
-	background: #C32630;
+	background: #2ea375;
 	padding: 10px;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -718,7 +708,7 @@ button.close, button.close span, button.close span {
 .checkout-buttons .btn-primary {
 	background: #fff;
 	border: 1px solid #fff;
-	color: #C32630
+	color: #2ea375
 }
 .list-detail ul {
 	float: left;
@@ -805,18 +795,50 @@ button.close, button.close span, button.close span {
 	padding: 0px;
 	border: none;
 }
-.cd-cart h2{
-	margin-top:0px;}
-.actions a{
-	font-size:13px;}
-.quantity label{
-	font-size:12px;}
-.cd-cart .checkout{
-	background:#C32630}
-.cd-cart .checkout:hover{
-	background:#C32630;
-	opacity:.9;}
- @media only screen and (min-width : 768px) and (max-width : 1024px) {
+.cd-cart h2 {
+	margin-top: 0px;
+}
+.actions a {
+	font-size: 13px;
+}
+.quantity label {
+	font-size: 12px;
+}
+.cd-cart .checkout {
+	background: #2ea375
+}
+.cd-cart .checkout:hover {
+	background: #2ea375;
+	opacity: .9;
+}
+.login.check-out {
+	max-width: 500px;
+	margin: 2.0em 0;
+	text-align: left;
+}
+.form-group .required {
+	color: #2ea375;
+}
+.sb-title {
+	text-align: center;
+	padding-bottom: 5px;
+	border-bottom: 4px solid #F4E38B;
+}
+.h20 {
+	height: 30px;
+	font-size: 14px;
+}
+.mw900 {
+	max-width: 900px;
+}
+.table tbody tr td.pl20 {
+	padding-left: 20px;
+}
+.bg-warning {
+	background-color: #f2e5a5;
+}
+
+@media only screen and (min-width : 768px) and (max-width : 1024px) {
 .navbar-brand>img {
 	max-width: 120px;
 }
@@ -839,14 +861,15 @@ button.close, button.close span, button.close span {
 	width: 55%;
 }
 }
- @media only screen and (max-width : 767px) {
+
+@media only screen and (max-width : 767px) {
 h1 {
 	font-size: 34px;
 }
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
 	width: 100%;
 	margin: 35px 0px 0px;
-	background: #c32630;
+	background: #2ea375;
 }
 .navbar-nav {
 	margin: 0px;

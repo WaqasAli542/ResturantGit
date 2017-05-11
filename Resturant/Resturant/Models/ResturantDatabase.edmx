@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ResturantDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ResturantDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityType Name="AddOn">
           <Key>
             <PropertyRef Name="Id" />
@@ -84,8 +84,8 @@
           <Property Name="Email" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="PhoneNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Address" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="City" Type="varchar" MaxLength="25" Nullable="false" />
-          <Property Name="Country" Type="varchar" MaxLength="25" Nullable="false" />
+          <Property Name="City" Type="varchar" MaxLength="25" />
+          <Property Name="Country" Type="varchar" MaxLength="25" />
           <Property Name="PostCode" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
@@ -161,6 +161,7 @@
           <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="FoodId" Type="int" Nullable="false" />
           <Property Name="Food_Size_Id" Type="int" />
+          <Property Name="TagLine" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="FoodItem_AddOn">
           <Key>
@@ -186,20 +187,11 @@
           <Property Name="Status" Type="int" />
           <Property Name="PaymentMethodId" Type="int" />
         </EntityType>
-        <EntityType Name="Order_AddOn">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Order_ItemId" Type="int" Nullable="false" />
-          <Property Name="AddOnId" Type="int" Nullable="false" />
-          <Property Name="CountofAddOn" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="Order_Discount">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderId" Type="int" Nullable="false" />
           <Property Name="DiscountId" Type="int" Nullable="false" />
         </EntityType>
@@ -211,24 +203,13 @@
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="ExtraChargesID" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Order_FoodItem">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderID" Type="int" Nullable="false" />
-          <Property Name="FoodItemId" Type="int" Nullable="false" />
-          <Property Name="IDType" Type="int" Nullable="false" />
-          <Property Name="Count" Type="int" Nullable="false" />
-          <Property Name="SpecialOfferId" Type="int" />
-        </EntityType>
         <EntityType Name="Order_Item">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
-          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="FoodItemId" Type="int" Nullable="false" />
           <Property Name="IDType" Type="int" Nullable="false" />
           <Property Name="Count" Type="int" Nullable="false" />
           <Property Name="SpecialOfferId" Type="int" />
@@ -247,15 +228,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="AddOnid" Type="int" Nullable="false" />
-          <Property Name="Order_SpecialOfferFoodItemId" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Order_SpecialOffer_FoodItem">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FoodItemId" Type="int" Nullable="false" />
+          <Property Name="SpecialOffer_AddOnId" Type="int" Nullable="false" />
           <Property Name="Order_SpecialOfferId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Order_SpecialOffer_Item">
@@ -263,9 +236,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="OrderId" Type="int" Nullable="false" />
-          <Property Name="SpecialOfferId" Type="int" Nullable="false" />
-          <Property Name="FoodItemId" Type="int" Nullable="false" />
+          <Property Name="Order_SpecialOfferId" Type="int" Nullable="false" />
+          <Property Name="SpecialOffer_ItemId" Type="int" Nullable="false" />
+          <Property Name="FoodId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Order_Taxes">
           <Key>
@@ -510,30 +483,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_AddOn_ToAddOn">
-          <End Role="AddOn" Type="Self.AddOn" Multiplicity="1" />
-          <End Role="Order_AddOn" Type="Self.Order_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AddOn">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_AddOn">
-              <PropertyRef Name="AddOnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_AddOn_ToOrderItem">
-          <End Role="Order_Item" Type="Self.Order_Item" Multiplicity="1" />
-          <End Role="Order_AddOn" Type="Self.Order_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order_Item">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_AddOn">
-              <PropertyRef Name="Order_ItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Order_CustomerId">
           <End Role="Customer" Type="Self.Customer" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -596,32 +545,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_FoodItem_Order">
-          <End Role="Order" Type="Self.Order" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Order_FoodItem" Type="Self.Order_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_FoodItem">
-              <PropertyRef Name="OrderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_FoodItem_ToFoodItem">
-          <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
-          <End Role="Order_FoodItem" Type="Self.Order_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FoodItem">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_FoodItem">
-              <PropertyRef Name="FoodItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Order_Item_Order">
           <End Role="Order" Type="Self.Order" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -633,6 +556,18 @@
             </Principal>
             <Dependent Role="Order_Item">
               <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_Item_ToFoodItem">
+          <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
+          <End Role="Order_Item" Type="Self.Order_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FoodItem">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order_Item">
+              <PropertyRef Name="FoodItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -650,87 +585,63 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_SpecialOffer_AddOn_ToAddOn">
-          <End Role="AddOn" Type="Self.AddOn" Multiplicity="1" />
+        <Association Name="FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item">
+          <End Role="Order_SpecialOffer" Type="Self.Order_SpecialOffer" Multiplicity="1" />
           <End Role="Order_SpecialOffer_AddOn" Type="Self.Order_SpecialOffer_AddOn" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="AddOn">
+            <Principal Role="Order_SpecialOffer">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Order_SpecialOffer_AddOn">
-              <PropertyRef Name="AddOnid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer">
-          <End Role="Order_SpecialOffer_FoodItem" Type="Self.Order_SpecialOffer_FoodItem" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_AddOn" Type="Self.Order_SpecialOffer_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order_SpecialOffer_FoodItem">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_AddOn">
-              <PropertyRef Name="Order_SpecialOfferFoodItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_FoodItem_ToFoodItem">
-          <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_FoodItem" Type="Self.Order_SpecialOffer_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FoodItem">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_FoodItem">
-              <PropertyRef Name="FoodItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId">
-          <End Role="Order" Type="Self.Order" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_FoodItem" Type="Self.Order_SpecialOffer_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_FoodItem">
               <PropertyRef Name="Order_SpecialOfferId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_SpecialOffer_Item_ToFoodItem">
-          <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
+        <Association Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn">
+          <End Role="SpecialOffer_AddOn" Type="Self.SpecialOffer_AddOn" Multiplicity="1" />
+          <End Role="Order_SpecialOffer_AddOn" Type="Self.Order_SpecialOffer_AddOn" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FoodItem">
+            <Principal Role="SpecialOffer_AddOn">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Order_SpecialOffer_Item">
-              <PropertyRef Name="FoodItemId" />
+            <Dependent Role="Order_SpecialOffer_AddOn">
+              <PropertyRef Name="SpecialOffer_AddOnId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_SpecialOffer_Item_ToOrder">
-          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+        <Association Name="FK_Order_SpecialOffer_Item_ToFood">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
           <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Order">
+            <Principal Role="Food">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Order_SpecialOffer_Item">
-              <PropertyRef Name="OrderId" />
+              <PropertyRef Name="FoodId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_SpecialOffer_Item_ToSpecialOffer">
-          <End Role="SpecialOffer" Type="Self.SpecialOffer" Multiplicity="1" />
+        <Association Name="FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer">
+          <End Role="Order_SpecialOffer" Type="Self.Order_SpecialOffer" Multiplicity="1" />
           <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SpecialOffer">
+            <Principal Role="Order_SpecialOffer">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Order_SpecialOffer_Item">
-              <PropertyRef Name="SpecialOfferId" />
+              <PropertyRef Name="Order_SpecialOfferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_SpecialOffer_Item_ToSpecialOffer_Item">
+          <End Role="SpecialOffer_Item" Type="Self.SpecialOffer_Item" Multiplicity="1" />
+          <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SpecialOffer_Item">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order_SpecialOffer_Item">
+              <PropertyRef Name="SpecialOffer_ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -798,7 +709,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_OrderItem_AddOn_ToOrderItem">
+        <Association Name="FK_OrderItem_AddOn_ToOrder_Item">
           <End Role="Order_Item" Type="Self.Order_Item" Multiplicity="1" />
           <End Role="OrderItem_AddOn" Type="Self.OrderItem_AddOn" Multiplicity="*" />
           <ReferentialConstraint>
@@ -948,14 +859,11 @@
           <EntitySet Name="FoodItem_AddOn" EntityType="Self.FoodItem_AddOn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ingredients" EntityType="Self.Ingredients" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Order_AddOn" EntityType="Self.Order_AddOn" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_Discount" EntityType="Self.Order_Discount" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_ExtraCharges" EntityType="Self.Order_ExtraCharges" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Order_FoodItem" EntityType="Self.Order_FoodItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_Item" EntityType="Self.Order_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_SpecialOffer" EntityType="Self.Order_SpecialOffer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_SpecialOffer_AddOn" EntityType="Self.Order_SpecialOffer_AddOn" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Order_SpecialOffer_FoodItem" EntityType="Self.Order_SpecialOffer_FoodItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_SpecialOffer_Item" EntityType="Self.Order_SpecialOffer_Item" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order_Taxes" EntityType="Self.Order_Taxes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderItem_AddOn" EntityType="Self.OrderItem_AddOn" Schema="dbo" store:Type="Tables" />
@@ -1014,14 +922,6 @@
             <End Role="Food_Size" EntitySet="Food_Size" />
             <End Role="FoodItem" EntitySet="FoodItem" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_AddOn_ToAddOn" Association="Self.FK_Order_AddOn_ToAddOn">
-            <End Role="AddOn" EntitySet="AddOn" />
-            <End Role="Order_AddOn" EntitySet="Order_AddOn" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_AddOn_ToOrderItem" Association="Self.FK_Order_AddOn_ToOrderItem">
-            <End Role="Order_Item" EntitySet="Order_Item" />
-            <End Role="Order_AddOn" EntitySet="Order_AddOn" />
-          </AssociationSet>
           <AssociationSet Name="FK_Order_CustomerId" Association="Self.FK_Order_CustomerId">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Order" EntitySet="Order" />
@@ -1042,48 +942,36 @@
             <End Role="Order" EntitySet="Order" />
             <End Role="Order_ExtraCharges" EntitySet="Order_ExtraCharges" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_FoodItem_Order" Association="Self.FK_Order_FoodItem_Order">
-            <End Role="Order" EntitySet="Order" />
-            <End Role="Order_FoodItem" EntitySet="Order_FoodItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_FoodItem_ToFoodItem" Association="Self.FK_Order_FoodItem_ToFoodItem">
-            <End Role="FoodItem" EntitySet="FoodItem" />
-            <End Role="Order_FoodItem" EntitySet="Order_FoodItem" />
-          </AssociationSet>
           <AssociationSet Name="FK_Order_Item_Order" Association="Self.FK_Order_Item_Order">
             <End Role="Order" EntitySet="Order" />
+            <End Role="Order_Item" EntitySet="Order_Item" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_Item_ToFoodItem" Association="Self.FK_Order_Item_ToFoodItem">
+            <End Role="FoodItem" EntitySet="FoodItem" />
             <End Role="Order_Item" EntitySet="Order_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_PaymentMethod" Association="Self.FK_Order_PaymentMethod">
             <End Role="PaymentMethod" EntitySet="PaymentMethod" />
             <End Role="Order" EntitySet="Order" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToAddOn" Association="Self.FK_Order_SpecialOffer_AddOn_ToAddOn">
-            <End Role="AddOn" EntitySet="AddOn" />
+          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item" Association="Self.FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item">
+            <End Role="Order_SpecialOffer" EntitySet="Order_SpecialOffer" />
             <End Role="Order_SpecialOffer_AddOn" EntitySet="Order_SpecialOffer_AddOn" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer" Association="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer">
-            <End Role="Order_SpecialOffer_FoodItem" EntitySet="Order_SpecialOffer_FoodItem" />
+          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn" Association="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn">
+            <End Role="SpecialOffer_AddOn" EntitySet="SpecialOffer_AddOn" />
             <End Role="Order_SpecialOffer_AddOn" EntitySet="Order_SpecialOffer_AddOn" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_FoodItem_ToFoodItem" Association="Self.FK_Order_SpecialOffer_FoodItem_ToFoodItem">
-            <End Role="FoodItem" EntitySet="FoodItem" />
-            <End Role="Order_SpecialOffer_FoodItem" EntitySet="Order_SpecialOffer_FoodItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId" Association="Self.FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId">
-            <End Role="Order" EntitySet="Order" />
-            <End Role="Order_SpecialOffer_FoodItem" EntitySet="Order_SpecialOffer_FoodItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToFoodItem" Association="Self.FK_Order_SpecialOffer_Item_ToFoodItem">
-            <End Role="FoodItem" EntitySet="FoodItem" />
+          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToFood" Association="Self.FK_Order_SpecialOffer_Item_ToFood">
+            <End Role="Food" EntitySet="Food" />
             <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToOrder" Association="Self.FK_Order_SpecialOffer_Item_ToOrder">
-            <End Role="Order" EntitySet="Order" />
+          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer" Association="Self.FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer">
+            <End Role="Order_SpecialOffer" EntitySet="Order_SpecialOffer" />
             <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToSpecialOffer" Association="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer">
-            <End Role="SpecialOffer" EntitySet="SpecialOffer" />
+          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToSpecialOffer_Item" Association="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer_Item">
+            <End Role="SpecialOffer_Item" EntitySet="SpecialOffer_Item" />
             <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_SpecialOffer_ToOrder" Association="Self.FK_Order_SpecialOffer_ToOrder">
@@ -1106,7 +994,7 @@
             <End Role="AddOn" EntitySet="AddOn" />
             <End Role="OrderItem_AddOn" EntitySet="OrderItem_AddOn" />
           </AssociationSet>
-          <AssociationSet Name="FK_OrderItem_AddOn_ToOrderItem" Association="Self.FK_OrderItem_AddOn_ToOrderItem">
+          <AssociationSet Name="FK_OrderItem_AddOn_ToOrder_Item" Association="Self.FK_OrderItem_AddOn_ToOrder_Item">
             <End Role="Order_Item" EntitySet="Order_Item" />
             <End Role="OrderItem_AddOn" EntitySet="OrderItem_AddOn" />
           </AssociationSet>
@@ -1147,8 +1035,7 @@
             <End Role="FoodItem_AddOn" EntitySet="FoodItem_AddOn" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ResturantDatabaseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -1161,8 +1048,6 @@
           <Property Name="Price" Type="Double" Nullable="false" />
           <Property Name="Category" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Food_AddOn" Relationship="Self.FK_Food_AddOn_AddOn" FromRole="AddOn" ToRole="Food_AddOn" />
-          <NavigationProperty Name="Order_AddOn" Relationship="Self.FK_Order_AddOn_ToAddOn" FromRole="AddOn" ToRole="Order_AddOn" />
-          <NavigationProperty Name="Order_SpecialOffer_AddOn" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToAddOn" FromRole="AddOn" ToRole="Order_SpecialOffer_AddOn" />
           <NavigationProperty Name="OrderItem_AddOn" Relationship="Self.FK_OrderItem_AddOn_ToAddOn" FromRole="AddOn" ToRole="OrderItem_AddOn" />
           <NavigationProperty Name="SpecialOffer_AddOn" Relationship="Self.FK_SpecialOffer_AddOn_Addon" FromRole="AddOn" ToRole="SpecialOffer_AddOn" />
           <NavigationProperty Name="FoodItem_AddOn" Relationship="Self.FK_Table_AddOn" FromRole="AddOn" ToRole="FoodItem_AddOn" />
@@ -1249,8 +1134,8 @@
           <Property Name="Email" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="PhoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="City" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Country" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="Country" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="PostCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Orders" Relationship="Self.FK_Order_CustomerId" FromRole="Customer" ToRole="Order" />
@@ -1302,6 +1187,7 @@
           <NavigationProperty Name="Food_AddOn" Relationship="Self.FK_Food_AddOn_Food" FromRole="Food" ToRole="Food_AddOn" />
           <NavigationProperty Name="Food_Ingredients" Relationship="Self.FK_Food_Ingredients_Food" FromRole="Food" ToRole="Food_Ingredients" />
           <NavigationProperty Name="FoodItems" Relationship="Self.FK_FoodItem_Food" FromRole="Food" ToRole="FoodItem" />
+          <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToFood" FromRole="Food" ToRole="Order_SpecialOffer_Item" />
         </EntityType>
         <EntityType Name="Food_AddOn">
           <Key>
@@ -1343,10 +1229,9 @@
           <Property Name="Food_Size_Id" Type="Int32" />
           <NavigationProperty Name="Food" Relationship="Self.FK_FoodItem_Food" FromRole="FoodItem" ToRole="Food" />
           <NavigationProperty Name="Food_Size" Relationship="Self.FK_FoodItem_ToFood_Size" FromRole="FoodItem" ToRole="Food_Size" />
-          <NavigationProperty Name="Order_FoodItem" Relationship="Self.FK_Order_FoodItem_ToFoodItem" FromRole="FoodItem" ToRole="Order_FoodItem" />
-          <NavigationProperty Name="Order_SpecialOffer_FoodItem" Relationship="Self.FK_Order_SpecialOffer_FoodItem_ToFoodItem" FromRole="FoodItem" ToRole="Order_SpecialOffer_FoodItem" />
-          <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToFoodItem" FromRole="FoodItem" ToRole="Order_SpecialOffer_Item" />
+          <NavigationProperty Name="Order_Item" Relationship="Self.FK_Order_Item_ToFoodItem" FromRole="FoodItem" ToRole="Order_Item" />
           <NavigationProperty Name="FoodItem_AddOn" Relationship="Self.FK_Table_FoodItem" FromRole="FoodItem" ToRole="FoodItem_AddOn" />
+          <Property Name="TagLine" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FoodItem_AddOn">
           <Key>
@@ -1377,30 +1262,16 @@
           <NavigationProperty Name="Customer" Relationship="Self.FK_Order_CustomerId" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="Order_Discount" Relationship="Self.FK_Order_Discount_Order" FromRole="Order" ToRole="Order_Discount" />
           <NavigationProperty Name="Order_ExtraCharges" Relationship="Self.FK_Order_ExtraCharges_Order" FromRole="Order" ToRole="Order_ExtraCharges" />
-          <NavigationProperty Name="Order_FoodItem" Relationship="Self.FK_Order_FoodItem_Order" FromRole="Order" ToRole="Order_FoodItem" />
           <NavigationProperty Name="Order_Item" Relationship="Self.FK_Order_Item_Order" FromRole="Order" ToRole="Order_Item" />
           <NavigationProperty Name="PaymentMethod" Relationship="Self.FK_Order_PaymentMethod" FromRole="Order" ToRole="PaymentMethod" />
-          <NavigationProperty Name="Order_SpecialOffer_FoodItem" Relationship="Self.FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId" FromRole="Order" ToRole="Order_SpecialOffer_FoodItem" />
-          <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToOrder" FromRole="Order" ToRole="Order_SpecialOffer_Item" />
           <NavigationProperty Name="Order_SpecialOffer" Relationship="Self.FK_Order_SpecialOffer_ToOrder" FromRole="Order" ToRole="Order_SpecialOffer" />
           <NavigationProperty Name="Order_Taxes" Relationship="Self.FK_Order_Taxes_Order" FromRole="Order" ToRole="Order_Taxes" />
-        </EntityType>
-        <EntityType Name="Order_AddOn">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Order_ItemId" Type="Int32" Nullable="false" />
-          <Property Name="AddOnId" Type="Int32" Nullable="false" />
-          <Property Name="CountofAddOn" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AddOn" Relationship="Self.FK_Order_AddOn_ToAddOn" FromRole="Order_AddOn" ToRole="AddOn" />
-          <NavigationProperty Name="Order_Item" Relationship="Self.FK_Order_AddOn_ToOrderItem" FromRole="Order_AddOn" ToRole="Order_Item" />
         </EntityType>
         <EntityType Name="Order_Discount">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderId" Type="Int32" Nullable="false" />
           <Property Name="DiscountId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Discount" Relationship="Self.FK_Order_Discount_Discount" FromRole="Order_Discount" ToRole="Discount" />
@@ -1416,7 +1287,7 @@
           <NavigationProperty Name="ExtraCharge" Relationship="Self.FK_Order_ExtraCharges_ExtraCharges" FromRole="Order_ExtraCharges" ToRole="ExtraCharges" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Order_ExtraCharges_Order" FromRole="Order_ExtraCharges" ToRole="Order" />
         </EntityType>
-        <EntityType Name="Order_FoodItem">
+        <EntityType Name="Order_Item">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -1426,22 +1297,9 @@
           <Property Name="IDType" Type="Int32" Nullable="false" />
           <Property Name="Count" Type="Int32" Nullable="false" />
           <Property Name="SpecialOfferId" Type="Int32" />
-          <NavigationProperty Name="FoodItem" Relationship="Self.FK_Order_FoodItem_ToFoodItem" FromRole="Order_FoodItem" ToRole="FoodItem" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_Order_FoodItem_Order" FromRole="Order_FoodItem" ToRole="Order" />
-        </EntityType>
-        <EntityType Name="Order_Item">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="IDType" Type="Int32" Nullable="false" />
-          <Property Name="Count" Type="Int32" Nullable="false" />
-          <Property Name="SpecialOfferId" Type="Int32" />
+          <NavigationProperty Name="FoodItem" Relationship="Self.FK_Order_Item_ToFoodItem" FromRole="Order_Item" ToRole="FoodItem" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Order_Item_Order" FromRole="Order_Item" ToRole="Order" />
-          <NavigationProperty Name="Order_AddOn" Relationship="Self.FK_Order_AddOn_ToOrderItem" FromRole="Order_Item" ToRole="Order_AddOn" />
-          <NavigationProperty Name="OrderItem_AddOn" Relationship="Self.FK_OrderItem_AddOn_ToOrderItem" FromRole="Order_Item" ToRole="OrderItem_AddOn" />
+          <NavigationProperty Name="OrderItem_AddOn" Relationship="Self.FK_OrderItem_AddOn_ToOrder_Item" FromRole="Order_Item" ToRole="OrderItem_AddOn" />
         </EntityType>
         <EntityType Name="Order_SpecialOffer">
           <Key>
@@ -1452,6 +1310,8 @@
           <Property Name="SpecialOfferId" Type="Int32" Nullable="false" />
           <Property Name="CountOfSpecialOffers" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Order_SpecialOffer_ToOrder" FromRole="Order_SpecialOffer" ToRole="Order" />
+          <NavigationProperty Name="Order_SpecialOffer_AddOn" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item" FromRole="Order_SpecialOffer" ToRole="Order_SpecialOffer_AddOn" />
+          <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer" FromRole="Order_SpecialOffer" ToRole="Order_SpecialOffer_Item" />
           <NavigationProperty Name="SpecialOffer" Relationship="Self.FK_Order_SpecialOffer_ToSpecialOffer" FromRole="Order_SpecialOffer" ToRole="SpecialOffer" />
         </EntityType>
         <EntityType Name="Order_SpecialOffer_AddOn">
@@ -1459,33 +1319,22 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="AddOnid" Type="Int32" Nullable="false" />
-          <Property Name="Order_SpecialOfferFoodItemId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AddOn" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToAddOn" FromRole="Order_SpecialOffer_AddOn" ToRole="AddOn" />
-          <NavigationProperty Name="Order_SpecialOffer_FoodItem" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer" FromRole="Order_SpecialOffer_AddOn" ToRole="Order_SpecialOffer_FoodItem" />
-        </EntityType>
-        <EntityType Name="Order_SpecialOffer_FoodItem">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FoodItemId" Type="Int32" Nullable="false" />
+          <Property Name="SpecialOffer_AddOnId" Type="Int32" Nullable="false" />
           <Property Name="Order_SpecialOfferId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="FoodItem" Relationship="Self.FK_Order_SpecialOffer_FoodItem_ToFoodItem" FromRole="Order_SpecialOffer_FoodItem" ToRole="FoodItem" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId" FromRole="Order_SpecialOffer_FoodItem" ToRole="Order" />
-          <NavigationProperty Name="Order_SpecialOffer_AddOn" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer" FromRole="Order_SpecialOffer_FoodItem" ToRole="Order_SpecialOffer_AddOn" />
+          <NavigationProperty Name="Order_SpecialOffer" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item" FromRole="Order_SpecialOffer_AddOn" ToRole="Order_SpecialOffer" />
+          <NavigationProperty Name="SpecialOffer_AddOn" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn" FromRole="Order_SpecialOffer_AddOn" ToRole="SpecialOffer_AddOn" />
         </EntityType>
         <EntityType Name="Order_SpecialOffer_Item">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="OrderId" Type="Int32" Nullable="false" />
-          <Property Name="SpecialOfferId" Type="Int32" Nullable="false" />
-          <Property Name="FoodItemId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="FoodItem" Relationship="Self.FK_Order_SpecialOffer_Item_ToFoodItem" FromRole="Order_SpecialOffer_Item" ToRole="FoodItem" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_Order_SpecialOffer_Item_ToOrder" FromRole="Order_SpecialOffer_Item" ToRole="Order" />
-          <NavigationProperty Name="SpecialOffer" Relationship="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer" FromRole="Order_SpecialOffer_Item" ToRole="SpecialOffer" />
+          <Property Name="Order_SpecialOfferId" Type="Int32" Nullable="false" />
+          <Property Name="SpecialOffer_ItemId" Type="Int32" Nullable="false" />
+          <Property Name="FoodId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Food" Relationship="Self.FK_Order_SpecialOffer_Item_ToFood" FromRole="Order_SpecialOffer_Item" ToRole="Food" />
+          <NavigationProperty Name="Order_SpecialOffer" Relationship="Self.FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer" FromRole="Order_SpecialOffer_Item" ToRole="Order_SpecialOffer" />
+          <NavigationProperty Name="SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer_Item" FromRole="Order_SpecialOffer_Item" ToRole="SpecialOffer_Item" />
         </EntityType>
         <EntityType Name="Order_Taxes">
           <Key>
@@ -1505,7 +1354,7 @@
           <Property Name="Order_ItemId" Type="Int32" Nullable="false" />
           <Property Name="AddOnId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AddOn" Relationship="Self.FK_OrderItem_AddOn_ToAddOn" FromRole="OrderItem_AddOn" ToRole="AddOn" />
-          <NavigationProperty Name="Order_Item" Relationship="Self.FK_OrderItem_AddOn_ToOrderItem" FromRole="OrderItem_AddOn" ToRole="Order_Item" />
+          <NavigationProperty Name="Order_Item" Relationship="Self.FK_OrderItem_AddOn_ToOrder_Item" FromRole="OrderItem_AddOn" ToRole="Order_Item" />
         </EntityType>
         <EntityType Name="PaymentMethod">
           <Key>
@@ -1549,7 +1398,6 @@
           <Property Name="EndingTime" Type="Time" Precision="7" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Order_SpecialOffer" Relationship="Self.FK_Order_SpecialOffer_ToSpecialOffer" FromRole="SpecialOffer" ToRole="Order_SpecialOffer" />
-          <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer" FromRole="SpecialOffer" ToRole="Order_SpecialOffer_Item" />
           <NavigationProperty Name="SpecialOffer_AddOn" Relationship="Self.FK_SpecialOffer_AddOn_SpecialOffer" FromRole="SpecialOffer" ToRole="SpecialOffer_AddOn" />
           <NavigationProperty Name="SpecialOffer_Item" Relationship="Self.FK_SpecialOffer_Item_SpecialOffer" FromRole="SpecialOffer" ToRole="SpecialOffer_Item" />
         </EntityType>
@@ -1562,6 +1410,7 @@
           <Property Name="AddonID" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AddOn" Relationship="Self.FK_SpecialOffer_AddOn_Addon" FromRole="SpecialOffer_AddOn" ToRole="AddOn" />
+          <NavigationProperty Name="Order_SpecialOffer_AddOn" Relationship="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn" FromRole="SpecialOffer_AddOn" ToRole="Order_SpecialOffer_AddOn" />
           <NavigationProperty Name="SpecialOffer" Relationship="Self.FK_SpecialOffer_AddOn_SpecialOffer" FromRole="SpecialOffer_AddOn" ToRole="SpecialOffer" />
         </EntityType>
         <EntityType Name="SpecialOffer_Item">
@@ -1576,6 +1425,7 @@
           <Property Name="isFlexible" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Category" Relationship="Self.FK_SpecialOffer_Item_Category" FromRole="SpecialOffer_Item" ToRole="Category" />
           <NavigationProperty Name="Food_Size" Relationship="Self.FK_SpecialOffer_Item_Food_Size" FromRole="SpecialOffer_Item" ToRole="Food_Size" />
+          <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer_Item" FromRole="SpecialOffer_Item" ToRole="Order_SpecialOffer_Item" />
           <NavigationProperty Name="SpecialOffer" Relationship="Self.FK_SpecialOffer_Item_SpecialOffer" FromRole="SpecialOffer_Item" ToRole="SpecialOffer" />
         </EntityType>
         <EntityType Name="Tax">
@@ -1596,30 +1446,6 @@
             </Principal>
             <Dependent Role="Food_AddOn">
               <PropertyRef Name="AddOnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_AddOn_ToAddOn">
-          <End Role="AddOn" Type="Self.AddOn" Multiplicity="1" />
-          <End Role="Order_AddOn" Type="Self.Order_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AddOn">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_AddOn">
-              <PropertyRef Name="AddOnId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_AddOn_ToAddOn">
-          <End Role="AddOn" Type="Self.AddOn" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_AddOn" Type="Self.Order_SpecialOffer_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AddOn">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_AddOn">
-              <PropertyRef Name="AddOnid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1861,6 +1687,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Order_SpecialOffer_Item_ToFood">
+          <End Role="Food" Type="Self.Food" Multiplicity="1" />
+          <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order_SpecialOffer_Item">
+              <PropertyRef Name="FoodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Food_Ingredients_Ingredients">
           <End Role="Ingredients" Type="Self.Ingredient" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1899,38 +1737,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_FoodItem_ToFoodItem">
+        <Association Name="FK_Order_Item_ToFoodItem">
           <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
-          <End Role="Order_FoodItem" Type="Self.Order_FoodItem" Multiplicity="*" />
+          <End Role="Order_Item" Type="Self.Order_Item" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FoodItem">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Order_FoodItem">
-              <PropertyRef Name="FoodItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_FoodItem_ToFoodItem">
-          <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_FoodItem" Type="Self.Order_SpecialOffer_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FoodItem">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_FoodItem">
-              <PropertyRef Name="FoodItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_Item_ToFoodItem">
-          <End Role="FoodItem" Type="Self.FoodItem" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FoodItem">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_Item">
+            <Dependent Role="Order_Item">
               <PropertyRef Name="FoodItemId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1973,20 +1787,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_FoodItem_Order">
-          <End Role="Order" Type="Self.Order" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Order_FoodItem" Type="Self.Order_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_FoodItem">
-              <PropertyRef Name="OrderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Order_Item_Order">
           <End Role="Order" Type="Self.Order" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -2012,30 +1812,6 @@
             </Principal>
             <Dependent Role="Order">
               <PropertyRef Name="PaymentMethodId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId">
-          <End Role="Order" Type="Self.Order" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_FoodItem" Type="Self.Order_SpecialOffer_FoodItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_FoodItem">
-              <PropertyRef Name="Order_SpecialOfferId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Order_SpecialOffer_Item_ToOrder">
-          <End Role="Order" Type="Self.Order" Multiplicity="1" />
-          <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_SpecialOffer_Item">
-              <PropertyRef Name="OrderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2065,19 +1841,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_AddOn_ToOrderItem">
-          <End Role="Order_Item" Type="Self.Order_Item" Multiplicity="1" />
-          <End Role="Order_AddOn" Type="Self.Order_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Order_Item">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Order_AddOn">
-              <PropertyRef Name="Order_ItemId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OrderItem_AddOn_ToOrderItem">
+        <Association Name="FK_OrderItem_AddOn_ToOrder_Item">
           <End Role="Order_Item" Type="Self.Order_Item" Multiplicity="1" />
           <End Role="OrderItem_AddOn" Type="Self.OrderItem_AddOn" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2086,6 +1850,30 @@
             </Principal>
             <Dependent Role="OrderItem_AddOn">
               <PropertyRef Name="Order_ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item">
+          <End Role="Order_SpecialOffer" Type="Self.Order_SpecialOffer" Multiplicity="1" />
+          <End Role="Order_SpecialOffer_AddOn" Type="Self.Order_SpecialOffer_AddOn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_SpecialOffer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order_SpecialOffer_AddOn">
+              <PropertyRef Name="Order_SpecialOfferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer">
+          <End Role="Order_SpecialOffer" Type="Self.Order_SpecialOffer" Multiplicity="1" />
+          <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order_SpecialOffer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Order_SpecialOffer_Item">
+              <PropertyRef Name="Order_SpecialOfferId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2101,27 +1889,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer">
-          <End Role="Order_SpecialOffer_FoodItem" Type="Self.Order_SpecialOffer_FoodItem" Multiplicity="1" />
+        <Association Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn">
+          <End Role="SpecialOffer_AddOn" Type="Self.SpecialOffer_AddOn" Multiplicity="1" />
           <End Role="Order_SpecialOffer_AddOn" Type="Self.Order_SpecialOffer_AddOn" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Order_SpecialOffer_FoodItem">
+            <Principal Role="SpecialOffer_AddOn">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Order_SpecialOffer_AddOn">
-              <PropertyRef Name="Order_SpecialOfferFoodItemId" />
+              <PropertyRef Name="SpecialOffer_AddOnId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Order_SpecialOffer_Item_ToSpecialOffer">
-          <End Role="SpecialOffer" Type="Self.SpecialOffer" Multiplicity="1" />
+        <Association Name="FK_Order_SpecialOffer_Item_ToSpecialOffer_Item">
+          <End Role="SpecialOffer_Item" Type="Self.SpecialOffer_Item" Multiplicity="1" />
           <End Role="Order_SpecialOffer_Item" Type="Self.Order_SpecialOffer_Item" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SpecialOffer">
+            <Principal Role="SpecialOffer_Item">
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Order_SpecialOffer_Item">
-              <PropertyRef Name="SpecialOfferId" />
+              <PropertyRef Name="SpecialOffer_ItemId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2165,7 +1953,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ResturantDatabaseEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ResturantDatabaseEntities9" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AddOns" EntityType="Self.AddOn" />
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Branches" EntityType="Self.Branch" />
@@ -2185,14 +1973,11 @@
           <EntitySet Name="FoodItem_AddOn" EntityType="Self.FoodItem_AddOn" />
           <EntitySet Name="Ingredients" EntityType="Self.Ingredient" />
           <EntitySet Name="Orders" EntityType="Self.Order" />
-          <EntitySet Name="Order_AddOn" EntityType="Self.Order_AddOn" />
           <EntitySet Name="Order_Discount" EntityType="Self.Order_Discount" />
           <EntitySet Name="Order_ExtraCharges" EntityType="Self.Order_ExtraCharges" />
-          <EntitySet Name="Order_FoodItem" EntityType="Self.Order_FoodItem" />
           <EntitySet Name="Order_Item" EntityType="Self.Order_Item" />
           <EntitySet Name="Order_SpecialOffer" EntityType="Self.Order_SpecialOffer" />
           <EntitySet Name="Order_SpecialOffer_AddOn" EntityType="Self.Order_SpecialOffer_AddOn" />
-          <EntitySet Name="Order_SpecialOffer_FoodItem" EntityType="Self.Order_SpecialOffer_FoodItem" />
           <EntitySet Name="Order_SpecialOffer_Item" EntityType="Self.Order_SpecialOffer_Item" />
           <EntitySet Name="Order_Taxes" EntityType="Self.Order_Taxes" />
           <EntitySet Name="OrderItem_AddOn" EntityType="Self.OrderItem_AddOn" />
@@ -2206,14 +1991,6 @@
           <AssociationSet Name="FK_Food_AddOn_AddOn" Association="Self.FK_Food_AddOn_AddOn">
             <End Role="AddOn" EntitySet="AddOns" />
             <End Role="Food_AddOn" EntitySet="Food_AddOn" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_AddOn_ToAddOn" Association="Self.FK_Order_AddOn_ToAddOn">
-            <End Role="AddOn" EntitySet="AddOns" />
-            <End Role="Order_AddOn" EntitySet="Order_AddOn" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToAddOn" Association="Self.FK_Order_SpecialOffer_AddOn_ToAddOn">
-            <End Role="AddOn" EntitySet="AddOns" />
-            <End Role="Order_SpecialOffer_AddOn" EntitySet="Order_SpecialOffer_AddOn" />
           </AssociationSet>
           <AssociationSet Name="FK_OrderItem_AddOn_ToAddOn" Association="Self.FK_OrderItem_AddOn_ToAddOn">
             <End Role="AddOn" EntitySet="AddOns" />
@@ -2287,6 +2064,10 @@
             <End Role="Food" EntitySet="Foods" />
             <End Role="FoodItem" EntitySet="FoodItems" />
           </AssociationSet>
+          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToFood" Association="Self.FK_Order_SpecialOffer_Item_ToFood">
+            <End Role="Food" EntitySet="Foods" />
+            <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
+          </AssociationSet>
           <AssociationSet Name="FK_Food_Ingredients_Ingredients" Association="Self.FK_Food_Ingredients_Ingredients">
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="Food_Ingredients" EntitySet="Food_Ingredients" />
@@ -2299,17 +2080,9 @@
             <End Role="Food_Size" EntitySet="Food_Size" />
             <End Role="SpecialOffer_Item" EntitySet="SpecialOffer_Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_FoodItem_ToFoodItem" Association="Self.FK_Order_FoodItem_ToFoodItem">
+          <AssociationSet Name="FK_Order_Item_ToFoodItem" Association="Self.FK_Order_Item_ToFoodItem">
             <End Role="FoodItem" EntitySet="FoodItems" />
-            <End Role="Order_FoodItem" EntitySet="Order_FoodItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_FoodItem_ToFoodItem" Association="Self.FK_Order_SpecialOffer_FoodItem_ToFoodItem">
-            <End Role="FoodItem" EntitySet="FoodItems" />
-            <End Role="Order_SpecialOffer_FoodItem" EntitySet="Order_SpecialOffer_FoodItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToFoodItem" Association="Self.FK_Order_SpecialOffer_Item_ToFoodItem">
-            <End Role="FoodItem" EntitySet="FoodItems" />
-            <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
+            <End Role="Order_Item" EntitySet="Order_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Table_FoodItem" Association="Self.FK_Table_FoodItem">
             <End Role="FoodItem" EntitySet="FoodItems" />
@@ -2323,10 +2096,6 @@
             <End Role="Order" EntitySet="Orders" />
             <End Role="Order_ExtraCharges" EntitySet="Order_ExtraCharges" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_FoodItem_Order" Association="Self.FK_Order_FoodItem_Order">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="Order_FoodItem" EntitySet="Order_FoodItem" />
-          </AssociationSet>
           <AssociationSet Name="FK_Order_Item_Order" Association="Self.FK_Order_Item_Order">
             <End Role="Order" EntitySet="Orders" />
             <End Role="Order_Item" EntitySet="Order_Item" />
@@ -2334,14 +2103,6 @@
           <AssociationSet Name="FK_Order_PaymentMethod" Association="Self.FK_Order_PaymentMethod">
             <End Role="PaymentMethod" EntitySet="PaymentMethods" />
             <End Role="Order" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId" Association="Self.FK_Order_SpecialOffer_FoodItem_ToOrder_SpecialOfferId">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="Order_SpecialOffer_FoodItem" EntitySet="Order_SpecialOffer_FoodItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToOrder" Association="Self.FK_Order_SpecialOffer_Item_ToOrder">
-            <End Role="Order" EntitySet="Orders" />
-            <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_SpecialOffer_ToOrder" Association="Self.FK_Order_SpecialOffer_ToOrder">
             <End Role="Order" EntitySet="Orders" />
@@ -2351,24 +2112,28 @@
             <End Role="Order" EntitySet="Orders" />
             <End Role="Order_Taxes" EntitySet="Order_Taxes" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_AddOn_ToOrderItem" Association="Self.FK_Order_AddOn_ToOrderItem">
-            <End Role="Order_Item" EntitySet="Order_Item" />
-            <End Role="Order_AddOn" EntitySet="Order_AddOn" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderItem_AddOn_ToOrderItem" Association="Self.FK_OrderItem_AddOn_ToOrderItem">
+          <AssociationSet Name="FK_OrderItem_AddOn_ToOrder_Item" Association="Self.FK_OrderItem_AddOn_ToOrder_Item">
             <End Role="Order_Item" EntitySet="Order_Item" />
             <End Role="OrderItem_AddOn" EntitySet="OrderItem_AddOn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item" Association="Self.FK_Order_SpecialOffer_AddOn_ToOrder_SpecialOffer_Item">
+            <End Role="Order_SpecialOffer" EntitySet="Order_SpecialOffer" />
+            <End Role="Order_SpecialOffer_AddOn" EntitySet="Order_SpecialOffer_AddOn" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer" Association="Self.FK_Order_SpecialOffer_Item_ToOrder_SpecialOffer">
+            <End Role="Order_SpecialOffer" EntitySet="Order_SpecialOffer" />
+            <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_SpecialOffer_ToSpecialOffer" Association="Self.FK_Order_SpecialOffer_ToSpecialOffer">
             <End Role="SpecialOffer" EntitySet="SpecialOffers" />
             <End Role="Order_SpecialOffer" EntitySet="Order_SpecialOffer" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer" Association="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer">
-            <End Role="Order_SpecialOffer_FoodItem" EntitySet="Order_SpecialOffer_FoodItem" />
+          <AssociationSet Name="FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn" Association="Self.FK_Order_SpecialOffer_AddOn_ToSpecialOffer_AddOn">
+            <End Role="SpecialOffer_AddOn" EntitySet="SpecialOffer_AddOn" />
             <End Role="Order_SpecialOffer_AddOn" EntitySet="Order_SpecialOffer_AddOn" />
           </AssociationSet>
-          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToSpecialOffer" Association="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer">
-            <End Role="SpecialOffer" EntitySet="SpecialOffers" />
+          <AssociationSet Name="FK_Order_SpecialOffer_Item_ToSpecialOffer_Item" Association="Self.FK_Order_SpecialOffer_Item_ToSpecialOffer_Item">
+            <End Role="SpecialOffer_Item" EntitySet="SpecialOffer_Item" />
             <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
           <AssociationSet Name="FK_Order_Taxes_Taxes" Association="Self.FK_Order_Taxes_Taxes">
@@ -2389,7 +2154,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ResturantDatabaseModelStoreContainer" CdmEntityContainer="ResturantDatabaseEntities">
+        <EntityContainerMapping StorageEntityContainer="ResturantDatabaseModelStoreContainer" CdmEntityContainer="ResturantDatabaseEntities9">
           <EntitySetMapping Name="AddOns">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.AddOn">
               <MappingFragment StoreEntitySet="AddOn">
@@ -2555,6 +2320,7 @@
           <EntitySetMapping Name="FoodItems">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.FoodItem">
               <MappingFragment StoreEntitySet="FoodItem">
+                <ScalarProperty Name="TagLine" ColumnName="TagLine" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -2590,16 +2356,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Order_AddOn">
-            <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_AddOn">
-              <MappingFragment StoreEntitySet="Order_AddOn">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Order_ItemId" ColumnName="Order_ItemId" />
-                <ScalarProperty Name="AddOnId" ColumnName="AddOnId" />
-                <ScalarProperty Name="CountofAddOn" ColumnName="CountofAddOn" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Order_Discount">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_Discount">
               <MappingFragment StoreEntitySet="Order_Discount">
@@ -2618,24 +2374,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Order_FoodItem">
-            <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_FoodItem">
-              <MappingFragment StoreEntitySet="Order_FoodItem">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="FoodItemId" ColumnName="FoodItemId" />
-                <ScalarProperty Name="IDType" ColumnName="IDType" />
-                <ScalarProperty Name="Count" ColumnName="Count" />
-                <ScalarProperty Name="SpecialOfferId" ColumnName="SpecialOfferId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Order_Item">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_Item">
               <MappingFragment StoreEntitySet="Order_Item">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="FoodItemId" ColumnName="FoodItemId" />
                 <ScalarProperty Name="IDType" ColumnName="IDType" />
                 <ScalarProperty Name="Count" ColumnName="Count" />
                 <ScalarProperty Name="SpecialOfferId" ColumnName="SpecialOfferId" />
@@ -2656,16 +2400,7 @@
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_SpecialOffer_AddOn">
               <MappingFragment StoreEntitySet="Order_SpecialOffer_AddOn">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="AddOnid" ColumnName="AddOnid" />
-                <ScalarProperty Name="Order_SpecialOfferFoodItemId" ColumnName="Order_SpecialOfferFoodItemId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Order_SpecialOffer_FoodItem">
-            <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_SpecialOffer_FoodItem">
-              <MappingFragment StoreEntitySet="Order_SpecialOffer_FoodItem">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="FoodItemId" ColumnName="FoodItemId" />
+                <ScalarProperty Name="SpecialOffer_AddOnId" ColumnName="SpecialOffer_AddOnId" />
                 <ScalarProperty Name="Order_SpecialOfferId" ColumnName="Order_SpecialOfferId" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -2674,9 +2409,9 @@
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Order_SpecialOffer_Item">
               <MappingFragment StoreEntitySet="Order_SpecialOffer_Item">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="OrderId" ColumnName="OrderId" />
-                <ScalarProperty Name="SpecialOfferId" ColumnName="SpecialOfferId" />
-                <ScalarProperty Name="FoodItemId" ColumnName="FoodItemId" />
+                <ScalarProperty Name="Order_SpecialOfferId" ColumnName="Order_SpecialOfferId" />
+                <ScalarProperty Name="SpecialOffer_ItemId" ColumnName="SpecialOffer_ItemId" />
+                <ScalarProperty Name="FoodId" ColumnName="FoodId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
