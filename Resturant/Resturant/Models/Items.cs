@@ -7,7 +7,7 @@ namespace Resturant.Models
 {
     public class Items
     {
-        public int Quantitity;
+       public int Quantitity;
        public  string Name;
        public  double price;
        public string addOns;

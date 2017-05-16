@@ -5,8 +5,7 @@
 @model List<Resturant.Models.SpecialOffer>
 @using Resturant.Models;
 <!-- Fixed navbar -->
-@if (ViewBag.Session == null)
-{
+
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
 
@@ -14,60 +13,39 @@
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-                <a class="navbar-brand" href="#"><img src="~/Content/AdminThemeFiles/images/logo.png" alt=""></a>
+                <a class="navbar-brand" href="/Home/"><img src="~/Content/images/logo.png" alt=""></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">About</a></li>
+                    <li><a href="../Home/">Home</a></li>
                     <li><a href="../Home/Menu">Menu</a></li>
-                    <li><a href="../Home/SpecialOffers">Special Offers</a></li>
+                    <li class="active"><a href="../Home/SpecialOffers">Special Offers</a></li>
                     <li><a href="../Home/Location">Location</a></li>
                     <li><a href="../Home/Contact">CONTACT</a></li>
-                    <li class="order-online"><a href="../Home/OrderOnline">Order Online</a></li>
+                    @{
+                        if (System.Web.HttpContext.Current.Session["LoginCustomer"] == null)
+                        {
+                            <li><a href="../Home/login">LOGIN</a></li>
+                        }
+                        else
+                        {
+
+                            <li><a href="../Home/logOut ">LOGOUT</a></li>
+                        }
+                    }
                 </ul>
             </div>
             <!--/.nav-collapse -->
         </div>
     </nav>
-}
-else
-{
-    <nav class="navbar navbar-inverse navbar-fixed-top nav-small">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#"><img src="~/Content/images/logo.png" alt=""></a>
-            </div>
-            <a class="cutom-anc" href="#"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></a>
-            <ul class="custom-nav">
-                <li> <a class="active" href="#">Fingers &amp; Poppers</a> </li>
-                <li> <a href="#">Signature Creations</a> </li>
-                <li> <a href="#">Sandwiches</a> </li>
-                <li> <a href="#">Wraps / Salads</a> </li>
-                <li> <a href="#">Sides</a> </li>
-                <li> <a href="#">Sauce</a> </li>
-                <li> <a href="#">Drinks</a> </li>
-            </ul>
-            <div class="order-now-top-button"> <a href="#">Checkout</a> </div>
-            <a class="login-small" href="#">
-                <img src="~/Content/images/user.png" alt="">
-                <!--/.nav-collapse -->
+<br />
+<br />
 
-        </div>
-    </nav>
-}
 <div class="container-fluid menu-bg" style="margin-top:-0.02%;">
     <div class="row">
         <div class="col-xs-12">
             <div class="bg-white maxw800 menu-wrapper">
-                <h2 class="text-center">MENU</h2>
-                <h3 class="text-center">PLEASE CHOOSE A LOCATION</h3>
-                <div class="select-wrapper blackSelect maxw300">
-                    <select class="form-control w108P">
-                        <option>Today</option>
-                    </select>
-                </div>
-                <h3 class="text-center mb30">FIND OUR GREENWICH VILLAGE MENU BELOW.</h3>
-                <p class="text-center mb30"><a class="btn btn-primary" href="#">ORDER NOW</a></p>
+                <h2 class="text-center">Special Offers</h2>
                 <div class="menu-category">
                     <table class="table m0">
 
@@ -75,7 +53,7 @@ else
                         {
                             <tr>
                                 <td><h3 class="m0"><a data-toggle="modal" data-id=@specialOffer.Id title="Add this item" class="open-FoodItem btn" href="#SpecialOfferDialog"> @specialOffer.Name <small>@specialOffer.Description</small></a> </h3></td>
-                                <td class="price text-right">$@specialOffer.Price</td>
+                                <td class="price text-right">£@specialOffer.Price</td>
                             </tr>
 
                         }
@@ -115,11 +93,11 @@ else
 
                 if (cb.checked) {
                     addons = addons + cb.id + ",";
-                    amount = amount + parseInt(cb.value);
+                    amount = amount + parseFloat(cb.value);
                 }
                 else {
                     addons = addons.replace(cb.id + ",", "");
-                    amount = amount - parseInt(cb.value);
+                    amount = amount - parseFloat(cb.value);
                 }
                 document.getElementById("mob").innerHTML = name + ',' + amount + "," + "addon" + "," + addons + "foodtype" + "," + specialofferitem;
                
@@ -143,12 +121,12 @@ else
                     contentType: "application/json; charset=utf-8",
                     data: { SpecialOfferID: specialOfferID },
                     success: function (response) {
-                        amount = parseInt(response.Price);
+                        amount = parseFloat(response.Price);
                         var $el = $("#SpecialOfferDescription");
                         var $price = $("#btnsubmit");
                         name = response.Name;
                         $el.empty(); // remove old options
-                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Name + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Name + ',' + amount + "</p>"))
+                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Name + "<span class='pull-right'> £" + amount + "</span></h3> <p hidden id='mob'>" + response.Name + ',' + amount + "</p>"))
                         $price.removeAttr("data-price")
                         $price.attr("data-price", amount)
 
@@ -174,11 +152,11 @@ else
                         $el.empty(); // remove old options
                        
                                
-                            quantity = parseInt(response[0].Quantity);
+                            quantity = parseFloat(response[0].Quantity);
                      
                             for(var i=0;i<quantity;i++)
                             {
-                                temp = temp + "  <div class='form-group'><label> Select a " + response[0].Category.Name + "</label> <div class='select-wrapper select-wrapper-large blackSelect'> <select onchange='handleClickOfSpecialOffer(this);'  class='form-control ' id=" + i + ">";
+                                temp = temp + "  <div class='form-group'><label> Select a " + response[0].Category.Name + "</label> <div class='select-wrapper select-wrapper-large blackSelect'> <select onchange='handleClickOfSpecialOffer(this)'  class='form-control ' id=" + i + ">";
 
                                 $.each(response[0].Category.Foods, function (value1, key1) {
                                     temp = temp + "<option value=" + key1.Id + ">" + key1.Name +  "</option>";
@@ -186,7 +164,11 @@ else
 
                                 $el.append($(temp + "</select></div></div>"));
                                 temp = "";
+
+
+
                             }
+                            handleClickOfSpecialOffer(1);
                         
                         
 
@@ -211,7 +193,7 @@ else
 
                         $.each(response, function (value, key) {
 
-                            $el.append($("<tr> <td width='50%'><input onclick='handleClick(this);' id='" + parseInt(key.AddOn.Id) + "' type='checkbox' name= '" + key.AddOn.Price + "' value='" + key.AddOn.Price + "'>  <label id= 'kdf' name='" + key.AddOn.Name + " value='" + key.AddOn.Price + "'>" + key.AddOn.Name + "</label><p type='text' id='" + parseInt(key.AddOn.Id) + "' hidden >" + key.AddOn.Name + ',' + key.AddOn.Price + " </p> <span class='pull-right'>  $ " + key.AddOn.Price + "</span></td></tr>"))
+                            $el.append($("<tr> <td width='50%'><input onclick='handleClick(this);' id='" + parseInt(key.AddOn.Id) + "' type='checkbox' name= '" + key.AddOn.Price + "' value='" + key.AddOn.Price + "'>  <label id= 'kdf' name='" + key.AddOn.Name + " value='" + key.AddOn.Price + "'>" + key.AddOn.Name + "</label><p type='text' id='" + parseInt(key.AddOn.Id) + "' hidden >" + key.AddOn.Name + ',' + key.AddOn.Price + " </p> <span class='pull-right'>  £ " + key.AddOn.Price + "</span></td></tr>"))
 
                         });
                     },
@@ -259,7 +241,7 @@ else
                             <td width="50%">
                                 <input id="checkbox3" type="checkbox" name="" value="3">
                                 <label>SMALL CLASSIC FRY</label>
-                                <span class="pull-right"> $0.92</span>
+                                <span class="pull-right"> £0.92</span>
                             </td>
                             <td width="50%">
                                 <input id="checkbox3" type="checkbox" name="" value="3">
@@ -312,7 +294,7 @@ else
                 </ul>
             </div>
             <footer>
-                <a href="/Home/Check_Out" class="checkout btn"><em>Checkout - $<span>0</span></em></a>
+                <a href="/Home/Check_Out" class="checkout btn"><em>Checkout - £<span>0</span></em></a>
             </footer>
 
         </div>

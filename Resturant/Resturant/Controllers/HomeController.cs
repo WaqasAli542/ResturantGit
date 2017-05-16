@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Resturant.BAL;
+using Resturant.BAL.Order_Managament;
 using Resturant.Models;
 using Resturant.Models.DTO;
+using Resturant.UtilityClasses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,34 +14,18 @@ namespace Resturant.Controllers
 {
     public class HomeController : Controller
     {
+
+
         
         //
         // GET: /Home/
         public ActionResult Index()
         {
+            
             System.Web.HttpContext.Current.Session["orderId"] = null;
             System.Web.HttpContext.Current.Session["PresentId"] = null;
-            DateTime today_date = Convert.ToDateTime(string.Format("{0:HH:mm:ss tt}", DateTime.Now));
-            DateTime time = Convert.ToDateTime(today_date.TimeOfDay.ToString());
 
-            DateTime date_of_starting = Convert.ToDateTime("04/10/2017");
-            DateTime time2 = Convert.ToDateTime(date_of_starting.TimeOfDay.ToString());
-            DateTime date_of_ending = Convert.ToDateTime("05/10/2017");
-            TimeSpan startingTimeDiff = time.TimeOfDay - time2.TimeOfDay;
-            TimeSpan endingTimeDiff = date_of_ending - today_date;
-            List<Discount> discounts = new BLDiscount().getListOfDiscount();
-            DateTime dt = Convert.ToDateTime(discounts.First().StartingTime.ToString());
-
-            if ((startingTimeDiff.TotalMinutes > 0) && (endingTimeDiff.TotalMinutes > 0))
-            {
-
-
-            }
-            //Customer Login Credientials
-            System.Web.HttpContext.Current.Session["LoginCustomer"] = null;
-
-            List<Items> Items= new List<Items>();
-            System.Web.HttpContext.Current.Session["Items"] = Items;
+         
             return View();
         }
         public ActionResult loginrequest(string Email, string Password)
@@ -56,10 +42,23 @@ namespace Resturant.Controllers
         }
         public ActionResult Check_Out()
         {
+
+
+            List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
+            if(items==null)
+            {
+                return RedirectToAction("Menu");
+            }
+            Payments payment = new Payments();
+
+
+
+
             ViewBag.extracharges = new BLExtraCharges().getListOfExtraCharges();
             ViewBag.Taxes = new BLTax().getListOfTax();
-            List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
+ 
             ViewBag.Customer = new BLCustomer().getCustomersById(2);
+
 
 
             ////Discounts
@@ -95,9 +94,15 @@ namespace Resturant.Controllers
            bool check= new BLCustomer().addCustomers(customer);
             return RedirectToAction("index");
         }
-        public ActionResult Career()
+        public ActionResult LoginFromCheckOut(string Email, string Password)
         {
-            return View();
+
+            Customer isLogin = new BLCustomer().Login(Email, Password);
+            if (isLogin.Id > 0)
+            {
+                System.Web.HttpContext.Current.Session["LoginCustomer"] = isLogin;
+            }
+            return RedirectToAction("Check_Out");
         }
         public ActionResult About()
         {
@@ -155,6 +160,8 @@ namespace Resturant.Controllers
 
             Items item = new Items(1, name, actualPrice, addon, fitem);
             List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
+            if (items == null)
+                items = new List<Items>();
             items.Add(item);
             System.Web.HttpContext.Current.Session["Items"] = items;
             return JsonConvert.SerializeObject(null, Formatting.Indented,
@@ -174,6 +181,10 @@ namespace Resturant.Controllers
             string[] a = Quantities.Split(',');
             Array.Reverse(a);
             List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
+            if(items== null)
+            {
+                items = new List<Items>();
+            }
             foreach (Items item in items)
             {
                 string np = item.Name + item.price;
@@ -434,6 +445,123 @@ namespace Resturant.Controllers
             //}
             return RedirectToAction("Menu");
             
+        }
+
+
+        public ActionResult payment(FormCollection collection)
+        {
+            Customer cust;
+            BLCustomer blcustomer = new BLCustomer();
+            string idCheck=collection["id"];
+            string postCode = collection["PostCode"];
+            string address = collection["Address"];
+            string phoneNumber = collection["PhoneNumber"];
+            string email = collection["email"];
+            string last_name = collection["last_name"];
+            string FirstName = collection["FirstName"];
+            string password = collection["password"];
+            string instructions = collection["instructions"];
+            int id;
+            string timeFromForm =collection["time"];
+             string Time;
+             TimeSpan ts;
+             DateTime date;
+
+            if(idCheck != null)
+            {
+               id = Convert.ToInt32(idCheck);
+                cust = blcustomer.getCustomersById(id);
+
+            }
+            else
+            {
+                cust = new Customer()
+                {
+                    FirstName = FirstName,
+                    LastName = last_name,
+                    Password = password,
+                    Email = email,
+                    PhoneNumber = phoneNumber,
+                    Address = address,
+                    PostCode = postCode
+                };
+
+                blcustomer.addCustomers(cust);
+                id = blcustomer.getLastAddedCustomer();
+
+            }
+
+            //this check is here if there is too much traffic on the site and two customers register at the same time
+            //so this is for security measures
+
+            Customer finalCustomer=blcustomer.getListOfCustomers().FirstOrDefault(x=>x.Id==id && x.FirstName==FirstName && x.LastName==last_name);
+
+            if(!timeFromForm.Equals("ASAP"))
+            {
+             var split = timeFromForm.Split(':');
+          
+            ts = new TimeSpan(Convert.ToInt32(split[0]), Convert.ToInt32(split[0]), Convert.ToInt32(split[2]));
+            
+            }
+            else
+            {
+                ts = new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+            }
+
+            Order order = new Order()
+            {
+                DeliveryTime = ts,
+                Status = (int)Resturant.UtilityClasses.ProjectEnums.OrderStatus.NotPiad,
+                PaymentMethodId = 1,
+                OrderDate=DateTime.Now,
+                OrderArea=address,
+                Instructions=instructions,
+                CustomerId=finalCustomer.Id
+            };
+
+            new BLOrder().addOrder(order);
+            Order finalOrder = new BLOrder().getListOfOrder().FirstOrDefault(x => x.CustomerId == finalCustomer.Id && x.DeliveryTime == ts);
+            OrderMgmt om = new OrderMgmt(finalOrder);
+            List<Items> items = (List<Items>)System.Web.HttpContext.Current.Session["Items"];
+            om.generateOrder(items);
+            om.addExtraCharges();
+            om.addTaxes();
+           
+        
+
+
+            Payments payments = new Payments();
+             string nonceFromTheClient = collection["payment_method_nonce"];
+
+             if (payments.proceedPayment(nonceFromTheClient,om.Total))
+             {
+
+                 System.Web.HttpContext.Current.Session["Items"] = null;
+                 order.Status = (int)Resturant.UtilityClasses.ProjectEnums.OrderStatus.Paid;
+                 om.sendMail("hello");
+                 new BLOrder().updateOrder(order);
+                 
+
+                 return RedirectToAction("OrderReceived", new { val = "Thank you your order has been received. In case of any Query contact us on our Phone." });
+             }
+             else
+                 return RedirectToAction("OrderReceived", new { val = "Sorry for inconvinience, an error occured while receiving your order. Please try again and if the problem presist please contact us at Phone Number" });
+    
+        }
+
+
+        public ActionResult logOut()
+        {
+            System.Web.HttpContext.Current.Session["LoginCustomer"] = null;
+
+            List<Items> Items = new List<Items>();
+            System.Web.HttpContext.Current.Session["Items"] = Items;
+            return RedirectToAction("Index");
+        }
+        public ActionResult OrderReceived (String val)
+        {
+            ViewBag.val = val;
+            return View("OrderDelivered");
         }
 
     }

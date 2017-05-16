@@ -32,6 +32,12 @@ namespace Resturant.DAL.Classes
             return database.SaveChanges() != -1 ? true : false;
         }
 
+        public int getLastAddedCustomer()
+        {
+            var list = getListOfCustomers();
+            return list.Count == 0 ? 0 : list.Last().Id;
+        }
+
         public Customer getCustomersById(int _id)
         {
             return database.Customers.FirstOrDefault(cus => cus.Id == _id);

@@ -22,9 +22,7 @@ namespace Resturant.Models
         public int Id { get; set; }
         public int OrderID { get; set; }
         public int FoodItemId { get; set; }
-        public int IDType { get; set; }
         public int Count { get; set; }
-        public Nullable<int> SpecialOfferId { get; set; }
     
         public virtual FoodItem FoodItem { get; set; }
         public virtual Order Order { get; set; }

@@ -8,7 +8,7 @@
 {
     <link href="~/Content/jquery-ui.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
-       
+
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -36,104 +36,107 @@ else
             <div class="navbar-header">
                 <a class="navbar-brand" href="#"><img src="~/Content/images/logo.png" alt=""></a>
             </div>
-            <a class="cutom-anc" href="#"><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span></a>
+
             <ul class="custom-nav">
-                <li> <a href="#">Pizzas</a> </li>
-                <li> <a class="active" href="#">Fingers &amp; Poppers</a> </li>
-              
-                <li> <a href="#">Fresh Italian Pasta</a> </li>
-                <li> <a href="#">Wraps / Salads</a> </li>
-                <li> <a href="#">Burgers</a> </li>
-                <li> <a href="#">Desserts</a> </li>
-                <li> <a href="#">Ice Cream &amp; Drinks</a> </li>
+                @foreach (Category c in Model.Categories)
+                {
+                    <li> <a href="#@c.Name">@c.Name</a> </li>
+                }
+
             </ul>
-            <div class="order-now-top-button"> <a href="#">Checkout</a> </div>
-            <a class="login-small" href="#"><img src="~/Content/images/user.png" alt="">
+            <div class="order-now-top-button"> <a href="/Home/">Home</a> </div>
+
             <!--/.nav-collapse -->
 
         </div>
     </nav>
 }
-        <div class="container-fluid menu-bg" style="margin-top:-0.02%;">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="bg-white maxw800 menu-wrapper">
-                        <h2 class="text-center">MENU</h2>
-                        <h3 class="text-center">PLEASE CHOOSE A LOCATION</h3>
-                        <div class="select-wrapper blackSelect maxw300">
-                            <select class="form-control w108P">
-                                <option>Today</option>
-                            </select>
-                        </div>
-                        <h3 class="text-center mb30">FIND OUR GREENWICH VILLAGE MENU BELOW.</h3>
-                        <p class="text-center mb30"><a class="btn btn-primary" href="#">ORDER NOW</a></p>
-                      
-                        @foreach (Category c in Model.Categories)
+<div class="container-fluid menu-bg" style="margin-top:-0.02%;">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="bg-white maxw800 menu-wrapper">
+                <h2 class="text-center">MENU</h2>
+
+                @foreach (Category c in Model.Categories)
+                {
+                    <div class="menu-category">
+
+
+                        <h4>@c.Name</h4>
+                        <div class="dots"> &nbsp; </div>
+
+
+                        @foreach (Food food in c.Foods)
                         {
-                            <div class="menu-category">
-                                <h4>@c.Name</h4>
-                                <div class="dots"> &nbsp; </div>
-                                @foreach (Food food in c.Foods)
-                                {
-                                    <h4>@food.Name</h4>
-                                    <h5 class="colRed">@food.Tageline</h5>
-                                    <table class="table m0">
-                                        @{
-                                    food.FoodItems = food.FoodItems.OrderBy(item => item.Price).ToList();
-                                        }
-                                        @foreach (FoodItem fItem in food.FoodItems)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    <h3 class="m0">
-                                                        <a data-toggle="modal" data-id=@fItem.Id title="Add this item" class="open-ItemsAddon btn" href="#FooAddonDialog">@fItem.Size</a>
-                                                    </h3>
-                                                </td>
-                                                <td class="price text-right">$ @fItem.Price</td>
-                                            </tr>
-                                        }
+                            if (c.Name == "Pizza")
+                            {
+                                <h5 id="@c.Name">@food.Name   <small class="colRed">@food.Tageline</small></h5>
+                             
+                            }
+                            <table class="table m0">
+                                @{
+                            food.FoodItems = food.FoodItems.OrderBy(item => item.Price).ToList();
 
-                                    </table>
                                 }
-                            </div>
+                                @foreach (FoodItem fItem in food.FoodItems)
+                                {
+                                    <tr>
+                                        <td>
+                                            <h4 class="m0">
+                                                <a data-toggle="modal" data-id=@fItem.Id title="Add this item" class="open-ItemsAddon btn" href="#FooAddonDialog">@fItem.Size</a>
+                                                @if (fItem.TagLine != null || fItem.TagLine != string.Empty)
+                                                {
+                                                    <p>@fItem.TagLine</p>
+                                                }
+
+                                            </h4>
+                                        </td>
+
+                                        <td class="price text-right"><h5>£ @fItem.Price </h5></td>
+                                    </tr>
+                                }
+
+                            </table>
                         }
-                        <div class="clr"></div>
                     </div>
-                    <p class="text-center mt20">* Extra charge for additional ingredients.</p>
-                </div>
+                }
+                <div class="clr"></div>
             </div>
+            <p class="text-center mt20"><strong>* Extra charge for additional ingredients.</strong></p>
         </div>
+    </div>
+</div>
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 
-        <script>
+<script>
             var OrderN=0;
             var amount = 0;
             var name = "";
             var count = 0;
             var addons="";
             function handleClick(cb) {
-   
+
                 if (cb.checked)
                 {
                     addons = addons + cb.id + ",";
-                    amount = amount + parseInt(cb.value); 
+                    amount = amount + parseFloat(cb.value);
                 }
                 else
                 {
                    addons= addons.replace(cb.id + ",", "");
-                    amount = amount - parseInt(cb.value);
+                    amount = amount - parseFloat(cb.value);
                 }
                 document.getElementById("mob").innerHTML = name + ',' + amount + "," + "addon" + "," + addons;
-                 alert(amount);
+
                 $(cb).change(function () {
-                    //do something when the user clicks the box   
+                    //do something when the user clicks the box
                 });
-              
+
             }
-           
+
             function displayFoodModal(FoodItemId) {
                 $.ajax({
                     dataType: "json",
@@ -142,16 +145,16 @@ else
                     contentType: "application/json; charset=utf-8",
                     data: { foodItemID: FoodItemId },
                     success: function (response) {
-                        amount = parseInt(response.Price);
+                        amount = parseFloat(response.Price);
                         var $el = $("#Fooddescription");
                         var $price = $("#btnsubmit");
-                        name = response.Size+" "+ response.Food.Name;
+                        name = response.Size+"-"+ response.Food.Name;
                         $el.empty(); // remove  old options
-                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Size + "<span class='pull-right'> $" + amount + "</span></h3> <p hidden id='mob'>" + response.Size + " " + response.Food.Name + ',' + amount + "</p>"))
-                        $price.removeAttr("data-price") 
+                        $el.append($("<h3 class='modal-title' id='myModalLabel'>" + response.Size + "<span class='pull-right'> £" + amount + "</span></h3> <p hidden id='mob'>" + response.Size + "-" + response.Food.Name + ',' + amount + "</p>"))
+                        $price.removeAttr("data-price")
                         $price.attr("data-price", amount)
                     },
-                    error: function (response) { alert(response); }
+                    error: function (response) {; }
 
                 });
 
@@ -164,13 +167,13 @@ else
                     contentType: "application/json; charset=utf-8",
                     data: { foodItemID: FoodItemId },
                     success: function (response) {
-                      
+
                         var $el = $("#modalTable");
                         $el.empty(); // remove old options
-                        
+
                         $.each(response, function (value, key) {
-                         
-                            $el.append($("<tr> <td width='50%'><input onclick='handleClick(this);' id='"+key.Id+ "' type='checkbox' name= '" + key.Price + "' value='" + key.Price + "'>  <label id= 'kdf' name='" + key.Name + " value='" + key.Price + "'>" + key.Name + "</label><p type='text' id='" + key.Id + "' hidden >" + key.Name + '                   ' + key.Price + " </p> <span class='pull-right'>  $ " + key.Price + "</span></td></tr>"))
+
+                            $el.append($("<tr> <td width='50%'><input onclick='handleClick(this);' id='"+key.Id+ "' type='checkbox' name= '" + key.Price + "' value='" + key.Price + "'>  <label id= 'kdf' name='" + key.Name + " value='" + key.Price + "'>" + key.Name + "</label><p type='text' id='" + key.Id + "' hidden >" + key.Name + '                   ' + key.Price + " </p> <span class='pull-right'>  £ " + key.Price + "</span></td></tr>"))
 
                         });
                     },
@@ -181,7 +184,7 @@ else
             }
 
 
-           
+
             $(document).on("click", ".open-ItemsAddon", function () {
 
                 var myFoodItemId = $(this).data('id');
@@ -196,42 +199,38 @@ else
                 $('#show_AddOns').toggle();
                 // $('#addBookDialog').modal('show');
             });
-        </script>
-        <div id="FooAddonDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <div id="Fooddescription"></div>
-                    </div>
-                    <form action="AddtoOrder" method="post" onsubmit="updateBasket()">
-                        <div class="modal-body">
-                            <h4>Add it into the Basket<small></small></h4>
-                            <table id="modalTable" class="table mb0">
-                                <tr>
-                                </tr>
-                            </table>
-                            <input type="text" hidden id="foodItemId" name="foodItemId" />
-                            <div class="dots mt0 mb0">&nbsp;</div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <h4>QUANTITY</h4>
-                                    <input class="spinner">
-                                </div>
-                                <div class="col-sm-8">
-                                    <h4>SPECIAL INSTRUCTIONSAnything <small>we need to be aware of?</small></h4>
-                                    <textarea class="form-control custom-textarea" rows="3"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input id="btnsubmit" data-price="" type="submit" class="cd-add-to-cart btn btn-primary" value="ADD to Order" />
-                        </div>
-                    </form>
-                </div>
+</script>
+<div id="FooAddonDialog" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div id="Fooddescription"></div>
             </div>
+            <form action="AddtoOrder" method="post" onsubmit="updateBasket()">
+                <div class="modal-body">
+                    <h4>Add it into the Basket<small></small></h4>
+                    <table id="modalTable" class="table mb0">
+                        <tr></tr>
+                    </table>
+                    <input type="text" hidden id="foodItemId" name="foodItemId" />
+                    <div class="dots mt0 mb0">&nbsp;</div>
+                    <div class="row">
+                     
+                        <div class="col-sm-8">
+                            <h4>SPECIAL INSTRUCTIONSAnything <small>we need to be aware of?</small></h4>
+                            <textarea class="form-control custom-textarea" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input id="btnsubmit" data-price="" type="submit" class="cd-add-to-cart btn btn-primary" data-dismiss="modal" value="ADD to Order" />
+                </div>
+            </form>
         </div>
+    </div>
+</div>
 
 
 <div class="cd-cart-container empty">
@@ -257,9 +256,17 @@ else
                 </ul>
             </div>
             <footer>
-                <a href="/Home/Check_Out" class="checkout btn"><em>Checkout - $<span>0</span></em></a>
+                <a href="/Home/Check_Out" class="checkout btn"><em>Checkout - £<span>0</span></em></a>
             </footer>
 
         </div>
     </div> <!-- .cd-cart -->
 </div>
+<style>
+    .dotsMenu {
+        background: url(../Content/images/dots.png) left center repeat-x;
+        height: 30px;
+        margin-bottom: 40px;
+        margin-top: 30px;
+    }
+</style>

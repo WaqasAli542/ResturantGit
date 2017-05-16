@@ -133,6 +133,8 @@ nav {
 }
 .navbar-brand>img {
 	max-width: 200px;
+    max-height:150px;
+    margin-top:-15%;
 }
 .navbar-collapse {
 	float: right;
@@ -157,6 +159,8 @@ nav {
 }
 .nav-small.navbar .navbar-brand>img {
 	max-width: 100px;
+     max-height:90px;
+    margin-top:-25%;
 }
 .order-online {
 	background: #054d30;
@@ -327,9 +331,7 @@ footer {
 }
 .menu-category {
 	border-bottom: 4px solid #F4E38B;
-	padding-bottom: 10px;
-	margin-bottom: 10px;
-	margin-top: 10px;
+
 	float: left;
 	width: 100%;
 }
@@ -357,10 +359,10 @@ footer {
 	margin: 0px !important;
 }
 .menu-category table tr td {
-	padding: 5px;
+	padding: 1px;
 }
 .menu-category table tr td h3 {
-	font-size: 24px;
+	font-size: 0px;
 }
 .menu-category table tr td.price {
 	font-size: 24px !important;
@@ -841,6 +843,8 @@ button.close, button.close span, button.close span {
 @media only screen and (min-width : 768px) and (max-width : 1024px) {
 .navbar-brand>img {
 	max-width: 120px;
+     max-height:100px;
+    margin-top:-35%;
 }
 .navbar-inverse .navbar-nav>li>a {
 	font-size: 1.9rem;
@@ -923,7 +927,7 @@ footer {
 	left: auto;
 	right: 10px;
 	top: 69px;
-	background: #6e151b;
+	background: #2ea375;
 	text-align: left;
 	padding: 10px;
 	display: none

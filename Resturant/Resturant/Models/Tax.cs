@@ -22,6 +22,7 @@ namespace Resturant.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public double Percentage { get; set; }
+        public int IsAvailable { get; set; }
     
         public virtual ICollection<Order_Taxes> Order_Taxes { get; set; }
     }

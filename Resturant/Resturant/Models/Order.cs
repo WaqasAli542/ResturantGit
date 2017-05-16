@@ -27,6 +27,10 @@ namespace Resturant.Models
         public int CustomerId { get; set; }
         public Nullable<int> Status { get; set; }
         public Nullable<int> PaymentMethodId { get; set; }
+        public System.TimeSpan DeliveryTime { get; set; }
+        public System.DateTime OrderDate { get; set; }
+        public string OrderArea { get; set; }
+        public string Instructions { get; set; }
     
         public virtual Customer Customer { get; set; }
         public virtual ICollection<Order_Discount> Order_Discount { get; set; }

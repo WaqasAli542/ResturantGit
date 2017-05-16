@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ResturantDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+      <Schema Namespace="ResturantDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityType Name="AddOn">
           <Key>
             <PropertyRef Name="Id" />
@@ -118,6 +118,7 @@
           <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="Minimum_Amount" Type="int" />
           <Property Name="Maximum_Amount" Type="int" />
+          <Property Name="IsAvailable" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Food">
           <Key>
@@ -187,6 +188,10 @@
           <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="Status" Type="int" />
           <Property Name="PaymentMethodId" Type="int" />
+          <Property Name="DeliveryTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="OrderArea" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Instructions" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="Order_Discount">
           <Key>
@@ -211,9 +216,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
           <Property Name="FoodItemId" Type="int" Nullable="false" />
-          <Property Name="IDType" Type="int" Nullable="false" />
           <Property Name="Count" Type="int" Nullable="false" />
-          <Property Name="SpecialOfferId" Type="int" />
         </EntityType>
         <EntityType Name="Order_SpecialOffer">
           <Key>
@@ -323,6 +326,7 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Percentage" Type="float" Nullable="false" />
+          <Property Name="IsAvailable" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Branch_Day_Branch">
           <End Role="Branch" Type="Self.Branch" Multiplicity="1">
@@ -1052,7 +1056,8 @@
             <End Role="FoodItem_AddOn" EntitySet="FoodItem_AddOn" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ResturantDatabaseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -1189,6 +1194,7 @@
           <Property Name="Price" Type="Double" Nullable="false" />
           <Property Name="Minimum_Amount" Type="Int32" />
           <Property Name="Maximum_Amount" Type="Int32" />
+          <Property Name="IsAvailable" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Order_ExtraCharges" Relationship="Self.FK_Order_ExtraCharges_ExtraCharges" FromRole="ExtraCharges" ToRole="Order_ExtraCharges" />
         </EntityType>
         <EntityType Name="Food">
@@ -1213,10 +1219,10 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="FoodId" Type="Int32" Nullable="false" />
           <Property Name="AddOnId" Type="Int32" Nullable="false" />
+          <Property Name="FoodSizeId" Type="Int32" />
           <NavigationProperty Name="AddOn" Relationship="Self.FK_Food_AddOn_AddOn" FromRole="Food_AddOn" ToRole="AddOn" />
           <NavigationProperty Name="Food" Relationship="Self.FK_Food_AddOn_Food" FromRole="Food_AddOn" ToRole="Food" />
-          <Property Name="FoodSizeId" Type="Int32" />
-          <NavigationProperty Name="Food_Size" Relationship="ResturantDatabaseModel.FK_Food_AddOn_Food_Size" FromRole="Food_AddOn" ToRole="Food_Size" />
+          <NavigationProperty Name="Food_Size" Relationship="Self.FK_Food_AddOn_Food_Size" FromRole="Food_AddOn" ToRole="Food_Size" />
         </EntityType>
         <EntityType Name="Food_Ingredients">
           <Key>
@@ -1234,9 +1240,9 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SizeDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Food_AddOn" Relationship="Self.FK_Food_AddOn_Food_Size" FromRole="Food_Size" ToRole="Food_AddOn" />
           <NavigationProperty Name="FoodItems" Relationship="Self.FK_FoodItem_ToFood_Size" FromRole="Food_Size" ToRole="FoodItem" />
           <NavigationProperty Name="SpecialOffer_Item" Relationship="Self.FK_SpecialOffer_Item_Food_Size" FromRole="Food_Size" ToRole="SpecialOffer_Item" />
-          <NavigationProperty Name="Food_AddOn" Relationship="ResturantDatabaseModel.FK_Food_AddOn_Food_Size" FromRole="Food_Size" ToRole="Food_AddOn" />
         </EntityType>
         <EntityType Name="FoodItem">
           <Key>
@@ -1247,11 +1253,11 @@
           <Property Name="Price" Type="Double" Nullable="false" />
           <Property Name="FoodId" Type="Int32" Nullable="false" />
           <Property Name="Food_Size_Id" Type="Int32" />
+          <Property Name="TagLine" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Food" Relationship="Self.FK_FoodItem_Food" FromRole="FoodItem" ToRole="Food" />
           <NavigationProperty Name="Food_Size" Relationship="Self.FK_FoodItem_ToFood_Size" FromRole="FoodItem" ToRole="Food_Size" />
           <NavigationProperty Name="Order_Item" Relationship="Self.FK_Order_Item_ToFoodItem" FromRole="FoodItem" ToRole="Order_Item" />
           <NavigationProperty Name="FoodItem_AddOn" Relationship="Self.FK_Table_FoodItem" FromRole="FoodItem" ToRole="FoodItem_AddOn" />
-          <Property Name="TagLine" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="FoodItem_AddOn">
           <Key>
@@ -1279,6 +1285,10 @@
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="Status" Type="Int32" />
           <Property Name="PaymentMethodId" Type="Int32" />
+          <Property Name="DeliveryTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="OrderArea" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Instructions" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Order_CustomerId" FromRole="Order" ToRole="Customer" />
           <NavigationProperty Name="Order_Discount" Relationship="Self.FK_Order_Discount_Order" FromRole="Order" ToRole="Order_Discount" />
           <NavigationProperty Name="Order_ExtraCharges" Relationship="Self.FK_Order_ExtraCharges_Order" FromRole="Order" ToRole="Order_ExtraCharges" />
@@ -1314,9 +1324,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <Property Name="FoodItemId" Type="Int32" Nullable="false" />
-          <Property Name="IDType" Type="Int32" Nullable="false" />
           <Property Name="Count" Type="Int32" Nullable="false" />
-          <Property Name="SpecialOfferId" Type="Int32" />
           <NavigationProperty Name="FoodItem" Relationship="Self.FK_Order_Item_ToFoodItem" FromRole="Order_Item" ToRole="FoodItem" />
           <NavigationProperty Name="Order" Relationship="Self.FK_Order_Item_Order" FromRole="Order_Item" ToRole="Order" />
           <NavigationProperty Name="OrderItem_AddOn" Relationship="Self.FK_OrderItem_AddOn_ToOrder_Item" FromRole="Order_Item" ToRole="OrderItem_AddOn" />
@@ -1455,6 +1463,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Percentage" Type="Double" Nullable="false" />
+          <Property Name="IsAvailable" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Order_Taxes" Relationship="Self.FK_Order_Taxes_Taxes" FromRole="Taxes" ToRole="Order_Taxes" />
         </EntityType>
         <Association Name="FK_Food_AddOn_AddOn">
@@ -1719,6 +1728,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Food_AddOn_Food_Size">
+          <End Role="Food_Size" Type="Self.Food_Size" Multiplicity="0..1" />
+          <End Role="Food_AddOn" Type="Self.Food_AddOn" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Food_Size">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Food_AddOn">
+              <PropertyRef Name="FoodSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Food_Ingredients_Ingredients">
           <End Role="Ingredients" Type="Self.Ingredient" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1973,7 +1994,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ResturantDatabaseEntities9" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ResturantDatabaseEntities13" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AddOns" EntityType="Self.AddOn" />
           <EntitySet Name="Admins" EntityType="Self.Admin" />
           <EntitySet Name="Branches" EntityType="Self.Branch" />
@@ -2088,6 +2109,10 @@
             <End Role="Food" EntitySet="Foods" />
             <End Role="Order_SpecialOffer_Item" EntitySet="Order_SpecialOffer_Item" />
           </AssociationSet>
+          <AssociationSet Name="FK_Food_AddOn_Food_Size" Association="Self.FK_Food_AddOn_Food_Size">
+            <End Role="Food_Size" EntitySet="Food_Size" />
+            <End Role="Food_AddOn" EntitySet="Food_AddOn" />
+          </AssociationSet>
           <AssociationSet Name="FK_Food_Ingredients_Ingredients" Association="Self.FK_Food_Ingredients_Ingredients">
             <End Role="Ingredients" EntitySet="Ingredients" />
             <End Role="Food_Ingredients" EntitySet="Food_Ingredients" />
@@ -2168,29 +2193,13 @@
             <End Role="SpecialOffer" EntitySet="SpecialOffers" />
             <End Role="SpecialOffer_Item" EntitySet="SpecialOffer_Item" />
           </AssociationSet>
-          <AssociationSet Name="FK_Food_AddOn_Food_Size" Association="ResturantDatabaseModel.FK_Food_AddOn_Food_Size">
-            <End Role="Food_Size" EntitySet="Food_Size" />
-            <End Role="Food_AddOn" EntitySet="Food_AddOn" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Food_AddOn_Food_Size">
-          <End Type="ResturantDatabaseModel.Food_Size" Role="Food_Size" Multiplicity="0..1" />
-          <End Type="ResturantDatabaseModel.Food_AddOn" Role="Food_AddOn" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Food_Size">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Food_AddOn">
-              <PropertyRef Name="FoodSizeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ResturantDatabaseModelStoreContainer" CdmEntityContainer="ResturantDatabaseEntities9">
+        <EntityContainerMapping StorageEntityContainer="ResturantDatabaseModelStoreContainer" CdmEntityContainer="ResturantDatabaseEntities13">
           <EntitySetMapping Name="AddOns">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.AddOn">
               <MappingFragment StoreEntitySet="AddOn">
@@ -2313,6 +2322,7 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Minimum_Amount" ColumnName="Minimum_Amount" />
                 <ScalarProperty Name="Maximum_Amount" ColumnName="Maximum_Amount" />
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2330,10 +2340,10 @@
           <EntitySetMapping Name="Food_AddOn">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Food_AddOn">
               <MappingFragment StoreEntitySet="Food_AddOn">
-                <ScalarProperty Name="FoodSizeId" ColumnName="FoodSizeId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FoodId" ColumnName="FoodId" />
                 <ScalarProperty Name="AddOnId" ColumnName="AddOnId" />
+                <ScalarProperty Name="FoodSizeId" ColumnName="FoodSizeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2357,12 +2367,12 @@
           <EntitySetMapping Name="FoodItems">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.FoodItem">
               <MappingFragment StoreEntitySet="FoodItem">
-                <ScalarProperty Name="TagLine" ColumnName="TagLine" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="FoodId" ColumnName="FoodId" />
                 <ScalarProperty Name="Food_Size_Id" ColumnName="Food_Size_Id" />
+                <ScalarProperty Name="TagLine" ColumnName="TagLine" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2390,6 +2400,10 @@
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PaymentMethodId" ColumnName="PaymentMethodId" />
+                <ScalarProperty Name="DeliveryTime" ColumnName="DeliveryTime" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="OrderArea" ColumnName="OrderArea" />
+                <ScalarProperty Name="Instructions" ColumnName="Instructions" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2417,9 +2431,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="FoodItemId" ColumnName="FoodItemId" />
-                <ScalarProperty Name="IDType" ColumnName="IDType" />
                 <ScalarProperty Name="Count" ColumnName="Count" />
-                <ScalarProperty Name="SpecialOfferId" ColumnName="SpecialOfferId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2541,6 +2553,7 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Percentage" ColumnName="Percentage" />
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

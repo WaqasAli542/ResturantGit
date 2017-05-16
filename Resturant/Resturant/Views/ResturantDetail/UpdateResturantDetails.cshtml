@@ -28,10 +28,10 @@
                             <label>Select</label>
                             @Html.Hidden("Id", addon.Id)
                             <select class="form-control" name="Category">
-                                <option selected>@Enum.Parse(typeof(Resturant.Models.ProjectEnums.AddOnCategories), addon.Category + "")</option>
+                                <option selected>@Enum.Parse(typeof(Resturant.UtilityClasses.ProjectEnums.AddOnCategories), addon.Category + "")</option>
                                 @{
-                                    string[] names = Enum.GetNames(typeof(Resturant.Models.ProjectEnums.AddOnCategories));
-                                    int[] values = (int[])Enum.GetValues(typeof(Resturant.Models.ProjectEnums.AddOnCategories));
+                                    string[] names = Enum.GetNames(typeof(Resturant.UtilityClasses.ProjectEnums.AddOnCategories));
+                                    int[] values = (int[])Enum.GetValues(typeof(Resturant.UtilityClasses.ProjectEnums.AddOnCategories));
                                     for (int i = 0; i < names.Length; i++)
                                     {
                                         <option value=@values[i]>@names[i]</option>
@@ -77,7 +77,7 @@
                 <tr onclick="location.href='@Url.Action("DisplayUpdateAddOn", "AdminFood", new { _id=adon.Id})'">
                     <td>@adon.Name</td>
                     <td>@adon.Price</td>
-                    <td>@Enum.Parse(typeof(Resturant.Models.ProjectEnums.AddOnCategories), adon.Category + "")</td>
+                    <td>@Enum.Parse(typeof(Resturant.UtilityClasses.ProjectEnums.AddOnCategories), adon.Category + "")</td>
                     <td>@Html.ActionLink("Delete Addon", "deleteAddOn", new { _addOnId = adon.Id }, new { @type = "button", @class = "btn btn-block btn-primary" }) </td>
 
                 </tr>

@@ -20,5 +20,13 @@ namespace Resturant.UtilityClasses
 
         }
 
+
+        public enum OrderStatus
+        {
+            NotPiad=0,
+            Paid=1,
+            Delivered=2
+        }
+
     }
 }

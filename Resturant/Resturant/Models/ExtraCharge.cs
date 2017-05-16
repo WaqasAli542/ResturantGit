@@ -24,6 +24,7 @@ namespace Resturant.Models
         public double Price { get; set; }
         public Nullable<int> Minimum_Amount { get; set; }
         public Nullable<int> Maximum_Amount { get; set; }
+        public int IsAvailable { get; set; }
     
         public virtual ICollection<Order_ExtraCharges> Order_ExtraCharges { get; set; }
     }

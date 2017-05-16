@@ -11,11 +11,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">About</a></li>
+                <li><a href="#">Home</a></li>
                 <li><a href="../Home/Menu">Menu</a></li>
                 <li><a href="../Home/SpecialOffers">Special Offers</a></li>
                 <li><a href="../Home/Location">Location</a></li>
-                <li><a href="../Home/Contact">CONTACT</a></li>
+                <li class="active"><a href="../Home/Contact">CONTACT</a></li>
                 @{
                     if (System.Web.HttpContext.Current.Session["LoginCustomer"] == null)
                     {
@@ -27,7 +27,6 @@
                         <li><a href="../Home/logOut ">LOGOUT</a></li>
                     }
                 }
-                <li class="order-online"><a href="../Home/OrderOnline">Order Online</a></li>
             </ul>
         </div>
         <!--/.nav-collapse -->

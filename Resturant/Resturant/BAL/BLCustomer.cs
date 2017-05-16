@@ -19,7 +19,10 @@ namespace Resturant.BAL
         {
             return new DALCustomer().addCustomers(_Customers);
         }
-
+             public int getLastAddedCustomer()
+        {
+            return new DALCustomer().getLastAddedCustomer();
+        }
         public bool deleteCustomers(int _Id)
         {
             return new DALCustomer().deleteCustomers(_Id);
