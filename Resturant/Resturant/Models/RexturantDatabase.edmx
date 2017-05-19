@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ResturantDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ResturantDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityType Name="AddOn">
           <Key>
             <PropertyRef Name="Id" />
@@ -13,6 +13,7 @@
           <Property Name="Name" Type="varchar" MaxLength="25" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="Category" Type="int" Nullable="false" />
+          <Property Name="IsAvailable" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Admin">
           <Key>
@@ -129,6 +130,7 @@
           <Property Name="Tageline" Type="varchar" MaxLength="300" />
           <Property Name="Image" Type="varchar" MaxLength="100" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="IsAvailable" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Food_AddOn">
           <Key>
@@ -164,6 +166,7 @@
           <Property Name="FoodId" Type="int" Nullable="false" />
           <Property Name="Food_Size_Id" Type="int" />
           <Property Name="TagLine" Type="varchar" MaxLength="100" />
+          <Property Name="IsAvailable" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FoodItem_AddOn">
           <Key>
@@ -1056,8 +1059,7 @@
             <End Role="FoodItem_AddOn" EntitySet="FoodItem_AddOn" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ResturantDatabaseModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -1073,6 +1075,7 @@
           <NavigationProperty Name="OrderItem_AddOn" Relationship="Self.FK_OrderItem_AddOn_ToAddOn" FromRole="AddOn" ToRole="OrderItem_AddOn" />
           <NavigationProperty Name="SpecialOffer_AddOn" Relationship="Self.FK_SpecialOffer_AddOn_Addon" FromRole="AddOn" ToRole="SpecialOffer_AddOn" />
           <NavigationProperty Name="FoodItem_AddOn" Relationship="Self.FK_Table_AddOn" FromRole="AddOn" ToRole="FoodItem_AddOn" />
+          <Property Name="IsAvailable" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Admin">
           <Key>
@@ -1211,6 +1214,7 @@
           <NavigationProperty Name="Food_Ingredients" Relationship="Self.FK_Food_Ingredients_Food" FromRole="Food" ToRole="Food_Ingredients" />
           <NavigationProperty Name="FoodItems" Relationship="Self.FK_FoodItem_Food" FromRole="Food" ToRole="FoodItem" />
           <NavigationProperty Name="Order_SpecialOffer_Item" Relationship="Self.FK_Order_SpecialOffer_Item_ToFood" FromRole="Food" ToRole="Order_SpecialOffer_Item" />
+          <Property Name="IsAvailable" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Food_AddOn">
           <Key>
@@ -1258,6 +1262,7 @@
           <NavigationProperty Name="Food_Size" Relationship="Self.FK_FoodItem_ToFood_Size" FromRole="FoodItem" ToRole="Food_Size" />
           <NavigationProperty Name="Order_Item" Relationship="Self.FK_Order_Item_ToFoodItem" FromRole="FoodItem" ToRole="Order_Item" />
           <NavigationProperty Name="FoodItem_AddOn" Relationship="Self.FK_Table_FoodItem" FromRole="FoodItem" ToRole="FoodItem_AddOn" />
+          <Property Name="IsAvailable" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="FoodItem_AddOn">
           <Key>
@@ -2203,6 +2208,7 @@
           <EntitySetMapping Name="AddOns">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.AddOn">
               <MappingFragment StoreEntitySet="AddOn">
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
@@ -2329,6 +2335,7 @@
           <EntitySetMapping Name="Foods">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.Food">
               <MappingFragment StoreEntitySet="Food">
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Tageline" ColumnName="Tageline" />
@@ -2367,6 +2374,7 @@
           <EntitySetMapping Name="FoodItems">
             <EntityTypeMapping TypeName="ResturantDatabaseModel.FoodItem">
               <MappingFragment StoreEntitySet="FoodItem">
+                <ScalarProperty Name="IsAvailable" ColumnName="IsAvailable" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Size" ColumnName="Size" />
                 <ScalarProperty Name="Price" ColumnName="Price" />

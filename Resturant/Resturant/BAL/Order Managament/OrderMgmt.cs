@@ -1,4 +1,4 @@
-﻿using System;
+﻿                         using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -264,10 +264,10 @@ namespace Resturant.BAL.Order_Managament
 
 
             msg.From = new MailAddress("info@ubssols.com");
-            msg.To.Add("uzair.aslamansari02@gmail.com");
+            msg.To.Add(order.Customer.Email);
             msg.Subject = "test";
             msg.IsBodyHtml = true;
-            msg.Body = generateEmail();
+               msg.Body = generateEmail();
 
             //msg.Priority = MailPriority.High;
 
@@ -283,12 +283,6 @@ namespace Resturant.BAL.Order_Managament
 
                 client.Send(msg);
             }
-
-       
-
-
- 
-     
             return true;
 
         }
@@ -297,18 +291,55 @@ namespace Resturant.BAL.Order_Managament
     
         public string generateEmail()
         {
-            string text = "<link href='https://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet'><style>  * {";
-            text += "  font-family: 'Bree Serif', serif; }";
-            text += " .list-group-item {       border: none;  }    .hor {      border-bottom: 5px solid black;   }";
-            text += " .line {       margin-bottom: 20px; } </style>";
-            text+="<div class='container'>   <div class='row'>       <div class='col-md-offset-2 col-md-8'>'";
-            text += " <h2 class='page-header'>Order #"+ order.Id+"</h2>            <h3>Customer Name: <small>"+ order.Customer.FirstName +" "+order.Customer.LastName+"</small></h3>";
-            text+="<h3>Customer Address: <small>"+order.Customer.Address+"</small></h3>";
-             text+="<h3>Status: <small>"+order.Status+"</small></h3>";
-            text+=" <h3 class='text-danger'>Delivery Time: <small>"+order.DeliveryTime+"</small></h3>";
-           text+="  <div class='list-group'>";
-            return null;
+            string b="xcv";
+            string text = "<!DOCTYPE html><html><head><title></title></head><body><h1 style='text-align: center;'>Thank you for Ordering</h1><br><br><br><h3 style='margin-left:5px;'>Dear Customer, your order has been recieved. The delivery time of your order is <b>"+order.DeliveryTime+"</b></h3><br><h1 style='margin-left:10px;'>Here is the Detail of your order</h1>";
+            text += "  <table width='1000px' style='border: 1px solid #34C38A; border-collapse: collapse;'><thead style='background-color: #34C38A; color: white;'>";
+            text += " <tr style='padding: 5px; border: 1px solid #34C38A;'style='padding: 5px;'><td style='padding: 5px; border: 1px solid #34C38A;'>Item</td><td style='padding: 5px; border: 1px solid #34C38A;'>Quntity</td><td style='padding: 5px; border: 1px solid #34C38A;'>Unit Price</td><td style='padding: 5px; border: 1px solid #34C38A;'>Price</td></tr></thead><tbody>";
+            foreach (Order_SpecialOffer os in order.Order_SpecialOffer.ToList())
+            {
+                double sub = os.SpecialOffer.Price * os.CountOfSpecialOffers;
+                text += "<tr><td style='padding: 5px; border: 1px solid #34C38A;'>" +os.SpecialOffer.Name  + "</td>";
+                text += "<td style='padding: 5px; border: 1px solid #34C38A;'>" + os.CountOfSpecialOffers+ "</td>";
+                text += "<td style='padding: 5px; border: 1px solid #34C38A;'>£ " + os.SpecialOffer.Price + "</td>";
+                text += "<td style='padding: 5px; border: 1px solid #34C38A;'>£ " + sub + "</td></tr>";   
+            }
+            foreach (Order_Item oi in order.Order_Item.ToList())
+            {
+                double sub = oi.Count*oi.FoodItem.Price;
+                text += "<tr><td style='padding: 5px; border: 1px solid #34C38A;'>" + oi.FoodItem.Size + "</td>";
+                text += "<td style='padding: 5px; border: 1px solid #34C38A;'>" + oi.Count + "</td>";
+                text += "<td style='padding: 5px; border: 1px solid #34C38A;'>£ " + oi.FoodItem.Price + "</td>";
+                text += "<td style='padding: 5px; border: 1px solid #34C38A;'>£ " + sub + "</td></tr>";
+            }
+            text += "<tr ><td style='padding: 5px; border: 1px solid #34C38A; text-align: right;' colspan='3'>Sub-Total</td><td style='padding: 5px; border: 1px solid #34C38A;'>";
+            text+="£ "+subTotal+"</td></tr>";
+
+
+            foreach (Order_ExtraCharges oe in order.Order_ExtraCharges.ToList())
+            {
+                text += "<tr ><td style='padding: 5px; border: 1px solid #34C38A; text-align: right;' colspan='3'>"+oe.ExtraCharge.Name+"</td><td style='padding: 5px; border: 1px solid #34C38A;'>";
+                text += "£ "+oe.ExtraCharge.Price + "</td></tr>";
+            }
+            foreach (Order_Taxes ot in order.Order_Taxes.ToList())
+            {
+                text += "<tr ><td style='padding: 5px; border: 1px solid #34C38A; text-align: right;' colspan='3'>"+ot.Tax.Name+"</td><td style='padding: 5px; border: 1px solid #34C38A;'>";
+                text += ot.Tax.Percentage + "% </td></tr>";
+            }
+
+            foreach (Order_Discount oe in order.Order_Discount.ToList())
+            {
+                text += "<tr ><td style='padding: 5px; border: 1px solid #34C38A; text-align: right;' colspan='3'>"+oe.Discount.Name+"</td><td style='padding: 5px; border: 1px solid #34C38A;'>";
+                text += oe.Discount.Percentage + "%</td></tr>";
+            }
+
+            text += "<tr ><td style='padding: 5px; border: 1px solid #34C38A; text-align: right;' colspan='3'>Total</td><td style='padding: 5px; border: 1px solid #34C38A;'>";
+            text += "£ " + total + "</td></tr>";
+            text += "</tbody></table></body></html>";
+            return text;
         }
+
+
+       
 
 
     }

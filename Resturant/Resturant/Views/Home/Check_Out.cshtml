@@ -28,7 +28,7 @@
 
             <h3>DELIVERY DETAILS</h3>
             <div class="form-group mb30">
-                <input type="text" name="first_name" id="signup-first-name" class="form-control" placeholder="first name" value="" required>
+                <input type="text" name="FirstName" id="signup-first-name" class="form-control" placeholder="first name" value="" required>
             </div>
             <div class="form-group mb30">
                 <input type="text" name="last_name" id="signup-last-name" class="form-control" placeholder="last name" value="" required>
@@ -37,32 +37,28 @@
                 <input type="email" name="email" id="signup-email" class="form-control" placeholder="email address" value="" required>
                 <span class="text-muted">This is where your confirmation email / receipt will be sent.</span>
             </div>
-            <div class="form-group mb30">
-                <input type="email" name="email_confirm" id="signup-email-confirm" class="form-control" placeholder="confirm email address" value="" required>
-                <span class="text-muted">Sorry to ask for this twice, but this is an important one.</span>
-            </div>
+          
             <div class="form-group mb30">
                 <input type="text" name="PhoneNumber" id="signup-email-confirm" class="form-control" placeholder="phone number" value="" required>
                 <span class="text-muted">Such as 123-456-7890 x123. Just in case we need to get in touch for any reason.</span>
             </div>
             <div class="form-group mb30">
-                <input type="Address" name="Address" id="signup-email-confirm" class="form-control" placeholder=" address" value="" required>
-                <span class="text-muted">You already gave us this one! <a href="#">Click here</a> if you need to make any changes.</span>
+                <input type="text" name="Address" id="signup-email-confirm" class="form-control" placeholder=" address" value="" required>
+                       </div>
+            <div class="form-group mb30">
+                <input type="text" name="PostCode" id="signup-email-confirm" class="form-control" placeholder="PostCode" value="" required>
             </div>
             <div class="form-group mb30">
-                <input type="email" name="PostCode" id="signup-email-confirm" class="form-control" placeholder="PostCode" value="" required>
-            </div>
-            <div class="form-group mb30">
-                <input type="email" name="email_confirm" id="signup-email-confirm" class="form-control" placeholder="company" value="" required>
+                <input type="text" name="email_confirm" id="signup-email-confirm" class="form-control" placeholder="company" value="" >
                 <span class="text-muted">Optional, but this tends to be very helpful, especially if you're ordering from work.</span>
             </div>
             <div class="form-group mb30">
                 <textarea class="form-control" name="Instructions" rows="3" cols="5" placeholder=" delivery instructions"></textarea>
             </div>
             <h3>WANNA CREATE AN ACCOUNT?</h3>
-            <p>Simply enter a password. Creating an account allows us to save your address, credit card info, and detailed order history (for quick & easy re-ordering). </p>
+            <p>Simply enter a password. Creating an account allows us to save your address, and detailed order history (for quick & easy re-ordering). </p>
             <div class="form-group mb30">
-                <input type="password" name="password" id="signup-password" class="form-control" placeholder="password" value="" required>
+                <input type="password" name="password" id="signup-password" class="form-control" placeholder="password" value="" >
                 <span class="text-muted">Passwords are case sensitive and must be at least 8 letters or numbers.</span>
             </div>
           
@@ -75,7 +71,8 @@
                     <div class="col-sm-12">
                         <div class="form-group mb30">
                             <button id="submit-button" class="btn btn-primary" type="submit" data-modal="modal-updating" value="">Submit Your Order</button>
-                        </div>
+                            <br /><p id="notDeliveryTime" hidden style="color:red;">We cannot deliver at that time</p>
+                            </div>
                     </div>
                 </div>
         
@@ -104,13 +101,10 @@
                             <span class="text-muted">This is where your confirmation email / receipt will be sent.</span>
                         </div>
 
-                        <div class="form-group mb30">
-                            <input type="text" name="PhoneNumber" id="signup-email-confirm" class="form-control" placeholder="phone number" value="@cus.PhoneNumber" required>
-                                <span class="text-muted">Such as 123-456-7890 x123. Just in case we need to get in touch for any reason.</span>
-</div>
+                       
                         <div class="form-group mb30">
                             <input type="text" name="Address" id="signup-email-confirm" class="form-control" placeholder=" address" value="@cus.Address" required>
-                            <span class="text-muted">You already gave us this one! <a href="#">Click here</a> if you need to make any changes.</span>
+            
                         </div>
 
                         <div class="form-group mb30">
@@ -130,6 +124,7 @@
                             <div class="col-sm-12">
                                 <div class="form-group mb30">
                                     <button id="submit-button" class="btn btn-primary" type="submit" data-modal="modal-updating" value="">Submit Your Order</button>
+                                    <br /><p id="notDeliveryTime" hidden style="color:red;">We cannot deliver at that time</p>
                                 </div>
                             </div>
                         </div>
@@ -322,6 +317,10 @@
 <script src="https://js.braintreegateway.com/js/braintree-2.32.0.min.js"></script>
 
 <script>
+    window.onload=function()
+    {
+        onChange();
+    }
     function onChange()
     {
        
@@ -330,7 +329,111 @@
       
         d.value = e;
 
+   
+        var newDate = new Date();
+        var day = newDate.getDay();
+        var serviceAvailable = 0;
+        var currentHours = newDate.getHours();
+        var currentMinutes = newDate.getMinutes();
+        var closingtime = 2;// 2 AM 
+        var openingtime = 12; // 12 PM
+       
+
+    
+        if (e == "asap") {
+
+
+            if (day == 6 || day == 7) //if the days are saturday and sunday
+            {
+                closingtime = 4;
+            }
+
+
+            if (currentHours < closingtime && currentHours < openingtime) //if current time is not more then 4am or is after 12 pm
+            {
+                serviceAvailable = 1;
+            }
+            else serviceAvailable = 0;
+
+            if (currentHours == (closingtime - 1)) // if the current time is the last working hour
+            {
+                if (currentMinutes < 15) //if its 15 minutes passed the last working hour then the service will not be available
+                    serviceAvailable = 0;
+            }
+
+            if (serviceAvailable == 0) {
+                var obj = document.getElementById("submit-button");
+                obj.disabled = true;
+                var deliveryTime = document.getElementById("notDeliveryTime");
+                deliveryTime.hidden = false;
+                deliveryTime.textContent = "Sorry for inconvenience, but we are closed now.";
+            }
+            else {
+                var obj = document.getElementById("submit-button");
+                obj.disabled = false;
+                var deliveryTime = document.getElementById("notDeliveryTime");
+                deliveryTime.hidden = true;
+            }
         }
+        else {
+            var c = e.split(':');
+
+            var minutesInOrder = parseInt(c[0]) * 60 + parseInt(c[1]);
+            var minutesNow = parseInt(newDate.getHours()) * 60 + parseInt(newDate.getMinutes());
+            if ((minutesInOrder - minutesNow) < 0) {
+                var obj = document.getElementById("submit-button");
+                obj.disabled = true;
+                var deliveryTime = document.getElementById("notDeliveryTime");
+                deliveryTime.hidden = false;
+                deliveryTime.textContent = "Your given time has already passed. Please select some other time";
+            }
+            else if ((minutesInOrder - minutesNow) < 30) {
+                var obj = document.getElementById("submit-button");
+                obj.disabled = true;
+                var deliveryTime = document.getElementById("notDeliveryTime");
+                deliveryTime.hidden = false;
+                deliveryTime.textContent = "We cannot deliver too soon";
+            }
+            else {
+                var obj = document.getElementById("submit-button");
+                obj.disabled = false;
+                var deliveryTime = document.getElementById("notDeliveryTime");
+                deliveryTime.hidden = true;
+            }
+        }
+
+    }
+
+    function validatePassword()
+    {
+        alert("checked");
+        var checkingValue = 1;
+        var obj = document.getElementById("signup-email"); 
+        var confirm = document.getElementById("confirm_email");
+
+        if(obj != confim)
+        {
+         
+            checkingvalue = 0;
+        }
+        else
+        {
+            checkingValue = 1;
+            var obj = document.getElementById("submit-button");
+            obj.disabled = false;
+            var deliveryTime = document.getElementById("notDeliveryTime");
+            deliveryTime.hidden = true;
+        }
+        onChange();
+        if(checkingValue==0)
+        {
+            var obj = document.getElementById("submit-button");
+            obj.disabled = true;
+            var deliveryTime = document.getElementById("notDeliveryTime");
+            deliveryTime.hidden = false;
+            deliveryTime.textContent = "Your email and confirm email do not match";
+        }
+    }
     braintree.setup('@System.Web.HttpContext.Current.Session["token"]', "dropin", {
         amount:100,
         container: "payment-form"

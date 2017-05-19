@@ -27,6 +27,7 @@ namespace Resturant.Models
         public string Tageline { get; set; }
         public string Image { get; set; }
         public int CategoryId { get; set; }
+        public int IsAvailable { get; set; }
     
         public virtual Category Category { get; set; }
         public virtual ICollection<Food_AddOn> Food_AddOn { get; set; }

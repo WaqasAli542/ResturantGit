@@ -1470,6 +1470,7 @@
     <Content Include="Views\Home\Check_Out.cshtml" />
     <Content Include="Views\Home\Signup.cshtml" />
     <Content Include="Views\Home\OrderDelivered.cshtml" />
+    <Content Include="Views\Home\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

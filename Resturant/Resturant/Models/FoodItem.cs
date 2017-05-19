@@ -26,6 +26,7 @@ namespace Resturant.Models
         public int FoodId { get; set; }
         public Nullable<int> Food_Size_Id { get; set; }
         public string TagLine { get; set; }
+        public int IsAvailable { get; set; }
     
         public virtual Food Food { get; set; }
         public virtual Food_Size Food_Size { get; set; }

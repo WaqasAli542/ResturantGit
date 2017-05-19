@@ -12,12 +12,15 @@ namespace Resturant.Models.DTO
             this.Size = fi.Size;
             this.Price = fi.Price;
             this.FoodId = fi.FoodId;
+           this.IsAvailable = fi.IsAvailable;
+
         }
 
     public int Id { get; set; }
     public string Size { get; set; }
     public double Price { get; set; }
     public int FoodId { get; set; }
+    public int IsAvailable { get; set; }
     public Nullable<int> Food_Size_Id { get; set; }
 
     public virtual Food Food { get; set; }

@@ -13,11 +13,14 @@ namespace Resturant.Models.DTO
             this.CousineId = category.CousineId;
             this.Name = category.Name;
             this.Id = category.Id;
+         
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public int CousineId { get; set; }
+    
+    
     
         public virtual Cousine Cousine { get; set; }
         public virtual ICollection<Discount> Discounts { get; set; }

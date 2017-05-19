@@ -13,12 +13,15 @@ namespace Resturant.Models.DTO
             this.Name = addon.Name;
             this.Price = addon.Price;
             this.Category = addon.Category;
+            this.IsAvailable = addon.IsAvailable;
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }
         public int Category { get; set; }
+        public int IsAvailable { get; set; }
+    
 
         public virtual ICollection<Food_AddOn> Food_AddOn { get; set; }
         public virtual ICollection<OrderItem_AddOn> OrderItem_AddOn { get; set; }

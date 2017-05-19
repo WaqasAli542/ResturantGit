@@ -14,6 +14,8 @@ namespace Resturant.Models.DTO
             this.Tageline = food.Name;
             this.Image = food.Name;
             this.CategoryId = food.CategoryId;
+           this.IsAvailable = food.IsAvailable;
+                   
         }
 
     public int Id { get; set; }
@@ -21,7 +23,7 @@ namespace Resturant.Models.DTO
     public string Tageline { get; set; }
     public string Image { get; set; }
     public int CategoryId { get; set; }
-
+    public int IsAvailable { get; set; }
     public virtual Category Category { get; set; }
     public virtual ICollection<Food_AddOn> Food_AddOn { get; set; }
     public virtual ICollection<Food_Ingredients> Food_Ingredients { get; set; }

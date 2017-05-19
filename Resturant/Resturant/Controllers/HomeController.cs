@@ -21,7 +21,7 @@ namespace Resturant.Controllers
         // GET: /Home/
         public ActionResult Index()
         {
-            
+           
             System.Web.HttpContext.Current.Session["orderId"] = null;
             System.Web.HttpContext.Current.Session["PresentId"] = null;
 
@@ -254,8 +254,8 @@ namespace Resturant.Controllers
             List<AddOn> addons = new List<AddOn>();
 
 
-            List<Food_AddOn> food_addons = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id && foodAddon.FoodSizeId == foodItem.Food_Size_Id).ToList();
-            List<Food_AddOn> temp = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id && foodAddon.FoodSizeId == null).ToList();
+            List<Food_AddOn> food_addons = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id && foodAddon.FoodSizeId == foodItem.Food_Size_Id&&foodAddon.AddOn.IsAvailable==1).ToList();
+            List<Food_AddOn> temp = new BLFood().getListOfFood_AddOn().Where(foodAddon => foodAddon.FoodId == food.Id && foodAddon.FoodSizeId == null && foodAddon.AddOn.IsAvailable == 1).ToList();
 
             if(temp.Count>0)
             food_addons.AddRange(temp);
@@ -450,6 +450,9 @@ namespace Resturant.Controllers
 
         public ActionResult payment(FormCollection collection)
         {
+
+
+                                                                                                  
             Customer cust;
             BLCustomer blcustomer = new BLCustomer();
             string idCheck=collection["id"];
@@ -564,5 +567,14 @@ namespace Resturant.Controllers
             return View("OrderDelivered");
         }
 
+
+
+
+
+        //CustomError Pages
+        public ActionResult Error404()
+        {
+            return View();
+        }
     }
 }

@@ -70,8 +70,10 @@ else
                         {
                             if (c.Name == "Pizza")
                             {
-                                <h5 id="@c.Name">@food.Name   <small class="colRed">@food.Tageline</small></h5>
-                             
+                                if (food.IsAvailable == 1)
+                                {
+                                    <h5 id="@c.Name">@food.Name   <small class="colRed">@food.Tageline</small></h5>
+                                }
                             }
                             <table class="table m0">
                                 @{
@@ -80,6 +82,7 @@ else
                                 }
                                 @foreach (FoodItem fItem in food.FoodItems)
                                 {
+                                    if (fItem.IsAvailable == 1) { 
                                     <tr>
                                         <td>
                                             <h4 class="m0">
@@ -94,6 +97,7 @@ else
 
                                         <td class="price text-right"><h5>£ @fItem.Price </h5></td>
                                     </tr>
+                                }
                                 }
 
                             </table>

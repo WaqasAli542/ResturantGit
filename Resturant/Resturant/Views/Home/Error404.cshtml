@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Error404";
+}
+
+@using Resturant.Models;
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+            <a class="navbar-brand" href="../Home/Index"><img src="~/Content/images/logo.png" alt=""></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="../Home/Index">Home</a></li>
+                <li><a href="../Home/Menu">Menu</a></li>
+                <li><a href="../Home/SpecialOffers">Special Offers</a></li>
+                <li><a href="../Home/Location">Location</a></li>
+                <li><a href="../Home/Contact">CONTACT</a></li>
+                @{
+                    if (System.Web.HttpContext.Current.Session["LoginCustomer"] == null)
+                    {
+                        <li><a href="../Home/login">LOGIN</a></li>
+                    }
+                    else
+                    {
+
+                        <li><a href="../Home/logOut ">LOGOUT</a></li>
+                    }
+                }
+
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+</nav>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="container  mw900 mt70 pt140">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="mb30">Sorry! requested page is not available.</h2>
+        </div>
+    </div>
+</div>
+
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
