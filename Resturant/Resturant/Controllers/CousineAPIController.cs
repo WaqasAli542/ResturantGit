@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Resturant.UtilityClasses;
 
 namespace Resturant.Controllers
 {
@@ -29,11 +30,17 @@ namespace Resturant.Controllers
         {
             return new BLFood().getCousineById(_Id);
         }
-        //api/<controller>
-        public List<Cousine> CousineList()
-        {
-            return new BLFood().getListOfCousine();
 
+        public string Token()
+        {
+            Payments p = new Payments();
+            return p.TokenforApi();
         }
+        //api/<controller>
+        //public List<Cousine> CousineList()
+        //{
+        //    return new BLFood().getListOfCousine();
+
+        //}
     }
 }

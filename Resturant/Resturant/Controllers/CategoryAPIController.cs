@@ -34,7 +34,14 @@ namespace Resturant.Controllers
         //api/<controller>
         public List<Category> CategoryList()
         {
-            return new BLFood().getListOfCategory();
+            List<Category> categories=new BLFood().getListOfCategory();
+
+            foreach (var item in categories)
+            {
+               // item.
+            }
+
+            return null;
 
         }
       

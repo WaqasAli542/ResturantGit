@@ -33,8 +33,10 @@
             <div class="form-group mb30">
                 <input type="text" name="last_name" id="signup-last-name" class="form-control" placeholder="last name" value="" required>
             </div>
+            <label hidden id="notvalid" style="color:red;">Sorry! Email is not available</label>
+            <label hidden id="valid" style="color:green;">Congragulation! Email is available</label>
             <div class="form-group mb30">
-                <input type="email" name="email" id="signup-email" class="form-control" placeholder="email address" value="" required>
+                <input type="email" name="email" id="email" onchange="validateEmail()" class="form-control" placeholder="email address" value="" required>
                 <span class="text-muted">This is where your confirmation email / receipt will be sent.</span>
             </div>
           
@@ -49,7 +51,7 @@
                 <input type="text" name="PostCode" id="signup-email-confirm" class="form-control" placeholder="PostCode" value="" required>
             </div>
             <div class="form-group mb30">
-                <input type="text" name="email_confirm" id="signup-email-confirm" class="form-control" placeholder="company" value="" >
+                <input type="text" name="Company" id="signup-email-confirm" class="form-control" placeholder="company" value="" >
                 <span class="text-muted">Optional, but this tends to be very helpful, especially if you're ordering from work.</span>
             </div>
             <div class="form-group mb30">
@@ -97,7 +99,7 @@
                             <input type="text" name="last_name" id="signup-last-name" class="form-control" placeholder="last name" value="@cus.LastName" required>
                         </div>
                         <div class="form-group mb30">
-                            <input type="email" name="email" id="signup-email" class="form-control" placeholder="email address" value="@cus.Email" required>
+                            <input type="email" name="email"  id="email" class="form-control" placeholder="email address" value="@cus.Email" required>
                             <span class="text-muted">This is where your confirmation email / receipt will be sent.</span>
                         </div>
 
@@ -251,13 +253,10 @@
                                 <td class="bg-warning"><b>TOTAL WITH TAX</b></td>
                                 <td class="text-right bg-warning"><b>£ @total</b></td>
                             </tr>
-
                         </tbody>
-
                     </table>
 
-
-                    <a class="btn btn-primary center-block" href="/order/menu">Edit Your Order</a>
+                    <a class="btn btn-primary center-block" href="/Home/menu">Edit Your Order</a>
 
                     <h3 class="sb-title">ORDER DETAILS</h3>
 
@@ -316,7 +315,49 @@
 
 <script src="https://js.braintreegateway.com/js/braintree-2.32.0.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <script>
+    var disbaleCount = 0;
+    function validateEmail() {
+        var email = document.getElementById('email').value;
+
+        $.ajax({
+            dataType: "json",
+            type: "GET",
+            url: '@Url.Action("validateEmail", "Home")',
+            contentType: "application/json; charset=utf-8",
+            data: { Email: email },
+            success: function (response) {
+                if (response) {
+                    $("#notvalid").show();
+                    $("#valid").hide();
+                    disbaleCount++;
+                    //$(':input[type="submit"]').prop('disabled', true);
+                } else {
+                    $("#valid").show();
+                    $("#notvalid").hide();
+                   // $(':input[type="submit"]').prop('disabled', false);
+                    if( disbaleCount>0)
+                    {
+                        disbaleCount--;
+                    }
+                }
+                if (disbaleCount == 0) {
+                    var obj = document.getElementById("submit-button");
+                    obj.disabled = false;
+                }
+                else {
+                    var obj = document.getElementById("submit-button");
+                    obj.disabled = true;
+                }
+
+            },
+            error: function (response) {; }
+
+        });
+
+    }
     window.onload=function()
     {
         onChange();
@@ -348,11 +389,15 @@
                 closingtime = 4;
             }
 
-
-            if (currentHours < closingtime && currentHours < openingtime) //if current time is not more then 4am or is after 12 pm
+            if (currentHours < closingtime)//if current time is not more then 4am or is after 12 pm
             {
                 serviceAvailable = 1;
             }
+            else if (currentHours > openingtime)
+            {
+                serviceAvailable = 1;
+            }
+          
             else serviceAvailable = 0;
 
             if (currentHours == (closingtime - 1)) // if the current time is the last working hour
@@ -362,17 +407,23 @@
             }
 
             if (serviceAvailable == 0) {
-                var obj = document.getElementById("submit-button");
-                obj.disabled = true;
+                //var obj = document.getElementById("submit-button");
+               // obj.disabled = true;
                 var deliveryTime = document.getElementById("notDeliveryTime");
                 deliveryTime.hidden = false;
                 deliveryTime.textContent = "Sorry for inconvenience, but we are closed now.";
+
+                disbaleCount++;
             }
             else {
-                var obj = document.getElementById("submit-button");
-                obj.disabled = false;
+                //var obj = document.getElementById("submit-button");
+               // obj.disabled = false;
                 var deliveryTime = document.getElementById("notDeliveryTime");
                 deliveryTime.hidden = true;
+
+                if (disbaleCount > 0) {
+                    disbaleCount--;
+                }
             }
         }
         else {
@@ -381,27 +432,42 @@
             var minutesInOrder = parseInt(c[0]) * 60 + parseInt(c[1]);
             var minutesNow = parseInt(newDate.getHours()) * 60 + parseInt(newDate.getMinutes());
             if ((minutesInOrder - minutesNow) < 0) {
-                var obj = document.getElementById("submit-button");
-                obj.disabled = true;
+               // var obj = document.getElementById("submit-button");
+               // obj.disabled = true;
                 var deliveryTime = document.getElementById("notDeliveryTime");
                 deliveryTime.hidden = false;
                 deliveryTime.textContent = "Your given time has already passed. Please select some other time";
+
+                disbaleCount++;
             }
             else if ((minutesInOrder - minutesNow) < 30) {
-                var obj = document.getElementById("submit-button");
-                obj.disabled = true;
+               // var obj = document.getElementById("submit-button");
+                //obj.disabled = true;
                 var deliveryTime = document.getElementById("notDeliveryTime");
                 deliveryTime.hidden = false;
                 deliveryTime.textContent = "We cannot deliver too soon";
+
+                disbaleCount++;
             }
             else {
-                var obj = document.getElementById("submit-button");
-                obj.disabled = false;
+                //var obj = document.getElementById("submit-button");
+                //obj.disabled = false;
                 var deliveryTime = document.getElementById("notDeliveryTime");
                 deliveryTime.hidden = true;
+
+                if (disbaleCount > 0) {
+                    disbaleCount--;
+                }
             }
         }
-
+        if (disbaleCount == 0) {
+            var obj = document.getElementById("submit-button");
+            obj.disabled = false;
+        }
+        else {
+            var obj = document.getElementById("submit-button");
+            obj.disabled = true;
+        }
     }
 
     function validatePassword()
@@ -419,23 +485,40 @@
         else
         {
             checkingValue = 1;
-            var obj = document.getElementById("submit-button");
-            obj.disabled = false;
+           // var obj = document.getElementById("submit-button");
+           // obj.disabled = false;
             var deliveryTime = document.getElementById("notDeliveryTime");
             deliveryTime.hidden = true;
+
+            if (disbaleCount > 0) {
+                disbaleCount--;
+            }
         }
         onChange();
         if(checkingValue==0)
         {
-            var obj = document.getElementById("submit-button");
-            obj.disabled = true;
+           // var obj = document.getElementById("submit-button");
+            //obj.disabled = true;
             var deliveryTime = document.getElementById("notDeliveryTime");
             deliveryTime.hidden = false;
             deliveryTime.textContent = "Your email and confirm email do not match";
+
+            disbaleCount++;
+        }
+
+        if (disbaleCount == 0) {
+            var obj = document.getElementById("submit-button");
+            obj.disabled = false;
+        }
+        else {
+            var obj = document.getElementById("submit-button");
+            obj.disabled = true;
         }
     }
     braintree.setup('@System.Web.HttpContext.Current.Session["token"]', "dropin", {
         amount:100,
         container: "payment-form"
     });
+
+    
 </script>

@@ -151,21 +151,16 @@
     <Compile Include="BAL\BLSpecialOffer.cs" />
     <Compile Include="BAL\BLTaxes.cs" />
     <Compile Include="BAL\Order Managament\OrderMgmt.cs" />
-    <Compile Include="Controllers\AddOnAPIController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AdminFoodController.cs" />
     <Compile Include="Controllers\CategoryAPIController.cs" />
     <Compile Include="Controllers\CousineAPIController.cs" />
     <Compile Include="Controllers\CutomerAPIController.cs" />
-    <Compile Include="Controllers\DiscountAPIController.cs" />
-    <Compile Include="Controllers\ExtraChargesAPIController.cs" />
     <Compile Include="Controllers\FoodAPIController.cs" />
-    <Compile Include="Controllers\FoodItemAPIController.cs" />
-    <Compile Include="Controllers\Food_AddOnAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IngredientsApiController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\PaymentAPIController.cs" />
     <Compile Include="Controllers\ResturantDetailsController.cs" />
     <Compile Include="Controllers\SpecialOfferAPIController.cs" />
     <Compile Include="Controllers\TaxesAPIController.cs" />
@@ -1472,7 +1467,17 @@
     <Content Include="Views\Home\OrderDelivered.cshtml" />
     <Content Include="Views\Home\Error404.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="QUERYLib">
+      <Guid>{15C3C83A-247E-40AD-932C-3C46E08BACEB}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

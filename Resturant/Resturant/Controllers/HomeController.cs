@@ -566,15 +566,22 @@ namespace Resturant.Controllers
             ViewBag.val = val;
             return View("OrderDelivered");
         }
-
-
-
-
-
         //CustomError Pages
         public ActionResult Error404()
         {
             return View();
         }
+
+        [HttpGet]
+        public string validateEmail(string Email)
+        {
+            bool exist = new BLCustomer().ValidateEmail(Email);
+            return JsonConvert.SerializeObject(exist, Formatting.Indented,
+                        new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                        });
+
+        }  
     }
 }

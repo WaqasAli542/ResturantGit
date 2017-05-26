@@ -9,8 +9,6 @@ namespace Resturant.UtilityClasses
 {
     public class Payments
     {
-
-
         BraintreeGateway gateway = new BraintreeGateway
         {
             Environment = Braintree.Environment.SANDBOX,
@@ -28,7 +26,12 @@ namespace Resturant.UtilityClasses
             System.Web.HttpContext.Current.Session["token"] = clientToken;
         }
 
-
+        public string TokenforApi()
+        {
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+            string clientToken = gateway.ClientToken.generate();
+            return clientToken;
+        }
         public bool proceedPayment(string nonce,double amount)
         {
           string nonceFromTheClient = nonce;

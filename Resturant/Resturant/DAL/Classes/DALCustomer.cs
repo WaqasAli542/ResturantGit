@@ -61,6 +61,16 @@ namespace Resturant.DAL.Classes
 
         }
         #endregion
-       
+
+
+        public bool ValidateEmail(string Email)
+        {
+           Customer c= database.Customers.FirstOrDefault(cus => cus.Email == Email);
+            if(c!=null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

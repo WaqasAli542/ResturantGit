@@ -46,6 +46,11 @@ namespace Resturant.BAL
         {
             return new DALCustomer().login(Email, Password); ;
         }
+
+        public bool ValidateEmail(string Email)
+        {
+            return new DALCustomer().ValidateEmail(Email); ;
+        }
         #endregion
     }
 }
